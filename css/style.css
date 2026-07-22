@@ -36,7 +36,6 @@ body {
 	height: 100%;
 	font-family: "Cairo", sans-serif;
 	-webkit-font-smoothing: antialiased;
-	font-smoothing: antialiased;
 }
 
 h1,
@@ -910,6 +909,7 @@ ol {
 	left: -35px;
 	top: 50%;
 	-webkit-transform: translateY(-35px);
+	transform: translateY(-35px);
 	background: #F3F3E6;
 }
 
@@ -3591,6 +3591,7 @@ ol {
 		left: 0;
 		top: 0;
 		-webkit-transform: translateY(0);
+		transform: translateY(0);
 	}
 	.categories__slider.owl-carousel .owl-nav button.owl-next {
 		right: -10px;
