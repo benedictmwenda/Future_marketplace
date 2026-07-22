@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QAQA | Login & Sign Up</title>
+    <title>SokoHub | Login & Sign Up</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <!-- FontAwesome for icons -->
@@ -23,6 +23,7 @@
             --seller-dark: #b8860b;
             --seller-light: #fbf6e9;
         }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -30,6 +31,7 @@
             font-family: 'Outfit', sans-serif;
             transition: all 0.3s ease;
         }
+
         body {
             background: var(--bg-gradient);
             min-height: 100vh;
@@ -40,6 +42,7 @@
             overflow-x: hidden;
             position: relative;
         }
+
         /* Ambient background decorative blobs */
         .blob {
             position: absolute;
@@ -64,14 +67,17 @@
             right: -100px;
             animation: float-slow 20s infinite alternate-reverse;
         }
+
         /* Ambient color shifts when Seller is active */
         body.seller-bg {
             background: linear-gradient(135deg, #fcfaf2 0%, #f7f0d9 100%);
         }
+
         @keyframes float-slow {
             0% { transform: translate(0, 0) scale(1); }
             100% { transform: translate(50px, 30px) scale(1.1); }
         }
+
         /* Container & Cards layout */
         .auth-container {
             width: 1000px;
@@ -87,11 +93,12 @@
             z-index: 10;
             position: relative;
         }
+
         /* Left Branding Panel */
         .brand-panel {
             flex: 1.1;
             background: linear-gradient(135deg, rgba(16, 0, 184, 0.9) 0%, rgba(11, 0, 130, 0.95) 100%), 
-                        url("img/logo.png") no-repeat center center;
+                        url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600') no-repeat center center;
             background-size: cover;
             color: #fff;
             padding: 50px;
@@ -100,31 +107,37 @@
             justify-content: space-between;
             position: relative;
         }
+
         /* Overlay details when Seller is selected */
         .brand-panel.seller-active {
             background: linear-gradient(135deg, rgba(218, 165, 32, 0.9) 0%, rgba(184, 134, 11, 0.95) 100%),
-                        url("img/logo.png") no-repeat center center;
+                        url('https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&q=80&w=600') no-repeat center center;
             background-size: cover;
         }
+
         .brand-logo img {
             height: 45px;
             filter: brightness(0) invert(1);
         }
+
         .brand-content h2 {
             font-size: 2.5rem;
             font-weight: 800;
             margin-bottom: 15px;
             line-height: 1.2;
         }
+
         .brand-content p {
             font-size: 1.05rem;
             opacity: 0.9;
             line-height: 1.6;
         }
+
         .brand-footer {
             font-size: 0.9rem;
             opacity: 0.7;
         }
+
         /* Right Form Panel */
         .form-panel {
             flex: 1.2;
@@ -134,19 +147,23 @@
             justify-content: center;
             background: #fff;
         }
+
         .form-header {
             margin-bottom: 30px;
         }
+
         .form-header h3 {
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--secondary);
             margin-bottom: 8px;
         }
+
         .form-header p {
             color: var(--text-muted);
             font-size: 0.95rem;
         }
+
         /* Segmented Selector for Buyer/Seller */
         .role-selector {
             display: flex;
@@ -157,6 +174,7 @@
             position: relative;
             z-index: 1;
         }
+
         .role-option {
             flex: 1;
             text-align: center;
@@ -174,10 +192,12 @@
             justify-content: center;
             gap: 8px;
         }
+
         .role-option.active {
             color: #fff;
             box-shadow: 0 4px 10px rgba(16, 0, 184, 0.1);
         }
+
         /* Sliding tab indicator for role toggle */
         .role-selector::after {
             content: '';
@@ -191,21 +211,26 @@
             z-index: 0;
             transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s;
         }
+
         .role-selector.seller-selected::after {
             transform: translateX(100%);
             background: var(--seller-accent);
         }
+
         .role-selector.seller-selected .role-option.active {
             color: #fff;
         }
+
         .role-option.active:not(.seller) {
             color: #fff;
         }
+
         /* Form styling */
         .input-group {
             margin-bottom: 20px;
             position: relative;
         }
+
         .input-group label {
             display: block;
             font-size: 0.85rem;
@@ -215,17 +240,20 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+
         .input-wrapper {
             position: relative;
             display: flex;
             align-items: center;
         }
+
         .input-wrapper i {
             position: absolute;
             left: 15px;
             color: var(--text-muted);
             font-size: 1.1rem;
         }
+
         .input-wrapper input {
             width: 100%;
             padding: 14px 15px 14px 45px;
@@ -236,16 +264,19 @@
             color: var(--text-main);
             background: #fbfbfe;
         }
+
         .input-wrapper input:focus {
             border-color: var(--primary);
             background: #fff;
             box-shadow: 0 0 0 4px var(--primary-light);
         }
+
         /* Seller theme focus color */
         .seller-active .input-wrapper input:focus {
             border-color: var(--seller-accent);
             box-shadow: 0 0 0 4px var(--seller-light);
         }
+
         /* Helper elements (forgot password, remember me) */
         .form-helpers {
             display: flex;
@@ -254,6 +285,7 @@
             margin-bottom: 25px;
             font-size: 0.9rem;
         }
+
         .remember-me {
             display: flex;
             align-items: center;
@@ -261,26 +293,32 @@
             cursor: pointer;
             color: var(--text-muted);
         }
+
         .remember-me input {
             accent-color: var(--primary);
             width: 16px;
             height: 16px;
             cursor: pointer;
         }
+
         .seller-active .remember-me input {
             accent-color: var(--seller-accent);
         }
+
         .forgot-pass {
             color: var(--primary);
             text-decoration: none;
             font-weight: 600;
         }
+
         .seller-active .forgot-pass {
             color: var(--seller-accent);
         }
+
         .forgot-pass:hover {
             text-decoration: underline;
         }
+
         /* Action buttons */
         .submit-btn {
             width: 100%;
@@ -298,23 +336,28 @@
             justify-content: center;
             gap: 10px;
         }
+
         .submit-btn:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(16, 0, 184, 0.3);
         }
+
         .seller-active .submit-btn {
             background: var(--seller-accent);
             color: #fff;
             box-shadow: 0 6px 15px rgba(218, 165, 32, 0.2);
         }
+
         .seller-active .submit-btn:hover {
             background: var(--seller-dark);
             box-shadow: 0 8px 20px rgba(218, 165, 32, 0.3);
         }
+
         .submit-btn:active {
             transform: translateY(0);
         }
+
         /* Toggle between Sign In / Sign Up */
         .toggle-form {
             text-align: center;
@@ -322,29 +365,36 @@
             font-size: 0.95rem;
             color: var(--text-muted);
         }
+
         .toggle-form a {
             color: var(--primary);
             text-decoration: none;
             font-weight: 700;
         }
+
         .seller-active .toggle-form a {
             color: var(--seller-accent);
         }
+
         .toggle-form a:hover {
             text-decoration: underline;
         }
+
         /* Form structures - switching animation */
         .form-content {
             display: none;
             animation: fadeIn 0.4s ease-out forwards;
         }
+
         .form-content.active {
             display: block;
         }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         /* Responsive styling */
         @media (max-width: 850px) {
             .auth-container {
@@ -365,15 +415,15 @@
     </style>
 </head>
 <body>
+
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
+
     <div class="auth-container" id="authContainer">
         <!-- Left Branding Panel -->
         <div class="brand-panel" id="brandPanel">
-            <div class="brand-logo">
-                <h2 style="font-weight: 900; letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid "></i> QAQA Marketplace
-                </h2>
+            <div class="brand-logo" style="margin-bottom: 20px;">
+                <img src="logo.png" alt="SokoHub Logo" style="height: 120px; width: 120px; border-radius: 50%; background: #ffffff; padding: 5px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); object-fit: contain;">
             </div>
             
             <div class="brand-content" id="brandText">
@@ -382,9 +432,10 @@
             </div>
             
             <div class="brand-footer">
-                <p>© 2026 QAQA Ecosystem. All Rights Reserved.</p>
+                <p>© 2026 SokoHub Ecosystem. All Rights Reserved.</p>
             </div>
         </div>
+
         <!-- Right Form Panel -->
         <div class="form-panel">
             
@@ -397,6 +448,7 @@
                     <i class="fa-solid fa-store"></i> Seller
                 </button>
             </div>
+
             <!-- SIGN IN FORM -->
             <div class="form-content active" id="signInForm">
                 <div class="form-header">
@@ -437,11 +489,12 @@
                     Don't have an account yet? <a href="#" onclick="switchForm('signup')">Sign Up</a>
                 </div>
             </div>
+
             <!-- SIGN UP FORM -->
             <div class="form-content" id="signUpForm">
                 <div class="form-header">
                     <h3 id="signUpHeader">Create Account</h3>
-                    <p id="signUpSubtitle">Join QAQA today and access our full inventory pipeline.</p>
+                    <p id="signUpSubtitle">Join SokoHub today and access our full inventory pipeline.</p>
                 </div>
                 
                 <form onsubmit="handleAuthSubmit(event, 'signup')">
@@ -458,7 +511,7 @@
                         <label for="signup-store">Store / Company Name</label>
                         <div class="input-wrapper">
                             <i class="fa-solid fa-store"></i>
-                            <input type="text" id="signup-store" placeholder="e.g. QAQA Wholesale Ltd.">
+                            <input type="text" id="signup-store" placeholder="e.g. SokoHub Wholesale Ltd.">
                         </div>
                     </div>
                     
@@ -493,11 +546,14 @@
                     Already have an account? <a href="#" onclick="switchForm('signin')">Sign In</a>
                 </div>
             </div>
+
         </div>
     </div>
+
     <script>
         let currentRole = 'buyer'; // 'buyer' or 'seller'
         let currentForm = 'signin'; // 'signin' or 'signup'
+
         const contentTexts = {
             buyer: {
                 signin: {
@@ -506,7 +562,7 @@
                 },
                 signup: {
                     title: "Start Sourcing Now!",
-                    desc: "Create a free QAQA buyer account to connect with global suppliers, track real-time shipping logs, and access volume-based enterprise discounts."
+                    desc: "Create a free SokoHub buyer account to connect with global suppliers, track real-time shipping logs, and access volume-based enterprise discounts."
                 }
             },
             seller: {
@@ -516,10 +572,11 @@
                 },
                 signup: {
                     title: "Launch Your Store",
-                    desc: "Become a registered supplier on QAQA. Upload products, negotiate supply chain rates, and connect with direct wholesale buyers worldwide."
+                    desc: "Become a registered supplier on SokoHub. Upload products, negotiate supply chain rates, and connect with direct wholesale buyers worldwide."
                 }
             }
         };
+
         function setRole(role) {
             currentRole = role;
             
@@ -530,6 +587,7 @@
             const btnSeller = document.getElementById('btnSeller');
             const storeNameGroup = document.getElementById('storeNameGroup');
             const signupStoreInput = document.getElementById('signup-store');
+
             if (role === 'seller') {
                 container.classList.add('seller-active');
                 roleSelector.classList.add('seller-selected');
@@ -549,13 +607,16 @@
                 storeNameGroup.style.display = 'none';
                 signupStoreInput.removeAttribute('required');
             }
+
             updateDynamicText();
         }
+
         function switchForm(form) {
             currentForm = form;
             
             const signInForm = document.getElementById('signInForm');
             const signUpForm = document.getElementById('signUpForm');
+
             if (form === 'signup') {
                 signInForm.classList.remove('active');
                 signUpForm.classList.add('active');
@@ -563,8 +624,10 @@
                 signUpForm.classList.remove('active');
                 signInForm.classList.add('active');
             }
+
             updateDynamicText();
         }
+
         function updateDynamicText() {
             const data = contentTexts[currentRole][currentForm];
             const brandText = document.getElementById('brandText');
@@ -573,10 +636,12 @@
                 <h2>${data.title}</h2>
                 <p>${data.desc}</p>
             `;
+
             const signInHeader = document.getElementById('signInHeader');
             const signInSubtitle = document.getElementById('signInSubtitle');
             const signUpHeader = document.getElementById('signUpHeader');
             const signUpSubtitle = document.getElementById('signUpSubtitle');
+
             if (currentRole === 'seller') {
                 signInHeader.innerText = "Merchant Sign In";
                 signInSubtitle.innerText = "Access your merchant dashboard and products list.";
@@ -586,9 +651,10 @@
                 signInHeader.innerText = "Sign In";
                 signInSubtitle.innerText = "Welcome back! Please enter your login details.";
                 signUpHeader.innerText = "Create Account";
-                signUpSubtitle.innerText = "Join QAQA today and get access to top-tier consumer products.";
+                signUpSubtitle.innerText = "Join SokoHub today and get access to top-tier consumer products.";
             }
         }
+
         function handleAuthSubmit(event, type) {
             event.preventDefault();
             const email = type === 'signin' ? document.getElementById('signin-email').value : document.getElementById('signup-email').value;
@@ -597,6 +663,7 @@
             alert(`${roleFormatted} ${type === 'signin' ? 'Sign In' : 'Sign Up'} Successful!\nEmail: ${email}`);
             window.location.href = "./index.html"; 
         }
+
         updateDynamicText();
     </script>
 </body>

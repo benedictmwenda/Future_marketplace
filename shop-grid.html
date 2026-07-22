@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Ogani Template">
-    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="description" content="SokoHub Marketplace Shop — Browse All Listings & Deals">
+    <meta name="keywords" content="SokoHub, marketplace, shop, vehicles, property, electronics, fashion, services, jobs">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ogani | Template</title>
+    <title>SokoHub | Shop</title>
+    <link href="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" rel="icon">
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
@@ -24,7 +25,56 @@
 </head>
 
 <body>
-    <!-- Page Preloder -->
+
+    <!-- ===================== Quick View Modal ===================== -->
+    <div class="qv-overlay" id="quickViewOverlay"></div>
+    <div class="qv-modal" id="quickViewModal" role="dialog" aria-modal="true">
+        <button class="qv-close" id="quickViewClose" aria-label="Close">
+            <i class="fa fa-times"></i>
+        </button>
+        <div class="qv-body">
+            <div class="qv-image">
+                <img id="qv-img" src="" alt="Item Image">
+                <span class="qv-badge" id="qv-category"></span>
+            </div>
+            <div class="qv-details">
+                <h2 id="qv-name"></h2>
+                <div class="qv-price" id="qv-price"></div>
+                <p class="qv-desc" id="qv-desc"></p>
+                <div class="qv-features" id="qv-features-wrapper">
+                    <h6 class="qv-features__title">
+                        <i class="fa fa-list-ul"></i> Key Features
+                    </h6>
+                    <div id="qv-features-list"></div>
+                </div>
+                <div class="qv-meta">
+                    <div class="qv-meta-item">
+                        <i class="fa fa-map-marker"></i>
+                        <span id="qv-location"></span>
+                    </div>
+                    <div class="qv-meta-item">
+                        <i class="fa fa-tag"></i>
+                        <span id="qv-condition"></span>
+                    </div>
+                    <div class="qv-meta-item">
+                        <i class="fa fa-user"></i>
+                        <span id="qv-seller"></span>
+                    </div>
+                </div>
+                <div class="qv-actions">
+                    <a href="#" class="qv-btn qv-btn--primary">
+                        <i class="fa fa-shopping-cart"></i> Add to Cart
+                    </a>
+                    <a href="#" class="qv-btn qv-btn--outline">
+                        <i class="fa fa-heart"></i> Wishlist
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ===================== End Quick View Modal ===================== -->
+
+    <!-- Page Preloader -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
@@ -33,14 +83,16 @@
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
-            <a href="#"><img src="img/logo.png" alt=""></a>
+            <a href="./index.html">
+                <img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" alt="SokoHub Logo" class="brand-logo-img">
+            </a>
         </div>
         <div class="humberger__menu__cart">
             <ul>
                 <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
                 <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
             </ul>
-            <div class="header__cart__price">item: <span>$150.00</span></div>
+            <div class="header__cart__price">cart: <span>KSH 150.00</span></div>
         </div>
         <div class="humberger__menu__widget">
             <div class="header__top__right__language">
@@ -48,24 +100,23 @@
                 <div>English</div>
                 <span class="arrow_carrot-down"></span>
                 <ul>
-                    <li><a href="#">Spanis</a></li>
+                    <li><a href="#">Swahili</a></li>
                     <li><a href="#">English</a></li>
                 </ul>
             </div>
             <div class="header__top__right__auth">
-                <a href="#"><i class="fa fa-user"></i> Login</a>
+                <a href="./login.html"><i class="fa fa-user"></i> Login / Register</a>
             </div>
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
-                <li class="active"><a href="./index.html">Home</a></li>
-                <li><a href="./shop-grid.html">Shop</a></li>
-                <li><a href="#">Pages</a>
+                <li><a href="./index.html">Home</a></li>
+                <li class="active"><a href="./shop-grid.html">Shop</a></li>
+                <li><a href="#">My Cart</a>
                     <ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">Shop Details</a></li>
-                        <li><a href="./shoping-cart.html">Shoping Cart</a></li>
+                        <li><a href="./shoping-cart.html">Shopping Cart</a></li>
                         <li><a href="./checkout.html">Check Out</a></li>
-                        <li><a href="./blog-details.html">Blog Details</a></li>
                     </ul>
                 </li>
                 <li><a href="./blog.html">Blog</a></li>
@@ -81,8 +132,8 @@
         </div>
         <div class="humberger__menu__contact">
             <ul>
-                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                <li>Free Shipping for all Order of $99</li>
+                <li><i class="fa fa-envelope"></i> beneditc64@gmail.com</li>
+                <li>Fast Local Delivery & Verification</li>
             </ul>
         </div>
     </div>
@@ -93,15 +144,15 @@
         <div class="header__top">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-md-6">
                         <div class="header__top__left">
                             <ul>
-                                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                                <li>Free Shipping for all Order of $99</li>
+                                <li><i class="fa fa-envelope"></i> beneditc64@gmail.com</li>
+                                <li>Fast Local Delivery & Verification</li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-md-6">
                         <div class="header__top__right">
                             <div class="header__top__right__social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
@@ -114,12 +165,12 @@
                                 <div>English</div>
                                 <span class="arrow_carrot-down"></span>
                                 <ul>
-                                    <li><a href="#">Spanis</a></li>
+                                    <li><a href="#">Swahili</a></li>
                                     <li><a href="#">English</a></li>
                                 </ul>
                             </div>
                             <div class="header__top__right__auth">
-                                <a href="#"><i class="fa fa-user"></i> Login</a>
+                                <a href="./login.html"><i class="fa fa-user"></i> Login / Register</a>
                             </div>
                         </div>
                     </div>
@@ -127,10 +178,12 @@
             </div>
         </div>
         <div class="container">
-            <div class="row">
+            <div class="row align-items-center">
                 <div class="col-lg-3">
                     <div class="header__logo">
-                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                        <a href="./index.html">
+                            <img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" alt="SokoHub Logo" class="brand-logo-img">
+                        </a>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -138,12 +191,11 @@
                         <ul>
                             <li><a href="./index.html">Home</a></li>
                             <li class="active"><a href="./shop-grid.html">Shop</a></li>
-                            <li><a href="#">Pages</a>
+                            <li><a href="#">My Cart</a>
                                 <ul class="header__menu__dropdown">
                                     <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shoping-cart.html">Shoping Cart</a></li>
+                                    <li><a href="./shoping-cart.html">Shopping Cart</a></li>
                                     <li><a href="./checkout.html">Check Out</a></li>
-                                    <li><a href="./blog-details.html">Blog Details</a></li>
                                 </ul>
                             </li>
                             <li><a href="./blog.html">Blog</a></li>
@@ -157,7 +209,7 @@
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
                             <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                         </ul>
-                        <div class="header__cart__price">item: <span>$150.00</span></div>
+                        <div class="header__cart__price">cart: <span>KSH 150.00</span></div>
                     </div>
                 </div>
             </div>
@@ -169,7 +221,7 @@
     <!-- Header Section End -->
 
     <!-- Hero Section Begin -->
-      <section class="hero">
+    <section class="hero hero-normal">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
@@ -178,14 +230,22 @@
                             <i class="fa fa-bars"></i>
                             <span>Browse Categories</span>
                         </div>
-                        <ul id="hero-categories-list"></ul>
+                        <ul id="hero-categories-list">
+                            <li><a href="#"><i class="fa fa-car" style="margin-right: 10px; color: #1000B8;"></i> Vehicles</a></li>
+                            <li><a href="#"><i class="fa fa-home" style="margin-right: 10px; color: #1000B8;"></i> Property & Rentals</a></li>
+                            <li><a href="#"><i class="fa fa-laptop" style="margin-right: 10px; color: #1000B8;"></i> Electronics</a></li>
+                            <li><a href="#"><i class="fa fa-shopping-bag" style="margin-right: 10px; color: #1000B8;"></i> Fashion & Beauty</a></li>
+                            <li><a href="#"><i class="fa fa-couch" style="margin-right: 10px; color: #1000B8;"></i> Home & Furniture</a></li>
+                            <li><a href="#"><i class="fa fa-tools" style="margin-right: 10px; color: #1000B8;"></i> Services</a></li>
+                            <li><a href="#"><i class="fa fa-briefcase" style="margin-right: 10px; color: #1000B8;"></i> Jobs</a></li>
+                            <li><a href="#"><i class="fa fa-seedling" style="margin-right: 10px; color: #1000B8;"></i> Agriculture</a></li>
+                        </ul>
                     </div>
                 </div>
                 <div class="col-lg-9">
                     <div class="hero__search">
                         <div class="hero__search__form">
-                             <form id="search-form">
-                                <!-- 💡 IMPROVED: Real select dropdown styled for the marketplace -->
+                            <form id="search-form">
                                 <select id="search-category" class="hero__search__select">
                                     <option value="all">All Categories</option>
                                     <option value="vehicles">Vehicles</option>
@@ -205,16 +265,8 @@
                             </div>
                             <div class="hero__search__phone__text">
                                 <h5>+254 794 536597</h5>
-                                <span>support 24/7 time</span>
+                                <span>Support 24/7</span>
                             </div>
-                        </div>
-                    </div>
-                    <div class="hero__item set-bg" data-setbg="https://i.pinimg.com/1200x/ec/04/40/ec04405f8a89c84589bfeb31d6c1ad94.jpg">
-                        <div class="hero__text">
-                            <span>QAQA MARKETPLACE</span>
-                            <h2>Buy, Sell & Rent <br />Anything Local</h2>
-                            <p>Products • Rentals • Vehicles • Services</p>
-                            <a href="#" class="primary-btn">EXPLORE NOW</a>
                         </div>
                     </div>
                 </div>
@@ -222,14 +274,14 @@
         </div>
     </section>
     <!-- Hero Section End -->
-     
+
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
+    <section class="breadcrumb-section set-bg" data-setbg="https://i.pinimg.com/1200x/ec/04/40/ec04405f8a89c84589bfeb31d6c1ad94.jpg">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Organi Shop</h2>
+                        <h2>SokoHub Marketplace Shop</h2>
                         <div class="breadcrumb__option">
                             <a href="./index.html">Home</a>
                             <span>Shop</span>
@@ -247,26 +299,27 @@
             <div class="row">
                 <div class="col-lg-3 col-md-5">
                     <div class="sidebar">
+                        <!-- SokoHub Categories -->
                         <div class="sidebar__item">
-                            <h4>Department</h4>
+                            <h4>Categories</h4>
                             <ul>
-                                <li><a href="#">Fresh Meat</a></li>
-                                <li><a href="#">Vegetables</a></li>
-                                <li><a href="#">Fruit & Nut Gifts</a></li>
-                                <li><a href="#">Fresh Berries</a></li>
-                                <li><a href="#">Ocean Foods</a></li>
-                                <li><a href="#">Butter & Eggs</a></li>
-                                <li><a href="#">Fastfood</a></li>
-                                <li><a href="#">Fresh Onion</a></li>
-                                <li><a href="#">Papayaya & Crisps</a></li>
-                                <li><a href="#">Oatmeal</a></li>
+                                <li><a href="#">Vehicles (Car, Bike, Truck)</a></li>
+                                <li><a href="#">Property & Rentals</a></li>
+                                <li><a href="#">Electronics & Phones</a></li>
+                                <li><a href="#">Fashion & Beauty</a></li>
+                                <li><a href="#">Home & Furniture</a></li>
+                                <li><a href="#">Local Services & Repairs</a></li>
+                                <li><a href="#">Jobs & Freelancing</a></li>
+                                <li><a href="#">Agriculture & Produce</a></li>
                             </ul>
                         </div>
+
+                        <!-- Price Range Filter (RETAINED) -->
                         <div class="sidebar__item">
-                            <h4>Price</h4>
+                            <h4>Price Range</h4>
                             <div class="price-range-wrap">
                                 <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                    data-min="10" data-max="540">
+                                    data-min="1000" data-max="5000000">
                                     <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
                                     <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                                     <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
@@ -279,8 +332,10 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Colors Option (RETAINED) -->
                         <div class="sidebar__item sidebar__item__color--option">
-                            <h4>Colors</h4>
+                            <h4>Colors / Finishes</h4>
                             <div class="sidebar__item__color sidebar__item__color--white">
                                 <label for="white">
                                     White
@@ -289,121 +344,81 @@
                             </div>
                             <div class="sidebar__item__color sidebar__item__color--gray">
                                 <label for="gray">
-                                    Gray
+                                    Silver / Gray
                                     <input type="radio" id="gray">
                                 </label>
                             </div>
                             <div class="sidebar__item__color sidebar__item__color--red">
                                 <label for="red">
-                                    Red
+                                    Red / Burgundy
                                     <input type="radio" id="red">
                                 </label>
                             </div>
                             <div class="sidebar__item__color sidebar__item__color--black">
                                 <label for="black">
-                                    Black
+                                    Black / Metallic
                                     <input type="radio" id="black">
                                 </label>
                             </div>
                             <div class="sidebar__item__color sidebar__item__color--blue">
                                 <label for="blue">
-                                    Blue
+                                    SokoHub Blue
                                     <input type="radio" id="blue">
                                 </label>
                             </div>
-                            <div class="sidebar__item__color sidebar__item__color--green">
-                                <label for="green">
-                                    Green
-                                    <input type="radio" id="green">
-                                </label>
-                            </div>
                         </div>
-                        <div class="sidebar__item">
-                            <h4>Popular Size</h4>
-                            <div class="sidebar__item__size">
-                                <label for="large">
-                                    Large
-                                    <input type="radio" id="large">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__size">
-                                <label for="medium">
-                                    Medium
-                                    <input type="radio" id="medium">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__size">
-                                <label for="small">
-                                    Small
-                                    <input type="radio" id="small">
-                                </label>
-                            </div>
-                            <div class="sidebar__item__size">
-                                <label for="tiny">
-                                    Tiny
-                                    <input type="radio" id="tiny">
-                                </label>
-                            </div>
-                        </div>
+
+                        <!-- Latest Sidebar Items -->
                         <div class="sidebar__item">
                             <div class="latest-product__text">
-                                <h4>Latest Products</h4>
+                                <h4>Hot Listings</h4>
                                 <div class="latest-product__slider owl-carousel">
-                                    <div class="latest-prdouct__slider__item">
+                                    <div class="latest-product__slider__item">
                                         <a href="#" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="img/latest-product/lp-1.jpg" alt="">
+                                                <img src="https://gybird.co.ke/site/images/car_images/2-6a5784847a093.jpg" alt="BMW" style="width: 100px; height: 100px; object-fit: cover;">
                                             </div>
                                             <div class="latest-product__item__text">
-                                                <h6>Crab Pool Security</h6>
-                                                <span>$30.00</span>
+                                                <h6>2017 BMW X1</h6>
+                                                <span>KSH 3,150,000</span>
                                             </div>
                                         </a>
                                         <a href="#" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="img/latest-product/lp-2.jpg" alt="">
+                                                <img src="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=100&auto=format&fit=crop&q=60" alt="iPhone" style="width: 100px; height: 100px; object-fit: cover;">
                                             </div>
                                             <div class="latest-product__item__text">
-                                                <h6>Crab Pool Security</h6>
-                                                <span>$30.00</span>
+                                                <h6>iPhone 15 Pro Max</h6>
+                                                <span>KSH 185,000</span>
                                             </div>
                                         </a>
                                         <a href="#" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="img/latest-product/lp-3.jpg" alt="">
+                                                <img src="https://www.luluaurelian.co.ke/assets/skyview/skyview_1.jpg" alt="Apartment" style="width: 100px; height: 100px; object-fit: cover;">
                                             </div>
                                             <div class="latest-product__item__text">
-                                                <h6>Crab Pool Security</h6>
-                                                <span>$30.00</span>
+                                                <h6>2 Bed Airbnb Westlands</h6>
+                                                <span>KSH 5,500/day</span>
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="latest-prdouct__slider__item">
+                                    <div class="latest-product__slider__item">
                                         <a href="#" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="img/latest-product/lp-1.jpg" alt="">
+                                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt6ea3yT2xWcXMNPMT5gC9G_l6HRBXQWZwY4dOovOjMw&s=10" alt="Subaru" style="width: 100px; height: 100px; object-fit: cover;">
                                             </div>
                                             <div class="latest-product__item__text">
-                                                <h6>Crab Pool Security</h6>
-                                                <span>$30.00</span>
+                                                <h6>2018 Subaru Levorg</h6>
+                                                <span>KSH 2,400,000</span>
                                             </div>
                                         </a>
                                         <a href="#" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="img/latest-product/lp-2.jpg" alt="">
+                                                <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=100&auto=format&fit=crop&q=60" alt="Cleaning" style="width: 100px; height: 100px; object-fit: cover;">
                                             </div>
                                             <div class="latest-product__item__text">
-                                                <h6>Crab Pool Security</h6>
-                                                <span>$30.00</span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="latest-product__item">
-                                            <div class="latest-product__item__pic">
-                                                <img src="img/latest-product/lp-3.jpg" alt="">
-                                            </div>
-                                            <div class="latest-product__item__text">
-                                                <h6>Crab Pool Security</h6>
-                                                <span>$30.00</span>
+                                                <h6>Home Cleaning Service</h6>
+                                                <span>KSH 3,500/session</span>
                                             </div>
                                         </a>
                                     </div>
@@ -412,138 +427,102 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-lg-9 col-md-7">
+                    <!-- Discount Offers Section -->
                     <div class="product__discount">
                         <div class="section-title product__discount__title">
-                            <h2>Sale Off</h2>
+                            <h2>Special Deals &amp; Discounts</h2>
                         </div>
                         <div class="row">
                             <div class="product__discount__slider owl-carousel">
                                 <div class="col-lg-4">
                                     <div class="product__discount__item">
                                         <div class="product__discount__item__pic set-bg"
-                                            data-setbg="img/product/discount/pd-1.jpg">
-                                            <div class="product__discount__percent">-20%</div>
+                                            data-setbg="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=500&auto=format&fit=crop&q=60">
+                                            <div class="product__discount__percent">-15%</div>
                                             <ul class="product__item__pic__hover">
                                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                                <li>
+                                                    <a href="#" class="quick-view-btn" data-name="iPhone 15 Pro Max (Refurbished)" data-price="KSH 157,000" data-category="Electronics" data-location="Nairobi CBD" data-condition="Refurbished — Like New" data-seller="TechZone Kenya" data-img="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=500&auto=format&fit=crop&q=60" data-desc="Special deal on certified refurbished iPhone 15 Pro Max 256GB with 6 months warranty." data-features="📱:6.7-inch Super Retina XDR|120Hz;📷:48MP Triple Camera;✅:6 Months Warranty">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                </li>
                                                 <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                             </ul>
                                         </div>
                                         <div class="product__discount__item__text">
-                                            <span>Dried Fruit</span>
-                                            <h5><a href="#">Raisin’n’nuts</a></h5>
-                                            <div class="product__item__price">$30.00 <span>$36.00</span></div>
+                                            <span>Electronics</span>
+                                            <h5><a href="#">iPhone 15 Pro Max (Deal)</a></h5>
+                                            <div class="product__item__price">KSH 157,000 <span>KSH 185,000</span></div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="product__discount__item">
                                         <div class="product__discount__item__pic set-bg"
-                                            data-setbg="img/product/discount/pd-2.jpg">
+                                            data-setbg="https://www.luluaurelian.co.ke/assets/skyview/skyview_1.jpg">
                                             <div class="product__discount__percent">-20%</div>
                                             <ul class="product__item__pic__hover">
                                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                                <li>
+                                                    <a href="#" class="quick-view-btn" data-name="2 Bed Airbnb Weekend Special" data-price="KSH 4,400/day" data-category="Property" data-location="Westlands, Nairobi" data-condition="Available Weekend" data-seller="Lulu Aurelian" data-img="https://www.luluaurelian.co.ke/assets/skyview/skyview_1.jpg" data-desc="Weekend special discount on luxury Westlands 2-bedroom serviced apartment." data-features="🏠:2 Bedrooms|2 Bathrooms;🏊:Pool & Gym;🔒:24hr Security">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                </li>
                                                 <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                             </ul>
                                         </div>
                                         <div class="product__discount__item__text">
-                                            <span>Vegetables</span>
-                                            <h5><a href="#">Vegetables’package</a></h5>
-                                            <div class="product__item__price">$30.00 <span>$36.00</span></div>
+                                            <span>Property / Rentals</span>
+                                            <h5><a href="#">2 Bed Airbnb Weekend Deal</a></h5>
+                                            <div class="product__item__price">KSH 4,400/day <span>KSH 5,500/day</span></div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="product__discount__item">
                                         <div class="product__discount__item__pic set-bg"
-                                            data-setbg="img/product/discount/pd-3.jpg">
-                                            <div class="product__discount__percent">-20%</div>
+                                            data-setbg="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&auto=format&fit=crop&q=60">
+                                            <div class="product__discount__percent">-10%</div>
                                             <ul class="product__item__pic__hover">
                                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                                <li>
+                                                    <a href="#" class="quick-view-btn" data-name="Full Home Deep Clean Deal" data-price="KSH 3,150" data-category="Services" data-location="Nairobi Wide" data-condition="Book Today" data-seller="CleanPro" data-img="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&auto=format&fit=crop&q=60" data-desc="10% discount on complete house deep cleaning sessions." data-features="🧹:Deep Clean|Sanitization;👷:Insured Staff">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                </li>
                                                 <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                             </ul>
                                         </div>
                                         <div class="product__discount__item__text">
-                                            <span>Dried Fruit</span>
-                                            <h5><a href="#">Mixed Fruitss</a></h5>
-                                            <div class="product__item__price">$30.00 <span>$36.00</span></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="product__discount__item">
-                                        <div class="product__discount__item__pic set-bg"
-                                            data-setbg="img/product/discount/pd-4.jpg">
-                                            <div class="product__discount__percent">-20%</div>
-                                            <ul class="product__item__pic__hover">
-                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="product__discount__item__text">
-                                            <span>Dried Fruit</span>
-                                            <h5><a href="#">Raisin’n’nuts</a></h5>
-                                            <div class="product__item__price">$30.00 <span>$36.00</span></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="product__discount__item">
-                                        <div class="product__discount__item__pic set-bg"
-                                            data-setbg="img/product/discount/pd-5.jpg">
-                                            <div class="product__discount__percent">-20%</div>
-                                            <ul class="product__item__pic__hover">
-                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="product__discount__item__text">
-                                            <span>Dried Fruit</span>
-                                            <h5><a href="#">Raisin’n’nuts</a></h5>
-                                            <div class="product__item__price">$30.00 <span>$36.00</span></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="product__discount__item">
-                                        <div class="product__discount__item__pic set-bg"
-                                            data-setbg="img/product/discount/pd-6.jpg">
-                                            <div class="product__discount__percent">-20%</div>
-                                            <ul class="product__item__pic__hover">
-                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="product__discount__item__text">
-                                            <span>Dried Fruit</span>
-                                            <h5><a href="#">Raisin’n’nuts</a></h5>
-                                            <div class="product__item__price">$30.00 <span>$36.00</span></div>
+                                            <span>Services</span>
+                                            <h5><a href="#">Full Home Deep Clean Deal</a></h5>
+                                            <div class="product__item__price">KSH 3,150 <span>KSH 3,500</span></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Filter / Sort Header (RETAINED) -->
                     <div class="filter__item">
                         <div class="row">
                             <div class="col-lg-4 col-md-5">
                                 <div class="filter__sort">
                                     <span>Sort By</span>
                                     <select>
-                                        <option value="0">Default</option>
-                                        <option value="0">Default</option>
+                                        <option value="0">Default Sorting</option>
+                                        <option value="1">Price: Low to High</option>
+                                        <option value="2">Price: High to Low</option>
+                                        <option value="3">Newest Listings</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4">
                                 <div class="filter__found">
-                                    <h6><span>16</span> Products found</h6>
+                                    <h6><span>12</span> Listings Found</h6>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-3">
@@ -554,188 +533,263 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Main Marketplace Product Grid (12 Items) -->
                     <div class="row">
+                        <!-- Item 1 -->
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
+                                <div class="product__item__pic set-bg" data-setbg="https://gybird.co.ke/site/images/car_images/2-6a5784847a093.jpg">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <li>
+                                            <a href="#" class="quick-view-btn" data-name="2017 BMW X1" data-price="KSH 3,150,000" data-category="Vehicles" data-location="Nairobi" data-condition="Used — Excellent" data-seller="Grbird Motors" data-img="https://gybird.co.ke/site/images/car_images/2-6a5784847a093.jpg" data-desc="2017 BMW X1 in pristine condition." data-features="⚙️:2.0L Petrol Twin-Turbo|AWD;🛡️:German Engineering">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </li>
                                         <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#">Crab Pool Security</a></h6>
-                                    <h5>$30.00</h5>
+                                    <h6><a href="#">2017 BMW X1</a></h6>
+                                    <h5>KSH 3,150,000</h5>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Item 2 -->
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
+                                <div class="product__item__pic set-bg" data-setbg="https://www.luluaurelian.co.ke/assets/skyview/skyview_1.jpg">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <li>
+                                            <a href="#" class="quick-view-btn" data-name="2 Bed Airbnb Westlands" data-price="KSH 5,500/day" data-category="Property" data-location="Westlands" data-condition="Fully Furnished" data-seller="Lulu Aurelian" data-img="https://www.luluaurelian.co.ke/assets/skyview/skyview_1.jpg" data-desc="Serviced 2-bedroom apartment with rooftop view." data-features="🏠:2 Bed|2 Bath;🏊:Pool & Gym">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </li>
                                         <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#">Crab Pool Security</a></h6>
-                                    <h5>$30.00</h5>
+                                    <h6><a href="#">2 Bed Airbnb Westlands</a></h6>
+                                    <h5>KSH 5,500/day</h5>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Item 3 -->
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">
+                                <div class="product__item__pic set-bg" data-setbg="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=500&auto=format&fit=crop&q=60">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <li>
+                                            <a href="#" class="quick-view-btn" data-name="iPhone 15 Pro Max" data-price="KSH 185,000" data-category="Electronics" data-location="CBD" data-condition="Brand New" data-seller="TechZone" data-img="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=500&auto=format&fit=crop&q=60" data-desc="Sealed Apple iPhone 15 Pro Max 256GB." data-features="📱:A17 Pro Chip;📷:48MP Camera">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </li>
                                         <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#">Crab Pool Security</a></h6>
-                                    <h5>$30.00</h5>
+                                    <h6><a href="#">iPhone 15 Pro Max</a></h6>
+                                    <h5>KSH 185,000</h5>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Item 4 -->
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/product-4.jpg">
+                                <div class="product__item__pic set-bg" data-setbg="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500&auto=format&fit=crop&q=60">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <li>
+                                            <a href="#" class="quick-view-btn" data-name="Designer Handbag" data-price="KSH 25,000" data-category="Fashion" data-location="Kilimani" data-condition="New with Tags" data-seller="Luxe Boutique" data-img="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500&auto=format&fit=crop&q=60" data-desc="Genuine leather designer handbag." data-features="👜:Leather|Gold Hardware">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </li>
                                         <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#">Crab Pool Security</a></h6>
-                                    <h5>$30.00</h5>
+                                    <h6><a href="#">Designer Handbag</a></h6>
+                                    <h5>KSH 25,000</h5>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Item 5 -->
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/product-5.jpg">
+                                <div class="product__item__pic set-bg" data-setbg="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&auto=format&fit=crop&q=60">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li>
+                                            <a href="#" class="quick-view-btn" data-name="Senior Web Developer" data-price="KSH 180,000/mo" data-category="Jobs" data-location="Remote / Nairobi" data-condition="Full Time" data-seller="SokoHub Software" data-img="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&auto=format&fit=crop&q=60" data-desc="Senior Full Stack Web Developer job opening." data-features="💻:React|Node.js;💰:Competitive Salary">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </li>
+                                        <li><a href="#"><i class="fa fa-paper-plane"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#">Crab Pool Security</a></h6>
-                                    <h5>$30.00</h5>
+                                    <h6><a href="#">Senior Web Developer</a></h6>
+                                    <h5>KSH 180,000/mo</h5>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Item 6 -->
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/product-6.jpg">
+                                <div class="product__item__pic set-bg" data-setbg="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&auto=format&fit=crop&q=60">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <li>
+                                            <a href="#" class="quick-view-btn" data-name="Home Cleaning Service" data-price="KSH 3,500/session" data-category="Services" data-location="Nairobi Wide" data-condition="Book Today" data-seller="CleanPro" data-img="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&auto=format&fit=crop&q=60" data-desc="Professional house cleaning service." data-features="🧹:Deep Cleaning|Sanitization">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </li>
                                         <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#">Crab Pool Security</a></h6>
-                                    <h5>$30.00</h5>
+                                    <h6><a href="#">Home Cleaning Service</a></h6>
+                                    <h5>KSH 3,500/session</h5>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Item 7 -->
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/product-7.jpg">
+                                <div class="product__item__pic set-bg" data-setbg="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt6ea3yT2xWcXMNPMT5gC9G_l6HRBXQWZwY4dOovOjMw&s=10">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <li>
+                                            <a href="#" class="quick-view-btn" data-name="2018 Subaru Levorg" data-price="KSH 2,400,000" data-category="Vehicles" data-location="Nairobi" data-condition="Used — Excellent" data-seller="Grbird Motors" data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt6ea3yT2xWcXMNPMT5gC9G_l6HRBXQWZwY4dOovOjMw&s=10" data-desc="Subaru Levorg 1.6L Turbo AWD." data-features="⚙️:CVT Automatic|1.6L Turbo AWD">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </li>
                                         <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#">Crab Pool Security</a></h6>
-                                    <h5>$30.00</h5>
+                                    <h6><a href="#">2018 Subaru Levorg</a></h6>
+                                    <h5>KSH 2,400,000</h5>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Item 8 -->
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/product-8.jpg">
+                                <div class="product__item__pic set-bg" data-setbg="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&auto=format&fit=crop&q=60">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <li>
+                                            <a href="#" class="quick-view-btn" data-name="Samsung Galaxy Watch 6" data-price="KSH 48,000" data-category="Electronics" data-location="Nairobi" data-condition="Brand New" data-seller="TechZone" data-img="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&auto=format&fit=crop&q=60" data-desc="Samsung Galaxy Watch 6 Classic 47mm." data-features="⌚:1.5-inch AMOLED;❤️:Health Sensors">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </li>
                                         <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#">Crab Pool Security</a></h6>
-                                    <h5>$30.00</h5>
+                                    <h6><a href="#">Samsung Galaxy Watch 6</a></h6>
+                                    <h5>KSH 48,000</h5>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Item 9 -->
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/product-9.jpg">
+                                <div class="product__item__pic set-bg" data-setbg="https://irp.cdn-website.com/8040eb97/dms3rep/multi/car-diagnostic-screen-engine-performance-graph-d3fcdef5.jpg">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <li>
+                                            <a href="#" class="quick-view-btn" data-name="Mobile Engine Diagnostics" data-price="KSH 5,000/session" data-category="Services" data-location="Nairobi Wide" data-condition="On Demand" data-seller="AutoDoctors" data-img="https://irp.cdn-website.com/8040eb97/dms3rep/multi/car-diagnostic-screen-engine-performance-graph-d3fcdef5.jpg" data-desc="On-location mobile car scanner diagnostic." data-features="⚙️:OBD2 Scanning|Engine Check">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </li>
                                         <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#">Crab Pool Security</a></h6>
-                                    <h5>$30.00</h5>
+                                    <h6><a href="#">Mobile Engine Diagnostics</a></h6>
+                                    <h5>KSH 5,000/session</h5>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Item 10 -->
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/product-10.jpg">
+                                <div class="product__item__pic set-bg" data-setbg="https://www.luluaurelian.co.ke/assets/skyview/skyview_12.avif">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <li>
+                                            <a href="#" class="quick-view-btn" data-name="2 Bed Airbnb Skuta Nyeri" data-price="KSH 5,500/day" data-category="Property" data-location="Skuta, Nyeri" data-condition="Daily Bookings" data-seller="Lulu Aurelian" data-img="https://www.luluaurelian.co.ke/assets/skyview/skyview_12.avif" data-desc="Luxury serviced Airbnb in Skuta, Nyeri." data-features="🏢:High-Speed WiFi;🔒:Secure Entry">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </li>
                                         <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#">Crab Pool Security</a></h6>
-                                    <h5>$30.00</h5>
+                                    <h6><a href="#">2 Bed Airbnb Skuta Nyeri</a></h6>
+                                    <h5>KSH 5,500/day</h5>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Item 11 -->
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/product-11.jpg">
+                                <div class="product__item__pic set-bg" data-setbg="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&auto=format&fit=crop&q=60">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <li>
+                                            <a href="#" class="quick-view-btn" data-name="Sony Alpha 7 IV DSLR" data-price="KSH 240,000" data-category="Electronics" data-location="Nairobi CBD" data-condition="Brand New" data-seller="Camera World" data-img="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&auto=format&fit=crop&q=60" data-desc="Sony Alpha 7 IV 33MP Full-Frame camera." data-features="📷:33MP Sensor;🎥:4K 60p Video">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </li>
                                         <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#">Crab Pool Security</a></h6>
-                                    <h5>$30.00</h5>
+                                    <h6><a href="#">Sony Alpha 7 IV DSLR</a></h6>
+                                    <h5>KSH 240,000</h5>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Item 12 -->
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/product-12.jpg">
+                                <div class="product__item__pic set-bg" data-setbg="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=500&auto=format&fit=crop&q=60">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <li>
+                                            <a href="#" class="quick-view-btn" data-name="Bridal Makeup &amp; Styling" data-price="KSH 8,500/session" data-category="Fashion &amp; Services" data-location="Nairobi Wide" data-condition="Mobile Service" data-seller="Grace Glam" data-img="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=500&auto=format&fit=crop&q=60" data-desc="Professional bridal and event makeup styling." data-features="💄:Bridal Glam;💇:Hair Styling">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </li>
                                         <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#">Crab Pool Security</a></h6>
-                                    <h5>$30.00</h5>
+                                    <h6><a href="#">Bridal Makeup &amp; Styling</a></h6>
+                                    <h5>KSH 8,500/session</h5>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Pagination (RETAINED) -->
                     <div class="product__pagination">
                         <a href="#">1</a>
                         <a href="#">2</a>
@@ -755,12 +809,14 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                            <a href="./index.html">
+                                <img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" alt="SokoHub Logo" class="brand-logo-img">
+                            </a>
                         </div>
                         <ul>
-                            <li>Address: 60-49 Road 11378 New York</li>
-                            <li>Phone: +65 11.188.888</li>
-                            <li>Email: hello@colorlib.com</li>
+                            <li>Address: Nairobi, Kenya</li>
+                            <li>Phone: +254 794 536597</li>
+                            <li>Email: beneditc64@gmail.com</li>
                         </ul>
                     </div>
                 </div>
@@ -771,7 +827,7 @@
                             <li><a href="#">About Us</a></li>
                             <li><a href="#">About Our Shop</a></li>
                             <li><a href="#">Secure Shopping</a></li>
-                            <li><a href="#">Delivery infomation</a></li>
+                            <li><a href="#">Delivery Information</a></li>
                             <li><a href="#">Privacy Policy</a></li>
                             <li><a href="#">Our Sitemap</a></li>
                         </ul>
@@ -779,7 +835,7 @@
                             <li><a href="#">Who We Are</a></li>
                             <li><a href="#">Our Services</a></li>
                             <li><a href="#">Projects</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li><a href="./contact.html">Contact</a></li>
                             <li><a href="#">Innovation</a></li>
                             <li><a href="#">Testimonials</a></li>
                         </ul>
@@ -787,17 +843,17 @@
                 </div>
                 <div class="col-lg-4 col-md-12">
                     <div class="footer__widget">
-                        <h6>Join Our Newsletter Now</h6>
-                        <p>Get E-mail updates about our latest shop and special offers.</p>
+                        <h6>Join Our Newsletter</h6>
+                        <p>Get updates about new listings and exclusive deals on SokoHub.</p>
                         <form action="#">
-                            <input type="text" placeholder="Enter your mail">
+                            <input type="text" placeholder="Enter your email">
                             <button type="submit" class="site-btn">Subscribe</button>
                         </form>
                         <div class="footer__widget__social">
                             <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
                             <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
                         </div>
                     </div>
                 </div>
@@ -805,10 +861,17 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="footer__copyright">
-                        <div class="footer__copyright__text"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p></div>
-                        <div class="footer__copyright__payment"><img src="img/payment-item.png" alt=""></div>
+                        <div class="footer__copyright__text">
+                            <p>
+                                Copyright &copy;
+                                <script>document.write(new Date().getFullYear());</script>
+                                All rights reserved | Powered by
+                                <a href="#" class="copyright-vendor-link">QAQA SOFTWARE</a>
+                            </p>
+                        </div>
+                        <div class="footer__copyright__payment">
+                            <img src="img/payment-item.png" alt="Payment Methods">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -816,9 +879,7 @@
     </footer>
     <!-- Footer Section End -->
 
- <!-- Data Generation & Dynamic Rendering JS -->
-
- <!-- Js Plugins -->
+    <!-- JS Plugins — jQuery MUST load first -->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.nice-select.min.js"></script>
@@ -826,10 +887,10 @@
     <script src="js/jquery.slicknav.js"></script>
     <script src="js/mixitup.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
-    <script src="js/template-data.js"></script>
     <script src="js/main.js"></script>
 
-
+    <!-- template-data.js loaded LAST -->
+    <script src="js/template-data.js"></script>
 
 </body>
 
