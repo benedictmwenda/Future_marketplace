@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>QAQA|MARKETPLACE</title>
+    <link href="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" rel="icon">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+</head>
+
+<body>
+
+<!-- ===================== Quick View Modal ===================== -->
+<div class="qv-overlay" id="quickViewOverlay"></div>
+<div class="qv-modal" id="quickViewModal" role="dialog" aria-modal="true">
+    <button class="qv-close" id="quickViewClose" aria-label="Close">
+        <i class="fa fa-times"></i>
+    </button>
+    <div class="qv-body">
+        <!-- Left: Image -->
+        <div class="qv-image">
+            <img id="qv-img" src="" alt="Item Image">
+            <span class="qv-badge" id="qv-category"></span>
+        </div>
+        <!-- Right: Details -->
+        <div class="qv-details">
+            <h2 id="qv-name"></h2>
+            <div class="qv-price" id="qv-price"></div>
+            <p class="qv-desc" id="qv-desc"></p>
+
+             <!-- ✅ Features Section -->
+            <div class="qv-features" id="qv-features-wrapper">
+                <h6 class="qv-features__title">
+                    <i class="fa fa-list-ul"></i> Key Features
+                </h6>
+                <div id="qv-features-list"></div>
+            </div>
+            <!-- Meta Info -->
+            <div class="qv-meta">
+                <div class="qv-meta-item">
+                    <i class="fa fa-map-marker"></i>
+                    <span id="qv-location"></span>
+                </div>
+                <div class="qv-meta-item">
+                    <i class="fa fa-tag"></i>
+                    <span id="qv-condition"></span>
+                </div>
+                <div class="qv-meta-item">
+                    <i class="fa fa-user"></i>
+                    <span id="qv-seller"></span>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="qv-actions">
+                <a href="#" class="qv-btn qv-btn--primary">
+                    <i class="fa fa-shopping-cart"></i> Add to Cart
+                </a>
+                <a href="#" class="qv-btn qv-btn--outline">
+                    <i class="fa fa-heart"></i> Wishlist
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ===================== End Quick View Modal ===================== -->
+
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Humberger Begin -->
+    <div class="humberger__menu__overlay"></div>
+    <div class="humberger__menu__wrapper">
+        <div class="humberger__menu__logo">
+            <a href="#"><img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" alt=""></a>
+        </div>
+        <div class="humberger__menu__cart">
+            <ul>
+                <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+            </ul>
+            <div class="header__cart__price">item: <span>$150.00</span></div>
+        </div>
+        <div class="humberger__menu__widget">
+            <div class="header__top__right__language">
+                <img src="img/language.png" alt="">
+                <div>English</div>
+                <span class="arrow_carrot-down"></span>
+                <ul>
+                    <li><a href="#">Spanis</a></li>
+                    <li><a href="#">English</a></li>
+                </ul>
+            </div>
+            <div class="header__top__right__auth">
+                <a href="#"><i class="fa fa-user"></i> Login</a>
+            </div>
+        </div>
+        <nav class="humberger__menu__nav mobile-menu">
+            <ul>
+                <li class="active"><a href="./index.html">Home</a></li>
+                <li><a href="./shop-grid.html">Shop</a></li>
+                <li><a href="#">Pages</a>
+                    <ul class="header__menu__dropdown">
+                        <li><a href="./shop-details.html">Shop Details</a></li>
+                        <li><a href="./shoping-cart.html">Shoping Cart</a></li>
+                        <li><a href="./checkout.html">Check Out</a></li>
+                        <li><a href="./blog-details.html">Blog Details</a></li>
+                    </ul>
+                </li>
+                <li><a href="./blog.html">Blog</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div id="mobile-menu-wrap"></div>
+        <div class="header__top__right__social">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-linkedin"></i></a>
+            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+        </div>
+        <div class="humberger__menu__contact">
+            <ul>
+                <li><i class="fa fa-envelope"></i> beneditc64@gmail.com</li>
+                <li>Free Shipping for all Order of $99</li>
+            </ul>
+        </div>
+    </div>
+    <!-- Humberger End -->
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header__top__left">
+                            <ul>
+                                <li><i class="fa fa-envelope"></i> beneditc64@gmail.com</li>
+                                <li>Free Shipping for all Order of $99</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="header__top__right">
+                            <div class="header__top__right__social">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                                <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                            </div>
+                            <div class="header__top__right__language">
+                                <img src="img/language.png" alt="">
+                                <div>English</div>
+                                <span class="arrow_carrot-down"></span>
+                                <ul>
+                                    <li><a href="#">Spanis</a></li>
+                                    <li><a href="#">English</a></li>
+                                </ul>
+                            </div>
+                            <div class="header__top__right__auth">
+                                <a href="#"><i class="fa fa-user"></i> Login</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="header__logo">
+                        <a href="./index.html"><img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <nav class="header__menu">
+                        <ul>
+                            <li class="active"><a href="./index.html">Home</a></li>
+                            <li><a href="./shop-grid.html">Shop</a></li>
+                            <li><a href="#">Pages</a>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="./shop-details.html">Shop Details</a></li>
+                                    <li><a href="./shoping-cart.html">Shoping Cart</a></li>
+                                    <li><a href="./checkout.html">Check Out</a></li>
+                                    <li><a href="./blog-details.html">Blog Details</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="./blog.html">Blog</a></li>
+                            <li><a href="./contact.html">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3">
+                    <div class="header__cart">
+                        <ul>
+                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                        </ul>
+                        <div class="header__cart__price">item: <span>$150.00</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="humberger__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+    <!-- Hero Section Begin -->
+      <section class="hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="hero__categories">
+                        <div class="hero__categories__all">
+                            <i class="fa fa-bars"></i>
+                            <span>Browse Categories</span>
+                        </div>
+                        <ul id="hero-categories-list"></ul>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="hero__search">
+                        <div class="hero__search__form">
+                             <form id="search-form">
+                                <!-- 💡 IMPROVED: Real select dropdown styled for the marketplace -->
+                                <select id="search-category" class="hero__search__select">
+                                    <option value="all">All Categories</option>
+                                    <option value="vehicles">Vehicles</option>
+                                    <option value="property">Property/Rentals</option>
+                                    <option value="electronics">Electronics</option>
+                                    <option value="fashion">Fashion & Beauty</option>
+                                    <option value="services">Services</option>
+                                    <option value="jobs">Jobs</option>
+                                </select>
+                                <input type="text" id="search-input" placeholder="Search cars, houses, laptops, services...">
+                                <button type="submit" class="site-btn">SEARCH</button>
+                            </form>
+                        </div>
+                        <div class="hero__search__phone">
+                            <div class="hero__search__phone__icon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <div class="hero__search__phone__text">
+                                <h5>+254 794 536597</h5>
+                                <span>support 24/7 time</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero__item set-bg" data-setbg="https://i.pinimg.com/1200x/ec/04/40/ec04405f8a89c84589bfeb31d6c1ad94.jpg">
+                        <div class="hero__text">
+                            <span>QAQA MARKETPLACE</span>
+                            <h2>Buy, Sell & Rent <br />Anything Local</h2>
+                            <p>Products • Rentals • Vehicles • Services</p>
+                            <a href="#" class="primary-btn">EXPLORE NOW</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Hero Section End -->
+
+    <!-- Categories Section Begin -->
+    <section class="categories">
+        <div class="container">
+            <div class="row">
+                <div class="categories__slider owl-carousel">
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="img/categories/cat-1.jpg">
+                            <h5><a href="#">Vehicles</a></h5>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="img/categories/cat-2.jpg">
+                            <h5><a href="#">Properties</a></h5>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="img/categories/cat-3.jpg">
+                            <h5><a href="#">Electronics</a></h5>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="https://images.unsplash.com/photo-1615420733091-6b320329987b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+                            <h5><a href="#">Fashion</a></h5>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="img/categories/cat-5.jpg">
+                            <h5><a href="#">Services</a></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Categories Section End -->
+
+    <!-- Featured Section Begin -->
+    <!-- Featured Section Begin -->
+<section class="featured spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>Featured Listings</h2>
+                </div>
+                <div class="featured__controls">
+                    <ul>
+                        <li class="active" data-filter="*">All</li>
+                        <li data-filter=".vehicles">Vehicles</li>
+                        <li data-filter=".property">Property</li>
+                        <li data-filter=".electronics">Electronics</li>
+                        <li data-filter=".fashion">Fashion</li>
+                        <li data-filter=".jobs">Jobs</li>
+                        <li data-filter=".services">Services</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row featured__filter">
+
+
+                <!-- ── Feature 1 ── Vehicles ─────────────────────────── -->
+                <div class="col-lg-3 col-md-4 col-sm-6 mix vehicles">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="https://gybird.co.ke/site/images/car_images/2-6a5784847a093.jpg">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li>
+                                    <a href="#" class="quick-view-btn"
+                                        data-name="2017 BMW X1"
+                                        data-price="KSH 3,150,000"
+                                        data-category="Vehicles"
+                                        data-location="Nairobi, Kenya"
+                                        data-condition="Used — Excellent"
+                                        data-seller="Grbird Motors LTD"
+                                        data-img="https://gybird.co.ke/site/images/car_images/2-6a5784847a093.jpg"
+                                        data-desc="A well-maintained 2017 BMW X1 | 2.0L Petrol Twin-Turbo with full service history. Low mileage, single owner, accident-free. Available for test drive."
+                                        data-features="⚙️:Automatic Transmission|AWD Confidence;🎡:Sleek Black Styling|Alloy Rims|LED Headlights;🛋️:Premium Interior|Leather Seats|Power Comfort;🖥️:Multimedia Infotainment|Bluetooth|Reverse Camera;🛡️:ABS|Airbags|Stability Control|German Engineering">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">2017 BMW X1</a></h6>
+                            <h5>KSH 3,150,000</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- ── Feature 2 ── Property ──────────────────────────── -->
+                <div class="col-lg-3 col-md-4 col-sm-6 mix property">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="https://www.luluaurelian.co.ke/assets/skyview/skyview_1.jpg">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li>
+                                    <a href="#" class="quick-view-btn"
+                                        data-name="2 Bedroom Apartment AirBNB"
+                                        data-price="KSH 5,500/day"
+                                        data-category="Property"
+                                        data-location="Westlands, Nairobi"
+                                        data-condition="New — Ready to Move"
+                                        data-seller="Lulu Aurelian"
+                                        data-img="https://www.luluaurelian.co.ke/assets/skyview/skyview_1.jpg"
+                                        data-desc="Modern 2-bedroom apartment in the heart of Westlands. Secure compound, 24hr security, backup power, ample parking and close to all amenities."
+                                        data-features="🏠:2 Bedrooms|2 Bathrooms|Open Plan Kitchen;🔒:24hr Security|Electric Fence|CCTV;🚗:2 Parking Slots|Visitor Parking;💡:Backup Generator|Borehole Water;🌳:Rooftop Garden|Swimming Pool|Gym">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">2 Bedroom Apartment AirBNB</a></h6>
+                            <h5>KSH 5,500/day</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- ── Feature 3 ── Electronics ───────────────────────── -->
+                <div class="col-lg-3 col-md-4 col-sm-6 mix electronics">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=500&auto=format&fit=crop&q=60">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li>
+                                    <a href="#" class="quick-view-btn"
+                                        data-name="iPhone 15 Pro Max"
+                                        data-price="KSH 185,000"
+                                        data-category="Electronics"
+                                        data-location="CBD, Nairobi"
+                                        data-condition="Brand New — Sealed"
+                                        data-seller="TechZone Kenya"
+                                        data-img="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=500&auto=format&fit=crop&q=60"
+                                        data-desc="Apple iPhone 15 Pro Max 256GB. Sealed in original box with full local warranty. All colors available. Delivery nationwide."
+                                        data-features="📱:6.7-inch Super Retina XDR|ProMotion 120Hz;📷:48MP Main Camera|Periscope Zoom|4K Video;⚡:A17 Pro Chip|USB-C|Titanium Frame;🔋:29hr Battery Life|MagSafe Charging;✅:1 Year Warranty|Local Stock|Original Sealed">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">iPhone 15 Pro Max</a></h6>
+                            <h5>KSH 185,000</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- ── Feature 4 ── Fashion ───────────────────────────── -->
+                <div class="col-lg-3 col-md-4 col-sm-6 mix fashion">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500&auto=format&fit=crop&q=60">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li>
+                                    <a href="#" class="quick-view-btn"
+                                        data-name="Designer Handbag"
+                                        data-price="KSH 25,000"
+                                        data-category="Fashion"
+                                        data-location="Kilimani, Nairobi"
+                                        data-condition="Brand New — With Tags"
+                                        data-seller="Luxe Boutique"
+                                        data-img="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500&auto=format&fit=crop&q=60"
+                                        data-desc="Elegant designer handbag. Premium quality leather with gold hardware. Multiple compartments and adjustable strap."
+                                        data-features="👜:Genuine Leather|Gold Hardware|Adjustable Strap;🎨:Available in Black|Brown|Tan;📦:Dust Bag Included|Gift Box|Authenticity Card;✨:Waterproof Lining|Multiple Pockets;🚚:Free Delivery|Easy Returns">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">Designer Handbag</a></h6>
+                            <h5>KSH 25,000</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- ── Feature 5 ── Jobs ──────────────────────────────── -->
+                <div class="col-lg-3 col-md-4 col-sm-6 mix jobs">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&auto=format&fit=crop&q=60">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li>
+                                    <a href="#" class="quick-view-btn"
+                                        data-name="Senior Web Developer"
+                                        data-price="KSH 180,000/mo"
+                                        data-category="Jobs"
+                                        data-location="Remote / Nairobi"
+                                        data-condition="Full Time — Urgent"
+                                        data-seller="QAQA Softwares"
+                                        data-img="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&auto=format&fit=crop&q=60"
+                                        data-desc="We are looking for an experienced Senior Web Developer to join our growing team. 5+ years experience required. React and Node.js expertise preferred."
+                                        data-features="💻:React.js|Node.js|PostgreSQL;🕐:Full Time|Remote Friendly|Flexible Hours;💰:Competitive Salary|Health Insurance|Pension;📈:Career Growth|Training Budget|Annual Bonus;📋:5+ Years Experience|Degree Preferred">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </li>
+                                <li><a href="#"><i class="fa fa-paper-plane"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">Senior Web Developer</a></h6>
+                            <h5>KSH 180,000/mo</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- ── Feature 6 ── Services ──────────────────────────── -->
+                <div class="col-lg-3 col-md-4 col-sm-6 mix services">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&auto=format&fit=crop&q=60">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li>
+                                    <a href="#" class="quick-view-btn"
+                                        data-name="Home Cleaning Service"
+                                        data-price="KSH 3,500/session"
+                                        data-category="Services"
+                                        data-location="Nairobi Wide"
+                                        data-condition="Available — Book Today"
+                                        data-seller="CleanPro Services"
+                                        data-img="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=500&auto=format&fit=crop&q=60"
+                                        data-desc="Professional home and office cleaning service. Trained and vetted staff. We bring our own equipment and eco-friendly cleaning products."
+                                        data-features="🧹:Deep Cleaning|Regular Cleaning|Move-in/out;🧴:Eco-Friendly Products|Own Equipment;👷:Vetted Staff|Uniformed Team|Insured;📅:Same Day Booking|Weekly Packages;⭐:4.9 Star Rating|500+ Reviews">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">Home Cleaning Service</a></h6>
+                            <h5>KSH 3,500/session</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- ── Feature 7 ── Vehicles ──────────────────────────── -->
+                <div class="col-lg-3 col-md-4 col-sm-6 mix vehicles">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt6ea3yT2xWcXMNPMT5gC9G_l6HRBXQWZwY4dOovOjMw&s=10">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li>
+                                    <a href="#" class="quick-view-btn"
+                                        data-name="2018 Subaru Levorg"
+                                        data-price="KSH 2,400,000"
+                                        data-category="Vehicles"
+                                        data-location="Nairobi, Kenya"
+                                        data-condition="Used — Excellent"
+                                        data-seller="Grbird Motors LTD"
+                                        data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt6ea3yT2xWcXMNPMT5gC9G_l6HRBXQWZwY4dOovOjMw&s=10"
+                                        data-desc="2018 Subaru Levorg in excellent condition. Well maintained with a powerful turbocharged engine, spacious interior, and advanced safety features. Ready for transfer."
+                                        data-features="⚙️:CVT Automatic Transmission|1.6L Turbo Engine|AWD;🚗:Push Start|Power Steering|Cruise Control;🛡️:ABS|Airbags|Lane Assist;📻:Touchscreen Infotainment|Bluetooth|Reverse Camera;📋:Original Logbook Available|Accident Free|NTSA Cleared">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">2018 Subaru Levorg</a></h6>
+                            <h5>KSH 2,400,000</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- ── Feature 8 ── Electronics + Fashion (Multi-Category) ── -->
+                <div class="col-lg-3 col-md-4 col-sm-6 mix electronics fashion">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&auto=format&fit=crop&q=60">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li>
+                                    <a href="#" class="quick-view-btn"
+                                        data-name="Samsung Galaxy Watch 6"
+                                        data-price="KSH 48,000"
+                                        data-category="Electronics &amp; Fashion"
+                                        data-location="Online / Nairobi"
+                                        data-condition="Brand New — Sealed"
+                                        data-seller="TechZone Kenya"
+                                        data-img="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&auto=format&fit=crop&q=60"
+                                        data-desc="Samsung Galaxy Watch 6 Classic 47mm. Advanced health tracking, long battery life, and a premium rotating bezel design."
+                                        data-features="⌚:1.5-inch AMOLED Display|Sapphire Glass;❤️:Heart Rate|Blood Pressure|SpO2|Sleep;📱:Android Compatible|NFC Payments;🔋:40hr Battery|Fast Charging;✅:1 Year Warranty|Local Stock">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">Samsung Galaxy Watch 6</a></h6>
+                            <h5>KSH 48,000</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- ── Feature 9 ── Vehicles + Services (Multi-Category) ── -->
+                <div class="col-lg-3 col-md-4 col-sm-6 mix vehicles services">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="https://irp.cdn-website.com/8040eb97/dms3rep/multi/car-diagnostic-screen-engine-performance-graph-d3fcdef5.jpg">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li>
+                                    <a href="#" class="quick-view-btn"
+                                        data-name="Mobile Engine Diagnostics"
+                                        data-price="KSH 5,000/session"
+                                        data-category="Vehicles &amp; Services"
+                                        data-location="Nairobi Wide"
+                                        data-condition="Available — Book Today"
+                                        data-seller="AutoDoctors"
+                                        data-img="https://irp.cdn-website.com/8040eb97/dms3rep/multi/car-diagnostic-screen-engine-performance-graph-d3fcdef5.jpg"
+                                        data-desc="Professional mechanics coming to your location for complete car scanner diagnostics, minor repairs, and servicing."
+                                        data-features="⚙️:Engine Diagnostics|OBD2 Scanning;🔧:Oil Change|Brake Inspection|Plug Replacement;👷:Vetted Staff|Insured Mechanics;📅:Same Day Booking|Weekly Packages;⭐:4.9 Star Rating|150+ Reviews">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">Mobile Engine Diagnostics</a></h6>
+                            <h5>KSH 5,000/session</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- ── Feature 10 ── Property + Services (Multi-Category) ── -->
+                <div class="col-lg-3 col-md-4 col-sm-6 mix property services">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="https://www.luluaurelian.co.ke/assets/skyview/skyview_12.avif">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li>
+                                    <a href="#" class="quick-view-btn"
+                                        data-name="2 Bedroom Apartment AirBNB"
+                                        data-price="KSH 5,500/day"
+                                        data-category="Property &amp; Services"
+                                        data-location="Skuta, Nyeri"
+                                        data-condition="Daily/Monthly Bookings"
+                                        data-seller="Lulu Aurelian"
+                                        data-img="https://www.luluaurelian.co.ke/assets/skyview/skyview_12.avif"
+                                        data-desc="High-speed internet, free coffee, modern meeting rooms, and a professional workspace in the heart of Kilimani."
+                                        data-features="🏢:High-Speed WiFi|Ergonomic Chairs|AC;☕:Free Tea &amp; Coffee|Kitchen Access;🔒:CCTV Surveillance|Secure Entry;📅:Flexible Plans|Meeting Room Hours">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">2 Bedroom Apartment AirBNB</a></h6>
+                            <h5>KSH 5,500/day</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- ── Feature 11 ── Electronics ── -->
+                <div class="col-lg-3 col-md-4 col-sm-6 mix electronics">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&auto=format&fit=crop&q=60">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li>
+                                    <a href="#" class="quick-view-btn"
+                                        data-name="Sony Alpha 7 IV DSLR"
+                                        data-price="KSH 240,000"
+                                        data-category="Electronics"
+                                        data-location="Nairobi CBD"
+                                        data-condition="Brand New — Sealed"
+                                        data-seller="Camera World Kenya"
+                                        data-img="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&auto=format&fit=crop&q=60"
+                                        data-desc="Next-generation hybrid full-frame camera. 33MP sensor, real-time autofocus tracking, 4K 60p video, and body image stabilization."
+                                        data-features="📷:33MP Full-Frame Sensor|BIONZ XR Processor;🎥:4K 60p 10-bit Video|S-Cinetone;🔍:Real-time Eye AF|759 Phase-detect points;🛡️:5-axis Stabilization|Dust/Moisture Resistant">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">Sony Alpha 7 IV DSLR</a></h6>
+                            <h5>KSH 240,000</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- ── Feature 12 ── Fashion + Services (Multi-Category) ── -->
+                <div class="col-lg-3 col-md-4 col-sm-6 mix fashion services">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=500&auto=format&fit=crop&q=60">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li>
+                                    <a href="#" class="quick-view-btn"
+                                        data-name="Bridal Makeup &amp; Styling"
+                                        data-price="KSH 8,500/session"
+                                        data-category="Fashion &amp; Services"
+                                        data-location="Nairobi Wide (Mobile)"
+                                        data-condition="Home Service Available"
+                                        data-seller="Grace Glam Artistry"
+                                        data-img="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=500&auto=format&fit=crop&q=60"
+                                        data-desc="Get professionally styled for weddings, dinners, photoshoots, and parties. We use premium international brands."
+                                        data-features="💄:Bridal Makeup|Party Glam|Photoshoot Look;💇:Hair Styling|Extensions Styling;🧴:Premium Brands (MAC, Fenty)|Vetted Artists;🚗:Mobile Service|Studio Bookings">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </li>
+                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">Bridal Makeup &amp; Styling</a></h6>
+                            <h5>KSH 8,500/session</h5>
+                        </div>
+                    </div>
+                </div>
+                
+            </div><!-- end featured__filter -->
+        </div>
+    </section>
+    <!-- ==================== Featured Section End ==================== -->
+
+    <!-- Banner Begin -->
+    <div class="banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="banner__pic">
+                        <img src="img/banner/banner-1.jpg" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="banner__pic">
+                        <img src="img/banner/banner-2.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Banner End -->
+
+     <!-- ==================== Latest Listings Section Begin ==================== -->
+    <section class="latest-product spad">
+        <div class="container">
+            <div class="row">
+                <!-- Column 1: Latest Listings -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="latest-product__text">
+                        <h4>Latest Listings</h4>
+                        <div class="latest-product__slider owl-carousel">
+                            <!-- Slide 1 -->
+                            <div class="latest-product__slider__item">
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=100&auto=format&fit=crop&q=60" alt="iPhone 15" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>iPhone 15 Pro Max</h6>
+                                        <span>KSH 185,000</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=100&auto=format&fit=crop&q=60" alt="Suzuki Alto" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>2020 Suzuki Alto</h6>
+                                        <span>KSH 980,000</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=100&auto=format&fit=crop&q=60" alt="Handbag" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>Designer Handbag</h6>
+                                        <span>KSH 25,000</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <!-- Slide 2 -->
+                            <div class="latest-product__slider__item">
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=100&auto=format&fit=crop&q=60" alt="Workspace" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>Co-Working Desk Space</h6>
+                                        <span>KSH 15,000/mo</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=100&auto=format&fit=crop&q=60" alt="Sony DSLR" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>Sony Alpha 7 IV DSLR</h6>
+                                        <span>KSH 240,000</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=100&auto=format&fit=crop&q=60" alt="BMW X1" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>2017 BMW X1</h6>
+                                        <span>KSH 3,150,000</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Column 2: Top Rated Listings -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="latest-product__text">
+                        <h4>Top Rated Listings</h4>
+                        <div class="latest-product__slider owl-carousel">
+                            <!-- Slide 1 -->
+                            <div class="latest-product__slider__item">
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=100&auto=format&fit=crop&q=60" alt="Villa" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>Luxury Villa Muthaiga</h6>
+                                        <span>KSH 85,000,000</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=100&auto=format&fit=crop&q=60" alt="Office" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>Office Space Westlands</h6>
+                                        <span>KSH 120,000/mo</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=100&auto=format&fit=crop&q=60" alt="Apartment" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>3 Bedroom Apartment</h6>
+                                        <span>KSH 7,500,000</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <!-- Slide 2 -->
+                            <div class="latest-product__slider__item">
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=100&auto=format&fit=crop&q=60" alt="Land" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>1 Acre Land Runda</h6>
+                                        <span>KSH 48,000,000</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=100&auto=format&fit=crop&q=60" alt="Studio" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>Furnished Studio Kilimani</h6>
+                                        <span>KSH 45,000/mo</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=100&auto=format&fit=crop&q=60" alt="Townhouse" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>2 Bedroom Townhouse</h6>
+                                        <span>KSH 12,000,000</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Column 3: Trending Services -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="latest-product__text">
+                        <h4>Trending Services</h4>
+                        <div class="latest-product__slider owl-carousel">
+                            <!-- Slide 1 -->
+                            <div class="latest-product__slider__item">
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=100&auto=format&fit=crop&q=60" alt="Cleaning" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>Home Cleaning Service</h6>
+                                        <span>KSH 3,500/session</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=100&auto=format&fit=crop&q=60" alt="Mechanic" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>Mobile Diagnostics</h6>
+                                        <span>KSH 5,000/session</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&auto=format&fit=crop&q=60" alt="Makeup" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>Bridal Makeup Artistry</h6>
+                                        <span>KSH 8,500/session</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <!-- Slide 2 -->
+                            <div class="latest-product__slider__item">
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=100&auto=format&fit=crop&q=60" alt="Plumbing" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>Plumbing &amp; Leak Repair</h6>
+                                        <span>KSH 2,500/hr</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=100&auto=format&fit=crop&q=60" alt="Moving" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>Professional Movers</h6>
+                                        <span>KSH 12,000</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="latest-product__item">
+                                    <div class="latest-product__item__pic">
+                                        <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=100&auto=format&fit=crop&q=60" alt="Design" style="width: 110px; height: 110px; object-fit: cover;">
+                                    </div>
+                                    <div class="latest-product__item__text">
+                                        <h6>Freelance Logo Design</h6>
+                                        <span>KSH 4,000/hr</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ==================== Latest Listings Section End ==================== -->
+
+    <!-- ==================== Blog Section Begin ==================== -->
+    <section class="from-blog spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title from-blog__title">
+                        <h2>Latest From Our Blog</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Blog Post 1 -->
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="blog__item">
+                        <div class="blog__item__pic">
+                            <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=500&auto=format&fit=crop&q=60" alt="Car Guide" style="width: 100%; height: 260px; object-fit: cover; border-radius: 8px;">
+                        </div>
+                        <div class="blog__item__text">
+                            <ul>
+                                <li><i class="fa fa-calendar-o"></i> July 16, 2026</li>
+                                <li><i class="fa fa-comment-o"></i> 5</li>
+                            </ul>
+                            <h5><a href="#">How to Safely Buy and Sell Vehicles Online</a></h5>
+                            <p>Discover critical tips for verifying vehicle logbooks, inspecting engines, and securing financial transactions safely in the local market.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Blog Post 2 -->
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="blog__item">
+                        <div class="blog__item__pic">
+                            <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=500&auto=format&fit=crop&q=60" alt="Apartment Guide" style="width: 100%; height: 260px; object-fit: cover; border-radius: 8px;">
+                        </div>
+                        <div class="blog__item__text">
+                            <ul>
+                                <li><i class="fa fa-calendar-o"></i> July 12, 2026</li>
+                                <li><i class="fa fa-comment-o"></i> 12</li>
+                            </ul>
+                            <h5><a href="#">Top 5 Rental Property Locations in Nairobi</a></h5>
+                            <p>An in-depth guide comparing rental rates, security levels, and water accessibility across Westlands, Kilimani, and surrounding suburbs.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Blog Post 3 -->
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="blog__item">
+                        <div class="blog__item__pic">
+                            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&auto=format&fit=crop&q=60" alt="Freelancer Guide" style="width: 100%; height: 260px; object-fit: cover; border-radius: 8px;">
+                        </div>
+                        <div class="blog__item__text">
+                            <ul>
+                                <li><i class="fa fa-calendar-o"></i> July 8, 2026</li>
+                                <li><i class="fa fa-comment-o"></i> 8</li>
+                            </ul>
+                            <h5><a href="#">Freelancer Guide: Pricing Your Services</a></h5>
+                            <p>Learn how to calculate hourly rates, set up custom project quotes, and establish client trust on peer-to-peer marketplaces.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ==================== Blog Section End ==================== -->
+
+    <!-- Footer Section Begin -->
+    <footer class="footer spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__about__logo">
+                            <a href="./index.html"><img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" alt=""></a>
+                        </div>
+                        <ul>
+                            <li>Address: Uthiru, Waiyaki Way, Nairobi</li>
+                            <li>Phone: +254 794 536597</li>
+                            <li>Email: beneditc64@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+                    <div class="footer__widget">
+                        <h6>Useful Links</h6>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">About Our Shop</a></li>
+                            <li><a href="#">Secure Shopping</a></li>
+                            <li><a href="#">Delivery infomation</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Our Sitemap</a></li>
+                        </ul>
+                        <ul>
+                            <li><a href="#">Who We Are</a></li>
+                            <li><a href="#">Our Services</a></li>
+                            <li><a href="#">Projects</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Innovation</a></li>
+                            <li><a href="#">Testimonials</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="footer__widget">
+                        <h6>Join Our Newsletter Now</h6>
+                        <p>Get E-mail updates about our latest shop and special offers.</p>
+                        <form action="#">
+                            <input type="text" placeholder="Enter your mail">
+                            <button type="submit" class="site-btn">Subscribe</button>
+                        </form>
+                        <div class="footer__widget__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="footer__copyright">
+                        <div class="footer__copyright__text"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p></div>
+                        <div class="footer__copyright__payment"><img src="img/payment-item.png" alt=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+ <!-- Js Plugins -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/mixitup.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/template-data.js"></script>
+    <script src="js/main.js"></script>
+
+
+
+
+</body>
+
+</html>

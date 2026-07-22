@@ -1,0 +1,63 @@
+Phase 1: Build an MVP (1–2 months)
+
+The goal is to get real users.
+
+Features
+User registration and login
+Seller registration
+Seller dashboard
+Add/Edit/Delete products
+Categories (Cars, Rentals, Electronics, Services, etc.)
+Product search
+Product filters
+Product details page
+Contact seller (WhatsApp, phone, or chat)
+Admin dashboard
+Approve or reject listings
+
+No online payments yet.
+
+At this stage, buyers contact sellers directly, just like Jiji.
+
+Phase 2: Start earning (2–4 weeks)
+
+Once people are using the platform, add monetization.
+
+Add:
+Featured ads
+Premium seller accounts
+Paid listings
+Seller analytics
+Banner advertising
+
+Now you can earn before implementing full e-commerce.
+
+Phase 3: Marketplace
+
+This is when your platform becomes more like Amazon.
+
+Add:
+
+Shopping cart
+Checkout
+M-Pesa payments
+Order tracking
+Commission system
+Seller payouts
+
+Example:
+
+Customer pays KSh 5,000.
+Your platform keeps 8%.
+Seller receives KSh 4,600.
+Phase 4: Scale
+
+Once the website is stable:
+
+Android app
+iPhone app
+In-app chat
+Push notifications
+Reviews and ratings
+AI recommendations
+Delivery integration

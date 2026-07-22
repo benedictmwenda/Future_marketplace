@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QAQA | Login & Sign Up</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #1000B8;
+            --primary-dark: #0b0082;
+            --primary-light: #eceaff;
+            --secondary: #1a1a1a;
+            --text-main: #333333;
+            --text-muted: #6f6f6f;
+            --bg-gradient: linear-gradient(135deg, #f3f2fc 0%, #e5e3f9 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --seller-accent: #DAA520;
+            --seller-dark: #b8860b;
+            --seller-light: #fbf6e9;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.3s ease;
+        }
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        /* Ambient background decorative blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.4;
+        }
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary-light);
+            top: -100px;
+            left: -100px;
+            animation: float-slow 15s infinite alternate;
+        }
+        .blob-2 {
+            width: 500px;
+            height: 500px;
+            background: var(--seller-light);
+            bottom: -150px;
+            right: -100px;
+            animation: float-slow 20s infinite alternate-reverse;
+        }
+        /* Ambient color shifts when Seller is active */
+        body.seller-bg {
+            background: linear-gradient(135deg, #fcfaf2 0%, #f7f0d9 100%);
+        }
+        @keyframes float-slow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 30px) scale(1.1); }
+        }
+        /* Container & Cards layout */
+        .auth-container {
+            width: 1000px;
+            max-width: 100%;
+            min-height: 650px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(16, 0, 184, 0.06);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            overflow: hidden;
+            z-index: 10;
+            position: relative;
+        }
+        /* Left Branding Panel */
+        .brand-panel {
+            flex: 1.1;
+            background: linear-gradient(135deg, rgba(16, 0, 184, 0.9) 0%, rgba(11, 0, 130, 0.95) 100%), 
+                        url("img/logo.png") no-repeat center center;
+            background-size: cover;
+            color: #fff;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+        /* Overlay details when Seller is selected */
+        .brand-panel.seller-active {
+            background: linear-gradient(135deg, rgba(218, 165, 32, 0.9) 0%, rgba(184, 134, 11, 0.95) 100%),
+                        url("img/logo.png") no-repeat center center;
+            background-size: cover;
+        }
+        .brand-logo img {
+            height: 45px;
+            filter: brightness(0) invert(1);
+        }
+        .brand-content h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+        .brand-content p {
+            font-size: 1.05rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        .brand-footer {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        /* Right Form Panel */
+        .form-panel {
+            flex: 1.2;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #fff;
+        }
+        .form-header {
+            margin-bottom: 30px;
+        }
+        .form-header h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 8px;
+        }
+        .form-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        /* Segmented Selector for Buyer/Seller */
+        .role-selector {
+            display: flex;
+            background: #f1f1fa;
+            padding: 5px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        .role-option {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .role-option.active {
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(16, 0, 184, 0.1);
+        }
+        /* Sliding tab indicator for role toggle */
+        .role-selector::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: calc(50% - 5px);
+            height: calc(100% - 10px);
+            background: var(--primary);
+            border-radius: 8px;
+            z-index: 0;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s;
+        }
+        .role-selector.seller-selected::after {
+            transform: translateX(100%);
+            background: var(--seller-accent);
+        }
+        .role-selector.seller-selected .role-option.active {
+            color: #fff;
+        }
+        .role-option.active:not(.seller) {
+            color: #fff;
+        }
+        /* Form styling */
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 1.5px solid #e2e2ed;
+            border-radius: 12px;
+            outline: none;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            background: #fbfbfe;
+        }
+        .input-wrapper input:focus {
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+        /* Seller theme focus color */
+        .seller-active .input-wrapper input:focus {
+            border-color: var(--seller-accent);
+            box-shadow: 0 0 0 4px var(--seller-light);
+        }
+        /* Helper elements (forgot password, remember me) */
+        .form-helpers {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+        .remember-me input {
+            accent-color: var(--primary);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        .seller-active .remember-me input {
+            accent-color: var(--seller-accent);
+        }
+        .forgot-pass {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .seller-active .forgot-pass {
+            color: var(--seller-accent);
+        }
+        .forgot-pass:hover {
+            text-decoration: underline;
+        }
+        /* Action buttons */
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(16, 0, 184, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 0, 184, 0.3);
+        }
+        .seller-active .submit-btn {
+            background: var(--seller-accent);
+            color: #fff;
+            box-shadow: 0 6px 15px rgba(218, 165, 32, 0.2);
+        }
+        .seller-active .submit-btn:hover {
+            background: var(--seller-dark);
+            box-shadow: 0 8px 20px rgba(218, 165, 32, 0.3);
+        }
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        /* Toggle between Sign In / Sign Up */
+        .toggle-form {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+        .toggle-form a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .seller-active .toggle-form a {
+            color: var(--seller-accent);
+        }
+        .toggle-form a:hover {
+            text-decoration: underline;
+        }
+        /* Form structures - switching animation */
+        .form-content {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        .form-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Responsive styling */
+        @media (max-width: 850px) {
+            .auth-container {
+                flex-direction: column;
+                min-height: auto;
+            }
+            .brand-panel {
+                padding: 40px;
+                min-height: 250px;
+            }
+            .form-panel {
+                padding: 40px 30px;
+            }
+            .brand-content h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="auth-container" id="authContainer">
+        <!-- Left Branding Panel -->
+        <div class="brand-panel" id="brandPanel">
+            <div class="brand-logo">
+                <h2 style="font-weight: 900; letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid "></i> QAQA Marketplace
+                </h2>
+            </div>
+            
+            <div class="brand-content" id="brandText">
+                <h2>Welcome back!</h2>
+                <p>Access your personal buyer portal to explore top-rated product listings, manage your orders, and configure transaction details instantly.</p>
+            </div>
+            
+            <div class="brand-footer">
+                <p>© 2026 QAQA Ecosystem. All Rights Reserved.</p>
+            </div>
+        </div>
+        <!-- Right Form Panel -->
+        <div class="form-panel">
+            
+            <!-- Segmented Role Selector -->
+            <div class="role-selector" id="roleSelector">
+                <button class="role-option active" id="btnBuyer" onclick="setRole('buyer')">
+                    <i class="fa-solid fa-user-tie"></i> Buyer
+                </button>
+                <button class="role-option" id="btnSeller" onclick="setRole('seller')">
+                    <i class="fa-solid fa-store"></i> Seller
+                </button>
+            </div>
+            <!-- SIGN IN FORM -->
+            <div class="form-content active" id="signInForm">
+                <div class="form-header">
+                    <h3 id="signInHeader">Sign In</h3>
+                    <p id="signInSubtitle">Welcome back! Please enter your login credentials.</p>
+                </div>
+                
+                <form onsubmit="handleAuthSubmit(event, 'signin')">
+                    <div class="input-group">
+                        <label for="signin-email">Email Address</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-envelope"></i>
+                            <input type="email" id="signin-email" placeholder="name@domain.com" required>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="signin-password">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="signin-password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-helpers">
+                        <label class="remember-me">
+                            <input type="checkbox" id="signin-remember"> Remember me
+                        </label>
+                        <a href="#" class="forgot-pass">Forgot Password?</a>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        Sign In <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    </button>
+                </form>
+                
+                <div class="toggle-form">
+                    Don't have an account yet? <a href="#" onclick="switchForm('signup')">Sign Up</a>
+                </div>
+            </div>
+            <!-- SIGN UP FORM -->
+            <div class="form-content" id="signUpForm">
+                <div class="form-header">
+                    <h3 id="signUpHeader">Create Account</h3>
+                    <p id="signUpSubtitle">Join QAQA today and access our full inventory pipeline.</p>
+                </div>
+                
+                <form onsubmit="handleAuthSubmit(event, 'signup')">
+                    <div class="input-group">
+                        <label for="signup-name">Full Name</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-user"></i>
+                            <input type="text" id="signup-name" placeholder="John Doe" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Dynamic field only visible for Sellers -->
+                    <div class="input-group" id="storeNameGroup" style="display: none;">
+                        <label for="signup-store">Store / Company Name</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-store"></i>
+                            <input type="text" id="signup-store" placeholder="e.g. QAQA Wholesale Ltd.">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="signup-email">Email Address</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-envelope"></i>
+                            <input type="email" id="signup-email" placeholder="name@domain.com" required>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="signup-password">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="signup-password" placeholder="Min. 8 characters" minlength="8" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-helpers" style="justify-content: flex-start;">
+                        <label class="remember-me">
+                            <input type="checkbox" id="signup-terms" required> I agree to the <a href="#" class="forgot-pass" style="font-weight: 500;">Terms & Conditions</a>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        Get Started <i class="fa-solid fa-user-plus"></i>
+                    </button>
+                </form>
+                
+                <div class="toggle-form">
+                    Already have an account? <a href="#" onclick="switchForm('signin')">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let currentRole = 'buyer'; // 'buyer' or 'seller'
+        let currentForm = 'signin'; // 'signin' or 'signup'
+        const contentTexts = {
+            buyer: {
+                signin: {
+                    title: "Welcome back!",
+                    desc: "Access your personal buyer portal to explore top-rated product listings, manage your orders, and configure transaction details instantly."
+                },
+                signup: {
+                    title: "Start Sourcing Now!",
+                    desc: "Create a free QAQA buyer account to connect with global suppliers, track real-time shipping logs, and access volume-based enterprise discounts."
+                }
+            },
+            seller: {
+                signin: {
+                    title: "Merchant Hub",
+                    desc: "Sign in to manage your inventory pipeline, change catalog pricing structures, resolve custom transactions, and check monthly sales performance metrics."
+                },
+                signup: {
+                    title: "Launch Your Store",
+                    desc: "Become a registered supplier on QAQA. Upload products, negotiate supply chain rates, and connect with direct wholesale buyers worldwide."
+                }
+            }
+        };
+        function setRole(role) {
+            currentRole = role;
+            
+            const container = document.getElementById('authContainer');
+            const roleSelector = document.getElementById('roleSelector');
+            const brandPanel = document.getElementById('brandPanel');
+            const btnBuyer = document.getElementById('btnBuyer');
+            const btnSeller = document.getElementById('btnSeller');
+            const storeNameGroup = document.getElementById('storeNameGroup');
+            const signupStoreInput = document.getElementById('signup-store');
+            if (role === 'seller') {
+                container.classList.add('seller-active');
+                roleSelector.classList.add('seller-selected');
+                btnSeller.classList.add('active');
+                btnBuyer.classList.remove('active');
+                document.body.classList.add('seller-bg');
+                
+                storeNameGroup.style.display = 'block';
+                signupStoreInput.setAttribute('required', 'true');
+            } else {
+                container.classList.remove('seller-active');
+                roleSelector.classList.remove('seller-selected');
+                btnBuyer.classList.add('active');
+                btnSeller.classList.remove('active');
+                document.body.classList.remove('seller-bg');
+                
+                storeNameGroup.style.display = 'none';
+                signupStoreInput.removeAttribute('required');
+            }
+            updateDynamicText();
+        }
+        function switchForm(form) {
+            currentForm = form;
+            
+            const signInForm = document.getElementById('signInForm');
+            const signUpForm = document.getElementById('signUpForm');
+            if (form === 'signup') {
+                signInForm.classList.remove('active');
+                signUpForm.classList.add('active');
+            } else {
+                signUpForm.classList.remove('active');
+                signInForm.classList.add('active');
+            }
+            updateDynamicText();
+        }
+        function updateDynamicText() {
+            const data = contentTexts[currentRole][currentForm];
+            const brandText = document.getElementById('brandText');
+            
+            brandText.innerHTML = `
+                <h2>${data.title}</h2>
+                <p>${data.desc}</p>
+            `;
+            const signInHeader = document.getElementById('signInHeader');
+            const signInSubtitle = document.getElementById('signInSubtitle');
+            const signUpHeader = document.getElementById('signUpHeader');
+            const signUpSubtitle = document.getElementById('signUpSubtitle');
+            if (currentRole === 'seller') {
+                signInHeader.innerText = "Merchant Sign In";
+                signInSubtitle.innerText = "Access your merchant dashboard and products list.";
+                signUpHeader.innerText = "Register as Seller";
+                signUpSubtitle.innerText = "Create your digital storefront and list global items.";
+            } else {
+                signInHeader.innerText = "Sign In";
+                signInSubtitle.innerText = "Welcome back! Please enter your login details.";
+                signUpHeader.innerText = "Create Account";
+                signUpSubtitle.innerText = "Join QAQA today and get access to top-tier consumer products.";
+            }
+        }
+        function handleAuthSubmit(event, type) {
+            event.preventDefault();
+            const email = type === 'signin' ? document.getElementById('signin-email').value : document.getElementById('signup-email').value;
+            const roleFormatted = currentRole.charAt(0).toUpperCase() + currentRole.slice(1);
+            
+            alert(`${roleFormatted} ${type === 'signin' ? 'Sign In' : 'Sign Up'} Successful!\nEmail: ${email}`);
+            window.location.href = "./index.html"; 
+        }
+        updateDynamicText();
+    </script>
+</body>
+</html>
