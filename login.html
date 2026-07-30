@@ -658,13 +658,35 @@
         function handleAuthSubmit(event, type) {
             event.preventDefault();
             const email = type === 'signin' ? document.getElementById('signin-email').value : document.getElementById('signup-email').value;
-            const roleFormatted = currentRole.charAt(0).toUpperCase() + currentRole.slice(1);
+            const storeName = document.getElementById('signup-store')?.value || email.split('@')[0];
             
-            alert(`${roleFormatted} ${type === 'signin' ? 'Sign In' : 'Sign Up'} Successful!\nEmail: ${email}`);
-            window.location.href = "./index.html"; 
+            const userSession = {
+                email: email,
+                role: currentRole, // 'seller' or 'buyer'
+                name: storeName,
+                isLoggedIn: true,
+                loggedInAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem('sokohub_user', JSON.stringify(userSession));
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectUrl = urlParams.get('redirect') || (currentRole === 'seller' ? './post-item.html' : './index.html');
+            
+            alert(`Welcome back, ${storeName}! Signed in as ${currentRole.toUpperCase()}`);
+            window.location.href = redirectUrl; 
         }
 
-        updateDynamicText();
+        // On DOM Load check URL parameters (e.g. ?role=seller)
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const requestedRole = urlParams.get('role');
+            if (requestedRole === 'seller' || requestedRole === 'buyer') {
+                setRole(requestedRole);
+            } else {
+                updateDynamicText();
+            }
+        });
     </script>
 </body>
 </html>

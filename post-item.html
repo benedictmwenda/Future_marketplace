@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="SokoHub - Post Your Item, Rental, Vehicle or Service">
+    <meta name="keywords" content="SokoHub, sell, post listing, Kenya marketplace, Nairobi">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SokoHub | Post a New Listing</title>
+    <link href="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" rel="icon">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+
+    <!-- Immediate Seller Auth Check (Prevents unauthorized page render) -->
+    <script>
+        (function () {
+            try {
+                const rawUser = localStorage.getItem('sokohub_user');
+                const user = rawUser ? JSON.parse(rawUser) : null;
+                if (!user || !user.isLoggedIn || user.role !== 'seller') {
+                    alert("🔒 Seller Sign In Required\n\nYou must be signed in as a Seller to post items on SokoHub. Redirecting to Seller Login...");
+                    window.location.href = './login.html?role=seller&redirect=post-item.html';
+                }
+            } catch (e) {
+                window.location.href = './login.html?role=seller&redirect=post-item.html';
+            }
+        })();
+    </script>
+
+    <style>
+        .post-form-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            padding: 35px;
+            margin-bottom: 40px;
+            border: 1px solid #eaeaea;
+        }
+
+        .post-form-card h3 {
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            color: #1c1c1c;
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #7fad39;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .form-control, select.form-control {
+            height: 48px;
+            border-radius: 6px;
+            border: 1px solid #e1e1e1;
+            padding: 10px 15px;
+            font-size: 14px;
+        }
+
+        textarea.form-control {
+            height: 120px;
+        }
+
+        .form-control:focus {
+            border-color: #7fad39;
+            box-shadow: 0 0 0 0.2rem rgba(127, 173, 57, 0.25);
+        }
+
+        .image-preview-container {
+            width: 100%;
+            height: 200px;
+            border: 2px dashed #7fad39;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f9fbf7;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .image-preview-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .upload-placeholder {
+            text-align: center;
+            color: #7fad39;
+        }
+
+        .upload-placeholder i {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .btn-post-item {
+            background: #7fad39;
+            color: #fff;
+            font-weight: 700;
+            padding: 14px 35px;
+            border-radius: 30px;
+            border: none;
+            font-size: 16px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-post-item:hover {
+            background: #6b942e;
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(127, 173, 57, 0.4);
+        }
+
+        .alert-status {
+            display: none;
+            margin-top: 15px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="header__top__left">
+                            <ul>
+                                <li><i class="fa fa-envelope"></i> beneditc64@gmail.com</li>
+                                <li><i class="fa fa-phone"></i> +254 794 536597</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="header__top__right">
+                            <div class="header__top__right__social">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-whatsapp"></i></a>
+                            </div>
+                            <div class="header__top__right__auth">
+                                <a href="#"><i class="fa fa-user"></i> Seller Dashboard</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="header__logo">
+                        <a href="./index.html">
+                            <img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png"
+                                alt="SokoHub" style="height: 50px; object-fit: contain;">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <nav class="header__menu">
+                        <ul>
+                            <li><a href="./index.html">Home</a></li>
+                            <li><a href="./shop-grid.html">Shop</a></li>
+                            <li class="active"><a href="./post-item.html">Post Item</a></li>
+                            <li><a href="./blog.html">Blog</a></li>
+                            <li><a href="./contact.html">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3 text-right" style="padding-top:15px;">
+                    <a href="./post-item.html" class="primary-btn" style="background:#27ae60; padding:10px 20px; font-size:13px;">
+                        <i class="fa fa-plus-circle"></i> SELL ITEM
+                    </a>
+                </div>
+            </div>
+            <div class="humberger__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Post a New Listing</h2>
+                        <div class="breadcrumb__option">
+                            <a href="./index.html">Home</a>
+                            <span>Seller Portal</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Post Item Form Section Begin -->
+    <section class="spad" style="background:#f5f7fa;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="post-form-card">
+                        <h3><i class="fa fa-tag" style="color:#7fad39;"></i> Listing Information</h3>
+                        
+                        <div id="statusAlert" class="alert alert-status alert-success"></div>
+
+                        <form id="sellerPostForm">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="itemTitle">Item / Listing Title *</label>
+                                    <input type="text" id="itemTitle" class="form-control" placeholder="e.g. iPhone 15 Pro Max 256GB or 2 Bedroom Apartment Kilimani" required>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label for="itemCategory">Category *</label>
+                                    <select id="itemCategory" class="form-control" required>
+                                        <option value="">Select Category...</option>
+                                        <option value="Electronics">Electronics &amp; Phones</option>
+                                        <option value="Vehicles">Vehicles &amp; Cars</option>
+                                        <option value="Property Rentals">Property Rentals &amp; Housing</option>
+                                        <option value="Fashion">Fashion &amp; Apparel</option>
+                                        <option value="Home & Furniture">Home &amp; Furniture</option>
+                                        <option value="Services">Professional Services</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label for="listingType">Listing Type *</label>
+                                    <select id="listingType" class="form-control" required>
+                                        <option value="Product">Product for Sale</option>
+                                        <option value="Rental">Rental / Booking</option>
+                                        <option value="Vehicle">Vehicle Sale / Hire</option>
+                                        <option value="Service">Professional Service</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label for="itemPrice">Price (KSH) *</label>
+                                    <input type="number" id="itemPrice" class="form-control" placeholder="e.g. 45000" required>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label for="itemLocation">Location / City *</label>
+                                    <input type="text" id="itemLocation" class="form-control" placeholder="e.g. Westlands, Nairobi" required>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label for="sellerName">Seller / Business Name *</label>
+                                    <input type="text" id="sellerName" class="form-control" placeholder="e.g. Benedict Mwenda" required>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label for="sellerPhone">Phone Number (M-Pesa / WhatsApp) *</label>
+                                    <input type="text" id="sellerPhone" class="form-control" placeholder="e.g. +254 794 536597" required>
+                                </div>
+
+                                <div class="col-md-12 form-group">
+                                    <label>Upload Item Photo *</label>
+                                    <input type="file" id="imageInput" accept="image/*" style="display:none;" required>
+                                    <div class="image-preview-container" id="previewBtn">
+                                        <div class="upload-placeholder" id="uploadPlaceholder">
+                                            <i class="fa fa-cloud-upload"></i>
+                                            <p style="margin:0; font-weight:600;">Click to upload item image</p>
+                                            <small style="color:#888;">PNG, JPG, WEBP up to 5MB</small>
+                                        </div>
+                                        <img id="previewImage" alt="Item Preview">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 form-group">
+                                    <label for="itemDescription">Description &amp; Specifications *</label>
+                                    <textarea id="itemDescription" class="form-control" placeholder="Provide key details, condition, warranty, features, or rental terms..." required></textarea>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn-post-item" id="submitBtn">
+                                        <i class="fa fa-paper-plane"></i> PUBLISH LISTING TO SOKOHUB
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Post Item Form Section End -->
+
+    <!-- Footer Section Begin -->
+    <footer class="footer spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__about__logo">
+                            <a href="./index.html">
+                                <img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" alt="SokoHub" style="height:45px;">
+                            </a>
+                        </div>
+                        <ul>
+                            <li>Nairobi, Kenya</li>
+                            <li>Phone: +254 794 536597</li>
+                            <li>Email: beneditc64@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <!-- Js Plugins -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        let selectedImageDataUrl = "";
+
+        // Seller Authentication Guard
+        document.addEventListener('DOMContentLoaded', function () {
+            const rawUser = localStorage.getItem('sokohub_user');
+            let user = null;
+            try {
+                if (rawUser) user = JSON.parse(rawUser);
+            } catch (e) { }
+
+            const formCard = document.querySelector('.post-form-card');
+
+            if (!user || user.role !== 'seller') {
+                // Lock out non-seller users
+                formCard.innerHTML = `
+                    <div class="text-center style="padding: 40px 20px;">
+                        <i class="fa fa-lock" style="font-size: 64px; color: #e74c3c; margin-bottom: 20px;"></i>
+                        <h3 style="border:none; margin-bottom: 10px;">Seller Authentication Required</h3>
+                        <p style="color: #666; font-size: 15px; margin-bottom: 25px;">
+                            You must be signed in as a <strong>Seller / Merchant</strong> on SokoHub to publish new items, rentals, or vehicles.
+                        </p>
+                        <a href="./login.html?role=seller&redirect=post-item.html" class="btn-post-item" style="display: inline-block; text-decoration: none; max-width: 320px;">
+                            <i class="fa fa-sign-in"></i> Sign In / Register as Seller
+                        </a>
+                        <br>
+                        <a href="./index.html" style="display: inline-block; margin-top: 15px; color: #888; font-size: 13px;">Return to Homepage</a>
+                    </div>
+                `;
+            } else {
+                // User is authenticated seller - Pre-fill seller name
+                if (user.name) {
+                    document.getElementById('sellerName').value = user.name;
+                }
+                const headerRight = document.querySelector('.header__top__right__auth');
+                if (headerRight) {
+                    headerRight.innerHTML = `
+                        <span style="color:#7fad39; font-weight:600;"><i class="fa fa-check-circle"></i> Seller: ${user.name || user.email}</span>
+                        <a href="#" id="logoutBtn" style="margin-left:12px; color:#e74c3c;"><i class="fa fa-sign-out"></i> Logout</a>
+                    `;
+                    document.getElementById('logoutBtn')?.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        localStorage.removeItem('sokohub_user');
+                        window.location.reload();
+                    });
+                }
+            }
+        });
+
+        // Trigger file select on box click
+        document.getElementById('previewBtn')?.addEventListener('click', function () {
+            document.getElementById('imageInput').click();
+        });
+
+        // Image file preview
+        document.getElementById('imageInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (evt) {
+                    selectedImageDataUrl = evt.target.result;
+                    document.getElementById('previewImage').src = selectedImageDataUrl;
+                    document.getElementById('previewImage').style.display = 'block';
+                    document.getElementById('uploadPlaceholder').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Save listing to Firebase / LocalStorage fallback
+        document.getElementById('sellerPostForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            const alertBox = document.getElementById('statusAlert');
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> PUBLISHING LISTING...';
+
+            const newListing = {
+                id: 'sh_' + Date.now(),
+                title: document.getElementById('itemTitle').value,
+                category: document.getElementById('itemCategory').value,
+                listingType: document.getElementById('listingType').value,
+                price: parseFloat(document.getElementById('itemPrice').value),
+                location: document.getElementById('itemLocation').value,
+                sellerName: document.getElementById('sellerName').value,
+                sellerPhone: document.getElementById('sellerPhone').value,
+                imageUrl: selectedImageDataUrl || 'img/featured/feature-1.jpg',
+                description: document.getElementById('itemDescription').value,
+                createdAt: new Date().toISOString(),
+                status: 'active'
+            };
+
+            try {
+                // Save into Firestore if Firebase db initialized
+                if (window.db && firebaseConfig.apiKey !== "YOUR_API_KEY") {
+                    await window.db.collection('listings').doc(newListing.id).set(newListing);
+                }
+
+                // Also save to LocalStorage so items show up instantly on front-end
+                let localListings = JSON.parse(localStorage.getItem('sokohub_listings') || '[]');
+                localListings.unshift(newListing);
+                localStorage.setItem('sokohub_listings', JSON.stringify(localListings));
+
+                alertBox.className = "alert alert-status alert-success";
+                alertBox.style.display = "block";
+                alertBox.innerHTML = "<strong><i class='fa fa-check-circle'></i> Success!</strong> Your listing has been published to SokoHub. Redirecting to Shop Grid...";
+
+                setTimeout(function () {
+                    window.location.href = './shop-grid.html';
+                }, 1800);
+
+            } catch (error) {
+                console.error("Error posting listing: ", error);
+                alertBox.className = "alert alert-status alert-danger";
+                alertBox.style.display = "block";
+                alertBox.innerHTML = "Error saving listing: " + error.message;
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa fa-paper-plane"></i> PUBLISH LISTING TO SOKOHUB';
+            }
+        });
+    </script>
+</body>
+
+</html>

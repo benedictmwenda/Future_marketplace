@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Ogani Template">
-    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="description" content="SokoHub Marketplace Platform — Buy, Sell, Rent Anything Local">
+    <meta name="keywords" content="SokoHub, marketplace, vehicles, property, electronics, fashion, services, jobs">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>SokoHub</title>
+    <title>SokoHub | MARKETPLACE</title>
     <link href="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" rel="icon">
 
     <!-- Google Font -->
@@ -26,62 +26,63 @@
 
 <body>
 
-<!-- ===================== Quick View Modal ===================== -->
-<div class="qv-overlay" id="quickViewOverlay"></div>
-<div class="qv-modal" id="quickViewModal" role="dialog" aria-modal="true">
-    <button class="qv-close" id="quickViewClose" aria-label="Close">
-        <i class="fa fa-times"></i>
-    </button>
-    <div class="qv-body">
-        <!-- Left: Image -->
-        <div class="qv-image">
-            <img id="qv-img" src="" alt="Item Image">
-            <span class="qv-badge" id="qv-category"></span>
-        </div>
-        <!-- Right: Details -->
-        <div class="qv-details">
-            <h2 id="qv-name"></h2>
-            <div class="qv-price" id="qv-price"></div>
-            <p class="qv-desc" id="qv-desc"></p>
-
-             <!-- ✅ Features Section -->
-            <div class="qv-features" id="qv-features-wrapper">
-                <h6 class="qv-features__title">
-                    <i class="fa fa-list-ul"></i> Key Features
-                </h6>
-                <div id="qv-features-list"></div>
+    <!-- ===================== Quick View Modal ===================== -->
+    <div class="qv-overlay" id="quickViewOverlay"></div>
+    <div class="qv-modal" id="quickViewModal" role="dialog" aria-modal="true">
+        <button class="qv-close" id="quickViewClose" aria-label="Close">
+            <i class="fa fa-times"></i>
+        </button>
+        <div class="qv-body">
+            <!-- Left: Image -->
+            <div class="qv-image">
+                <img id="qv-img" src="" alt="Item Image">
+                <span class="qv-badge" id="qv-category"></span>
             </div>
-            <!-- Meta Info -->
-            <div class="qv-meta">
-                <div class="qv-meta-item">
-                    <i class="fa fa-map-marker"></i>
-                    <span id="qv-location"></span>
-                </div>
-                <div class="qv-meta-item">
-                    <i class="fa fa-tag"></i>
-                    <span id="qv-condition"></span>
-                </div>
-                <div class="qv-meta-item">
-                    <i class="fa fa-user"></i>
-                    <span id="qv-seller"></span>
-                </div>
-            </div>
+            <!-- Right: Details -->
+            <div class="qv-details">
+                <h2 id="qv-name"></h2>
+                <div class="qv-price" id="qv-price"></div>
+                <p class="qv-desc" id="qv-desc"></p>
 
-            <!-- Actions -->
-            <div class="qv-actions">
-                <a href="#" class="qv-btn qv-btn--primary">
-                    <i class="fa fa-shopping-cart"></i> Add to Cart
-                </a>
-                <a href="#" class="qv-btn qv-btn--outline">
-                    <i class="fa fa-heart"></i> Wishlist
-                </a>
+                <!-- Features Section -->
+                <div class="qv-features" id="qv-features-wrapper">
+                    <h6 class="qv-features__title">
+                        <i class="fa fa-list-ul"></i> Key Features
+                    </h6>
+                    <div id="qv-features-list"></div>
+                </div>
+
+                <!-- Meta Info -->
+                <div class="qv-meta">
+                    <div class="qv-meta-item">
+                        <i class="fa fa-map-marker"></i>
+                        <span id="qv-location"></span>
+                    </div>
+                    <div class="qv-meta-item">
+                        <i class="fa fa-tag"></i>
+                        <span id="qv-condition"></span>
+                    </div>
+                    <div class="qv-meta-item">
+                        <i class="fa fa-user"></i>
+                        <span id="qv-seller"></span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="qv-actions">
+                    <a href="#" class="qv-btn qv-btn--primary">
+                        <i class="fa fa-shopping-cart"></i> Add to Cart
+                    </a>
+                    <a href="#" class="qv-btn qv-btn--outline">
+                        <i class="fa fa-heart"></i> Wishlist
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- ===================== End Quick View Modal ===================== -->
+    <!-- ===================== End Quick View Modal ===================== -->
 
-    <!-- Page Preloder -->
+    <!-- Page Preloader -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
@@ -90,14 +91,16 @@
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
-            <a href="#"><img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" alt=""></a>
+            <a href="./index.html">
+                <img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" alt="SokoHub Logo" class="brand-logo-img">
+            </a>
         </div>
         <div class="humberger__menu__cart">
             <ul>
                 <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
                 <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
             </ul>
-            <div class="header__cart__price">item: <span>$150.00</span></div>
+            <div class="header__cart__price">cart: <span>KSH 150.00</span></div>
         </div>
         <div class="humberger__menu__widget">
             <div class="header__top__right__language">
@@ -105,12 +108,12 @@
                 <div>English</div>
                 <span class="arrow_carrot-down"></span>
                 <ul>
-                    <li><a href="#">Spanis</a></li>
+                    <li><a href="#">Swahili</a></li>
                     <li><a href="#">English</a></li>
                 </ul>
             </div>
             <div class="header__top__right__auth">
-                <a href="#"><i class="fa fa-user"></i> Login</a>
+                <a href="./login.html"><i class="fa fa-user"></i> Login / Register</a>
             </div>
         </div>
         <nav class="humberger__menu__nav mobile-menu">
@@ -120,9 +123,8 @@
                 <li><a href="#">My Cart</a>
                     <ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">Shop Details</a></li>
-                        <li><a href="./shoping-cart.html">Shoping Cart</a></li>
+                        <li><a href="./shoping-cart.html">Shopping Cart</a></li>
                         <li><a href="./checkout.html">Check Out</a></li>
-                        <li><a href="./blog-details.html">Blog Details</a></li>
                     </ul>
                 </li>
                 <li><a href="./blog.html">Blog</a></li>
@@ -139,7 +141,7 @@
         <div class="humberger__menu__contact">
             <ul>
                 <li><i class="fa fa-envelope"></i> beneditc64@gmail.com</li>
-                <li>Free Shipping for all Order of $99</li>
+                <li>Fast Local Delivery & Verification</li>
             </ul>
         </div>
     </div>
@@ -154,7 +156,7 @@
                         <div class="header__top__left">
                             <ul>
                                 <li><i class="fa fa-envelope"></i> beneditc64@gmail.com</li>
-                                <li>Free Shipping for all Order of $99</li>
+                                <li>Fast Local Delivery & Verification</li>
                             </ul>
                         </div>
                     </div>
@@ -171,12 +173,12 @@
                                 <div>English</div>
                                 <span class="arrow_carrot-down"></span>
                                 <ul>
-                                    <li><a href="#">Spanis</a></li>
+                                    <li><a href="#">Swahili</a></li>
                                     <li><a href="#">English</a></li>
                                 </ul>
                             </div>
                             <div class="header__top__right__auth">
-                                <a href="#"><i class="fa fa-user"></i> Login</a>
+                                <a href="./login.html"><i class="fa fa-user"></i> Login / Register</a>
                             </div>
                         </div>
                     </div>
@@ -184,10 +186,12 @@
             </div>
         </div>
         <div class="container">
-            <div class="row">
+            <div class="row align-items-center">
                 <div class="col-lg-3">
                     <div class="header__logo">
-                        <a href="./index.html"><img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" alt=""></a>
+                        <a href="./index.html">
+                            <img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" alt="SokoHub Logo" class="brand-logo-img">
+                        </a>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -195,12 +199,13 @@
                         <ul>
                             <li class="active"><a href="./index.html">Home</a></li>
                             <li><a href="./shop-grid.html">Shop</a></li>
-                            <li><a href="#">My Cart</a>
+                            <li><a href="./post-item.html" style="color: #7fad39; font-weight: 700;"><i class="fa fa-plus-circle"></i> Sell Item</a></li>
+                            <li><a href="#">Pages</a>
                                 <ul class="header__menu__dropdown">
                                     <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shoping-cart.html">Shoping Cart</a></li>
+                                    <li><a href="./shoping-cart.html">Shopping Cart</a></li>
                                     <li><a href="./checkout.html">Check Out</a></li>
-                                    <li><a href="./blog-details.html">Blog Details</a></li>
+                                    <li><a href="./post-item.html">Seller Portal</a></li>
                                 </ul>
                             </li>
                             <li><a href="./blog.html">Blog</a></li>
@@ -214,7 +219,7 @@
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
                             <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                         </ul>
-                        <div class="header__cart__price">item: <span>$150.00</span></div>
+                        <div class="header__cart__price">cart: <span>KSH 150.00</span></div>
                     </div>
                 </div>
             </div>
@@ -226,7 +231,7 @@
     <!-- Header Section End -->
 
     <!-- Hero Section Begin -->
-      <section class="hero">
+    <section class="hero">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
@@ -235,14 +240,22 @@
                             <i class="fa fa-bars"></i>
                             <span>Browse Categories</span>
                         </div>
-                        <ul id="hero-categories-list"></ul>
+                        <ul id="hero-categories-list">
+                            <li><a href="#"><i class="fa fa-car" style="margin-right: 10px; width: 18px; color: #1000B8;"></i> Vehicles</a></li>
+                            <li><a href="#"><i class="fa fa-home" style="margin-right: 10px; width: 18px; color: #1000B8;"></i> Property & Rentals</a></li>
+                            <li><a href="#"><i class="fa fa-laptop" style="margin-right: 10px; width: 18px; color: #1000B8;"></i> Electronics</a></li>
+                            <li><a href="#"><i class="fa fa-shopping-bag" style="margin-right: 10px; width: 18px; color: #1000B8;"></i> Fashion & Beauty</a></li>
+                            <li><a href="#"><i class="fa fa-couch" style="margin-right: 10px; width: 18px; color: #1000B8;"></i> Home & Furniture</a></li>
+                            <li><a href="#"><i class="fa fa-tools" style="margin-right: 10px; width: 18px; color: #1000B8;"></i> Services</a></li>
+                            <li><a href="#"><i class="fa fa-briefcase" style="margin-right: 10px; width: 18px; color: #1000B8;"></i> Jobs</a></li>
+                            <li><a href="#"><i class="fa fa-seedling" style="margin-right: 10px; width: 18px; color: #1000B8;"></i> Agriculture</a></li>
+                        </ul>
                     </div>
                 </div>
                 <div class="col-lg-9">
                     <div class="hero__search">
                         <div class="hero__search__form">
-                             <form id="search-form">
-                                <!-- 💡 IMPROVED: Real select dropdown styled for the marketplace -->
+                            <form id="search-form">
                                 <select id="search-category" class="hero__search__select">
                                     <option value="all">All Categories</option>
                                     <option value="vehicles">Vehicles</option>
@@ -262,16 +275,16 @@
                             </div>
                             <div class="hero__search__phone__text">
                                 <h5>+254 794 536597</h5>
-                                <span>support 24/7 time</span>
+                                <span>Support 24/7</span>
                             </div>
                         </div>
                     </div>
                     <div class="hero__item set-bg" data-setbg="https://i.pinimg.com/1200x/ec/04/40/ec04405f8a89c84589bfeb31d6c1ad94.jpg">
                         <div class="hero__text">
-                            <span>SokoHub</span>
+                            <span>SokoHub MARKETPLACE</span>
                             <h2>Buy, Sell & Rent <br />Anything Local</h2>
                             <p>Products • Rentals • Vehicles • Services</p>
-                            <a href="/shop-grid.html" class="primary-btn">EXPLORE NOW</a>
+                            <a href="#" class="primary-btn">EXPLORE NOW</a>
                         </div>
                     </div>
                 </div>
@@ -301,7 +314,7 @@
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <div class="categories__item set-bg" data-setbg="https://images.unsplash.com/photo-1615420733091-6b320329987b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+                        <div class="categories__item set-bg" data-setbg="https://images.unsplash.com/photo-1615420733091-6b320329987b?q=80&w=687&auto=format&fit=crop">
                             <h5><a href="#">Fashion</a></h5>
                         </div>
                     </div>
@@ -317,30 +330,28 @@
     <!-- Categories Section End -->
 
     <!-- Featured Section Begin -->
-    <!-- Featured Section Begin -->
-<section class="featured spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-title">
-                    <h2>Featured Listings</h2>
-                </div>
-                <div class="featured__controls">
-                    <ul>
-                        <li class="active" data-filter="*">All</li>
-                        <li data-filter=".vehicles">Vehicles</li>
-                        <li data-filter=".property">Property</li>
-                        <li data-filter=".electronics">Electronics</li>
-                        <li data-filter=".fashion">Fashion</li>
-                        <li data-filter=".jobs">Jobs</li>
-                        <li data-filter=".services">Services</li>
-                    </ul>
+    <section class="featured spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2>Featured Listings</h2>
+                    </div>
+                    <div class="featured__controls">
+                        <ul>
+                            <li class="active" data-filter="*">All</li>
+                            <li data-filter=".vehicles">Vehicles</li>
+                            <li data-filter=".property">Property</li>
+                            <li data-filter=".electronics">Electronics</li>
+                            <li data-filter=".fashion">Fashion</li>
+                            <li data-filter=".jobs">Jobs</li>
+                            <li data-filter=".services">Services</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row featured__filter">
-
+            <div class="row featured__filter">
 
                 <!-- ── Feature 1 ── Vehicles ─────────────────────────── -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mix vehicles">
@@ -371,6 +382,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- ── Feature 2 ── Property ──────────────────────────── -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mix property">
                     <div class="featured__item">
@@ -400,6 +412,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- ── Feature 3 ── Electronics ───────────────────────── -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mix electronics">
                     <div class="featured__item">
@@ -429,6 +442,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- ── Feature 4 ── Fashion ───────────────────────────── -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mix fashion">
                     <div class="featured__item">
@@ -458,6 +472,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- ── Feature 5 ── Jobs ──────────────────────────────── -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mix jobs">
                     <div class="featured__item">
@@ -471,7 +486,7 @@
                                         data-category="Jobs"
                                         data-location="Remote / Nairobi"
                                         data-condition="Full Time — Urgent"
-                                        data-seller="QAQA Softwares"
+                                        data-seller="SokoHub Softwares"
                                         data-img="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&auto=format&fit=crop&q=60"
                                         data-desc="We are looking for an experienced Senior Web Developer to join our growing team. 5+ years experience required. React and Node.js expertise preferred."
                                         data-features="💻:React.js|Node.js|PostgreSQL;🕐:Full Time|Remote Friendly|Flexible Hours;💰:Competitive Salary|Health Insurance|Pension;📈:Career Growth|Training Budget|Annual Bonus;📋:5+ Years Experience|Degree Preferred">
@@ -487,6 +502,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- ── Feature 6 ── Services ──────────────────────────── -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mix services">
                     <div class="featured__item">
@@ -516,6 +532,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- ── Feature 7 ── Vehicles ──────────────────────────── -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mix vehicles">
                     <div class="featured__item">
@@ -545,6 +562,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- ── Feature 8 ── Electronics + Fashion (Multi-Category) ── -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mix electronics fashion">
                     <div class="featured__item">
@@ -574,6 +592,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- ── Feature 9 ── Vehicles + Services (Multi-Category) ── -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mix vehicles services">
                     <div class="featured__item">
@@ -603,6 +622,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- ── Feature 10 ── Property + Services (Multi-Category) ── -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mix property services">
                     <div class="featured__item">
@@ -632,6 +652,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- ── Feature 11 ── Electronics ── -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mix electronics">
                     <div class="featured__item">
@@ -661,6 +682,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- ── Feature 12 ── Fashion + Services (Multi-Category) ── -->
                 <div class="col-lg-3 col-md-4 col-sm-6 mix fashion services">
                     <div class="featured__item">
@@ -690,7 +712,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div><!-- end featured__filter -->
         </div>
     </section>
@@ -715,7 +737,7 @@
     </div>
     <!-- Banner End -->
 
-     <!-- ==================== Latest Listings Section Begin ==================== -->
+    <!-- ==================== Latest Listings Section Begin ==================== -->
     <section class="latest-product spad">
         <div class="container">
             <div class="row">
@@ -787,6 +809,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Column 2: Top Rated Listings -->
                 <div class="col-lg-4 col-md-6">
                     <div class="latest-product__text">
@@ -855,6 +878,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Column 3: Trending Services -->
                 <div class="col-lg-4 col-md-6">
                     <div class="latest-product__text">
@@ -943,14 +967,16 @@
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="blog__item">
                         <div class="blog__item__pic">
-                            <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=500&auto=format&fit=crop&q=60" alt="Car Guide" style="width: 100%; height: 260px; object-fit: cover; border-radius: 8px;">
+                            <a href="./blog-details.html">
+                                <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=500&auto=format&fit=crop&q=60" alt="Car Guide" style="width: 100%; height: 260px; object-fit: cover; border-radius: 8px;">
+                            </a>
                         </div>
                         <div class="blog__item__text">
                             <ul>
                                 <li><i class="fa fa-calendar-o"></i> July 16, 2026</li>
                                 <li><i class="fa fa-comment-o"></i> 5</li>
                             </ul>
-                            <h5><a href="#">How to Safely Buy and Sell Vehicles Online</a></h5>
+                            <h5><a href="./blog-details.html">How to Safely Buy and Sell Vehicles Online</a></h5>
                             <p>Discover critical tips for verifying vehicle logbooks, inspecting engines, and securing financial transactions safely in the local market.</p>
                         </div>
                     </div>
@@ -959,14 +985,16 @@
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="blog__item">
                         <div class="blog__item__pic">
-                            <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=500&auto=format&fit=crop&q=60" alt="Apartment Guide" style="width: 100%; height: 260px; object-fit: cover; border-radius: 8px;">
+                            <a href="./blog-details.html">
+                                <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=500&auto=format&fit=crop&q=60" alt="Apartment Guide" style="width: 100%; height: 260px; object-fit: cover; border-radius: 8px;">
+                            </a>
                         </div>
                         <div class="blog__item__text">
                             <ul>
                                 <li><i class="fa fa-calendar-o"></i> July 12, 2026</li>
                                 <li><i class="fa fa-comment-o"></i> 12</li>
                             </ul>
-                            <h5><a href="#">Top 5 Rental Property Locations in Nairobi</a></h5>
+                            <h5><a href="./blog-details.html">Top 5 Rental Property Locations in Nairobi</a></h5>
                             <p>An in-depth guide comparing rental rates, security levels, and water accessibility across Westlands, Kilimani, and surrounding suburbs.</p>
                         </div>
                     </div>
@@ -975,14 +1003,16 @@
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="blog__item">
                         <div class="blog__item__pic">
-                            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&auto=format&fit=crop&q=60" alt="Freelancer Guide" style="width: 100%; height: 260px; object-fit: cover; border-radius: 8px;">
+                            <a href="./blog-details.html">
+                                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&auto=format&fit=crop&q=60" alt="Freelancer Guide" style="width: 100%; height: 260px; object-fit: cover; border-radius: 8px;">
+                            </a>
                         </div>
                         <div class="blog__item__text">
                             <ul>
                                 <li><i class="fa fa-calendar-o"></i> July 8, 2026</li>
                                 <li><i class="fa fa-comment-o"></i> 8</li>
                             </ul>
-                            <h5><a href="#">Freelancer Guide: Pricing Your Services</a></h5>
+                            <h5><a href="./blog-details.html">Freelancer Guide: Pricing Your Services</a></h5>
                             <p>Learn how to calculate hourly rates, set up custom project quotes, and establish client trust on peer-to-peer marketplaces.</p>
                         </div>
                     </div>
@@ -1000,7 +1030,7 @@
                     <div class="footer__about">
                         <div class="footer__about__logo">
                             <a href="./index.html">
-                                <img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" alt="QAQA Logo" class="brand-logo-img">
+                                <img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" alt="SokoHub Logo" class="brand-logo-img">
                             </a>
                         </div>
                         <ul>
@@ -1034,7 +1064,7 @@
                 <div class="col-lg-4 col-md-12">
                     <div class="footer__widget">
                         <h6>Join Our Newsletter</h6>
-                        <p>Get updates about new listings and exclusive deals on QAQA.</p>
+                        <p>Get updates about new listings and exclusive deals on SokoHub.</p>
                         <form action="#">
                             <input type="text" placeholder="Enter your email">
                             <button type="submit" class="site-btn">Subscribe</button>
@@ -1056,7 +1086,7 @@
                                 Copyright &copy;
                                 <script>document.write(new Date().getFullYear());</script>
                                 All rights reserved | Powered by
-                                <a href="#" class="copyright-vendor-link">QAQA SOFTWARE</a>
+                                <a href="#" class="copyright-vendor-link">SokoHub SOFTWARE</a>
                             </p>
                         </div>
                         <div class="footer__copyright__payment">
@@ -1069,7 +1099,7 @@
     </footer>
     <!-- Footer Section End -->
 
- <!-- Js Plugins -->
+    <!-- JS Plugins — jQuery MUST load first -->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.nice-select.min.js"></script>
@@ -1077,12 +1107,10 @@
     <script src="js/jquery.slicknav.js"></script>
     <script src="js/mixitup.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
-    <script src="js/template-data.js"></script>
     <script src="js/main.js"></script>
 
-
-
+    <!-- template-data.js loaded LAST -->
+    <script src="js/template-data.js"></script>
 
 </body>
-
 </html>

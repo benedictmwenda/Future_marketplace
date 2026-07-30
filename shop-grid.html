@@ -7,7 +7,7 @@
     <meta name="keywords" content="SokoHub, marketplace, shop, vehicles, property, electronics, fashion, services, jobs">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>SokoHub | Shop</title>
+    <title>SokoHub | Shop Grid</title>
     <link href="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" rel="icon">
 
     <!-- Google Font -->
@@ -191,11 +191,13 @@
                         <ul>
                             <li><a href="./index.html">Home</a></li>
                             <li class="active"><a href="./shop-grid.html">Shop</a></li>
-                            <li><a href="#">My Cart</a>
+                            <li><a href="./post-item.html" style="color: #7fad39; font-weight: 700;"><i class="fa fa-plus-circle"></i> Sell Item</a></li>
+                            <li><a href="#">Pages</a>
                                 <ul class="header__menu__dropdown">
                                     <li><a href="./shop-details.html">Shop Details</a></li>
                                     <li><a href="./shoping-cart.html">Shopping Cart</a></li>
                                     <li><a href="./checkout.html">Check Out</a></li>
+                                    <li><a href="./post-item.html">Seller Portal</a></li>
                                 </ul>
                             </li>
                             <li><a href="./blog.html">Blog</a></li>
@@ -397,7 +399,7 @@
                                                 <img src="https://www.luluaurelian.co.ke/assets/skyview/skyview_1.jpg" alt="Apartment" style="width: 100px; height: 100px; object-fit: cover;">
                                             </div>
                                             <div class="latest-product__item__text">
-                                                <h6>2 Bed Airbnb Skuta, Nyeri</h6>
+                                                <h6>2 Bed Airbnb Westlands</h6>
                                                 <span>KSH 5,500/day</span>
                                             </div>
                                         </a>
@@ -466,7 +468,7 @@
                                             <ul class="product__item__pic__hover">
                                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                                 <li>
-                                                    <a href="#" class="quick-view-btn" data-name="2 Bed Airbnb Weekend Special" data-price="KSH 4,400/day" data-category="Property" data-location="Skuta, Nyeri, Nairobi" data-condition="Available Weekend" data-seller="Lulu Aurelian" data-img="https://www.luluaurelian.co.ke/assets/skyview/skyview_1.jpg" data-desc="Weekend special discount on luxury Skuta, Nyeri 2-bedroom serviced apartment." data-features="🏠:2 Bedrooms|2 Bathrooms;🏊:Pool & Gym;🔒:24hr Security">
+                                                    <a href="#" class="quick-view-btn" data-name="2 Bed Airbnb Weekend Special" data-price="KSH 4,400/day" data-category="Property" data-location="Westlands, Nairobi" data-condition="Available Weekend" data-seller="Lulu Aurelian" data-img="https://www.luluaurelian.co.ke/assets/skyview/skyview_1.jpg" data-desc="Weekend special discount on luxury Westlands 2-bedroom serviced apartment." data-features="🏠:2 Bedrooms|2 Bathrooms;🏊:Pool & Gym;🔒:24hr Security">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
                                                 </li>
@@ -534,8 +536,8 @@
                         </div>
                     </div>
 
-                    <!-- Main Marketplace Product Grid (12 Items) -->
-                    <div class="row">
+                    <!-- Main Marketplace Product Grid (12 Items + User Listings) -->
+                    <div class="row" id="shop-grid-items-container">
                         <!-- Item 1 -->
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
@@ -564,7 +566,7 @@
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li>
-                                            <a href="#" class="quick-view-btn" data-name="2 Bed Airbnb Skuta, Nyeri" data-price="KSH 5,500/day" data-category="Property" data-location="Skuta, Nyeri" data-condition="Fully Furnished" data-seller="Lulu Aurelian" data-img="https://www.luluaurelian.co.ke/assets/skyview/skyview_1.jpg" data-desc="Serviced 2-bedroom apartment with rooftop view." data-features="🏠:2 Bed|2 Bath;🏊:Pool & Gym">
+                                            <a href="#" class="quick-view-btn" data-name="2 Bed Airbnb Westlands" data-price="KSH 5,500/day" data-category="Property" data-location="Westlands" data-condition="Fully Furnished" data-seller="Lulu Aurelian" data-img="https://www.luluaurelian.co.ke/assets/skyview/skyview_1.jpg" data-desc="Serviced 2-bedroom apartment with rooftop view." data-features="🏠:2 Bed|2 Bath;🏊:Pool & Gym">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         </li>
@@ -572,7 +574,7 @@
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#">2 Bed Airbnb Skuta, Nyeri</a></h6>
+                                    <h6><a href="#">2 Bed Airbnb Westlands</a></h6>
                                     <h5>KSH 5,500/day</h5>
                                 </div>
                             </div>
@@ -866,7 +868,7 @@
                                 Copyright &copy;
                                 <script>document.write(new Date().getFullYear());</script>
                                 All rights reserved | Powered by
-                                <a href="#" class="copyright-vendor-link">QAQA SOFTWARE</a>
+                                <a href="#" class="copyright-vendor-link">SokoHub SOFTWARE</a>
                             </p>
                         </div>
                         <div class="footer__copyright__payment">
@@ -889,8 +891,16 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
 
-    <!-- template-data.js loaded LAST -->
+    <!-- Firebase SDKs & Dynamic Fetching -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <!-- template-data.js & sokohub-firebase.js loaded LAST -->
     <script src="js/template-data.js"></script>
+    <script src="js/sokohub-firebase.js"></script>
+    <script src="js/sokohub-auth.js"></script>
 
 </body>
 
