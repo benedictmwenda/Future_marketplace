@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Ogani Template">
-    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="description" content="SokoHub - Your Local Marketplace for Products, Rentals, Vehicles & Services">
+    <meta name="keywords" content="SokoHub, marketplace, Kenya, shop, cart, products, rentals, vehicles, services">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ogani | Template</title>
+    <title>SokoHub | Shopping Cart</title>
+    <link href="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" rel="icon">
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
@@ -21,6 +22,87 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+
+    <style>
+        /* SokoHub Cart Enhancements */
+        .shoping__cart__table table thead tr th {
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+        }
+
+        .shoping__cart__item h5 {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .cart-badge {
+            display: inline-block;
+            background: #7fad39;
+            color: #fff;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: 6px;
+            text-transform: uppercase;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        .cart-badge.rental { background: #e67e22; }
+        .cart-badge.vehicle { background: #2980b9; }
+        .cart-badge.service { background: #8e44ad; }
+
+        .shoping__cart__item small {
+            display: block;
+            color: #888;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .cart-trust-bar {
+            background: #f5f8f0;
+            border: 1px solid #e5eeda;
+            border-radius: 6px;
+            padding: 12px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .cart-trust-bar span {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .cart-trust-bar i {
+            color: #7fad39;
+            margin-right: 6px;
+        }
+
+        .shoping__checkout h5 {
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+        }
+
+        .shoping__checkout ul li span {
+            font-weight: 700;
+            color: #7fad39;
+        }
+
+        .checkout-note {
+            font-size: 12px;
+            color: #888;
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        .savings-tag {
+            color: #e74c3c;
+            font-size: 12px;
+            font-weight: 600;
+        }
+    </style>
 </head>
 
 <body>
@@ -29,18 +111,18 @@
         <div class="loader"></div>
     </div>
 
-    <!-- Humberger Begin -->
+    <!-- Hamburger Begin -->
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
-            <a href="#"><img src="img/logo.png" alt=""></a>
+            <a href="./index.html"><img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" alt="SokoHub" style="height:40px;"></a>
         </div>
         <div class="humberger__menu__cart">
             <ul>
-                <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                <li><a href="#"><i class="fa fa-heart"></i> <span>2</span></a></li>
+                <li><a href="./shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
             </ul>
-            <div class="header__cart__price">item: <span>$150.00</span></div>
+            <div class="header__cart__price">item: <span>KSH 12,650</span></div>
         </div>
         <div class="humberger__menu__widget">
             <div class="header__top__right__language">
@@ -48,8 +130,8 @@
                 <div>English</div>
                 <span class="arrow_carrot-down"></span>
                 <ul>
-                    <li><a href="#">Spanis</a></li>
                     <li><a href="#">English</a></li>
+                    <li><a href="#">Swahili</a></li>
                 </ul>
             </div>
             <div class="header__top__right__auth">
@@ -58,12 +140,12 @@
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
-                <li class="active"><a href="./index.html">Home</a></li>
+                <li><a href="./index.html">Home</a></li>
                 <li><a href="./shop-grid.html">Shop</a></li>
                 <li><a href="#">Pages</a>
                     <ul class="header__menu__dropdown">
-                        <li><a href="./shop-details.html">Shop Details</a></li>
-                        <li><a href="./shoping-cart.html">Shoping Cart</a></li>
+                        <li><a href="./shop-details.html">Listing Details</a></li>
+                        <li><a href="./shoping-cart.html">Cart</a></li>
                         <li><a href="./checkout.html">Check Out</a></li>
                         <li><a href="./blog-details.html">Blog Details</a></li>
                     </ul>
@@ -76,17 +158,17 @@
         <div class="header__top__right__social">
             <a href="#"><i class="fa fa-facebook"></i></a>
             <a href="#"><i class="fa fa-twitter"></i></a>
-            <a href="#"><i class="fa fa-linkedin"></i></a>
-            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+            <a href="#"><i class="fa fa-whatsapp"></i></a>
         </div>
         <div class="humberger__menu__contact">
             <ul>
-                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                <li>Free Shipping for all Order of $99</li>
+                <li><i class="fa fa-envelope"></i> beneditc64@gmail.com</li>
+                <li><i class="fa fa-phone"></i> +254 794 536597</li>
             </ul>
         </div>
     </div>
-    <!-- Humberger End -->
+    <!-- Hamburger End -->
 
     <!-- Header Section Begin -->
     <header class="header">
@@ -96,8 +178,8 @@
                     <div class="col-lg-6">
                         <div class="header__top__left">
                             <ul>
-                                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                                <li>Free Shipping for all Order of $99</li>
+                                <li><i class="fa fa-envelope"></i> beneditc64@gmail.com</li>
+                                <li><i class="fa fa-phone"></i> +254 794 536597</li>
                             </ul>
                         </div>
                     </div>
@@ -106,16 +188,16 @@
                             <div class="header__top__right__social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-linkedin"></i></a>
-                                <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-whatsapp"></i></a>
                             </div>
                             <div class="header__top__right__language">
                                 <img src="img/language.png" alt="">
                                 <div>English</div>
                                 <span class="arrow_carrot-down"></span>
                                 <ul>
-                                    <li><a href="#">Spanis</a></li>
                                     <li><a href="#">English</a></li>
+                                    <li><a href="#">Swahili</a></li>
                                 </ul>
                             </div>
                             <div class="header__top__right__auth">
@@ -130,18 +212,21 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header__logo">
-                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                        <a href="./index.html">
+                            <img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png"
+                                alt="SokoHub" style="height: 50px; object-fit: contain;">
+                        </a>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <nav class="header__menu">
                         <ul>
                             <li><a href="./index.html">Home</a></li>
-                            <li class="active"><a href="./shop-grid.html">Shop</a></li>
+                            <li><a href="./shop-grid.html">Shop</a></li>
                             <li><a href="#">Pages</a>
                                 <ul class="header__menu__dropdown">
-                                    <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shoping-cart.html">Shoping Cart</a></li>
+                                    <li><a href="./shop-details.html">Listing Details</a></li>
+                                    <li><a href="./shoping-cart.html">Cart</a></li>
                                     <li><a href="./checkout.html">Check Out</a></li>
                                     <li><a href="./blog-details.html">Blog Details</a></li>
                                 </ul>
@@ -154,10 +239,10 @@
                 <div class="col-lg-3">
                     <div class="header__cart">
                         <ul>
-                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                            <li><a href="#"><i class="fa fa-heart"></i> <span>2</span></a></li>
+                            <li><a href="./shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                         </ul>
-                        <div class="header__cart__price">item: <span>$150.00</span></div>
+                        <div class="header__cart__price">item: <span>KSH 12,650</span></div>
                     </div>
                 </div>
             </div>
@@ -176,32 +261,32 @@
                     <div class="hero__categories">
                         <div class="hero__categories__all">
                             <i class="fa fa-bars"></i>
-                            <span>All departments</span>
+                            <span>All Categories</span>
                         </div>
                         <ul>
-                            <li><a href="#">Fresh Meat</a></li>
-                            <li><a href="#">Vegetables</a></li>
-                            <li><a href="#">Fruit & Nut Gifts</a></li>
-                            <li><a href="#">Fresh Berries</a></li>
-                            <li><a href="#">Ocean Foods</a></li>
-                            <li><a href="#">Butter & Eggs</a></li>
-                            <li><a href="#">Fastfood</a></li>
-                            <li><a href="#">Fresh Onion</a></li>
-                            <li><a href="#">Papayaya & Crisps</a></li>
-                            <li><a href="#">Oatmeal</a></li>
-                            <li><a href="#">Fresh Bananas</a></li>
+                            <li><a href="./shop-grid.html">Electronics</a></li>
+                            <li><a href="./shop-grid.html">Vehicles &amp; Cars</a></li>
+                            <li><a href="./shop-grid.html">Property Rentals</a></li>
+                            <li><a href="./shop-grid.html">Fashion &amp; Clothing</a></li>
+                            <li><a href="./shop-grid.html">Home &amp; Furniture</a></li>
+                            <li><a href="./shop-grid.html">Professional Services</a></li>
+                            <li><a href="./shop-grid.html">Food &amp; Groceries</a></li>
+                            <li><a href="./shop-grid.html">Health &amp; Beauty</a></li>
+                            <li><a href="./shop-grid.html">Sports &amp; Fitness</a></li>
+                            <li><a href="./shop-grid.html">Agriculture</a></li>
+                            <li><a href="./shop-grid.html">Baby &amp; Kids</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-9">
                     <div class="hero__search">
                         <div class="hero__search__form">
-                            <form action="#">
+                            <form action="./shop-grid.html">
                                 <div class="hero__search__categories">
                                     All Categories
                                     <span class="arrow_carrot-down"></span>
                                 </div>
-                                <input type="text" placeholder="What do yo u need?">
+                                <input type="text" placeholder="Search products, vehicles, rentals...">
                                 <button type="submit" class="site-btn">SEARCH</button>
                             </form>
                         </div>
@@ -210,8 +295,8 @@
                                 <i class="fa fa-phone"></i>
                             </div>
                             <div class="hero__search__phone__text">
-                                <h5>+65 11.188.888</h5>
-                                <span>support 24/7 time</span>
+                                <h5>+254 794 536597</h5>
+                                <span>Support 24/7</span>
                             </div>
                         </div>
                     </div>
@@ -230,6 +315,7 @@
                         <h2>Shopping Cart</h2>
                         <div class="breadcrumb__option">
                             <a href="./index.html">Home</a>
+                            <a href="./shop-grid.html">Shop</a>
                             <span>Shopping Cart</span>
                         </div>
                     </div>
@@ -239,30 +325,44 @@
     </section>
     <!-- Breadcrumb Section End -->
 
-    <!-- Shoping Cart Section Begin -->
+    <!-- Shopping Cart Section Begin -->
     <section class="shoping-cart spad">
         <div class="container">
+
+            <!-- Trust Bar -->
+            <div class="cart-trust-bar">
+                <span><i class="fa fa-shield"></i> Buyer Protection on all orders</span>
+                <span><i class="fa fa-truck"></i> Nairobi-wide delivery available</span>
+                <span><i class="fa fa-mobile"></i> Pay via M-Pesa, Card or Cash on Delivery</span>
+                <span><i class="fa fa-star"></i> All sellers are verified</span>
+            </div>
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__table">
                         <table>
                             <thead>
                                 <tr>
-                                    <th class="shoping__product">Products</th>
-                                    <th>Price</th>
+                                    <th class="shoping__product">Product / Listing</th>
+                                    <th>Unit Price</th>
                                     <th>Quantity</th>
                                     <th>Total</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <!-- Item 1: Electronics -->
                                 <tr>
                                     <td class="shoping__cart__item">
-                                        <img src="img/cart/cart-1.jpg" alt="">
-                                        <h5>Vegetable’s Package</h5>
+                                        <img src="img/shopping-cart/cart-1.jpg" alt="iPhone 15 Pro Max">
+                                        <h5>
+                                            iPhone 15 Pro Max 256GB
+                                            <span class="cart-badge">Product</span>
+                                        </h5>
+                                        <small>Condition: Brand New | Seller: TechZone Nairobi</small>
                                     </td>
                                     <td class="shoping__cart__price">
-                                        $55.00
+                                        KSH 145,000
                                     </td>
                                     <td class="shoping__cart__quantity">
                                         <div class="quantity">
@@ -272,19 +372,26 @@
                                         </div>
                                     </td>
                                     <td class="shoping__cart__total">
-                                        $110.00
+                                        KSH 145,000
                                     </td>
                                     <td class="shoping__cart__item__close">
                                         <span class="icon_close"></span>
                                     </td>
                                 </tr>
+
+                                <!-- Item 2: Fashion -->
                                 <tr>
                                     <td class="shoping__cart__item">
-                                        <img src="img/cart/cart-2.jpg" alt="">
-                                        <h5>Fresh Garden Vegetable</h5>
+                                        <img src="img/shopping-cart/cart-2.jpg" alt="Leather Handbag">
+                                        <h5>
+                                            Premium Leather Handbag – Brown
+                                            <span class="cart-badge">Product</span>
+                                        </h5>
+                                        <small>Brand: Authentic | Seller: Fashionista CBD</small>
+                                        <small class="savings-tag">&#x2714; Save KSH 1,500 – Limited Offer</small>
                                     </td>
                                     <td class="shoping__cart__price">
-                                        $39.00
+                                        KSH 4,500
                                     </td>
                                     <td class="shoping__cart__quantity">
                                         <div class="quantity">
@@ -294,29 +401,36 @@
                                         </div>
                                     </td>
                                     <td class="shoping__cart__total">
-                                        $39.99
+                                        KSH 4,500
                                     </td>
                                     <td class="shoping__cart__item__close">
                                         <span class="icon_close"></span>
                                     </td>
                                 </tr>
+
+                                <!-- Item 3: Vehicle Rental -->
                                 <tr>
                                     <td class="shoping__cart__item">
-                                        <img src="img/cart/cart-3.jpg" alt="">
-                                        <h5>Organic Bananas</h5>
+                                        <img src="img/shopping-cart/cart-3.jpg" alt="Toyota Prado Rental">
+                                        <h5>
+                                            Toyota Land Cruiser Prado – Day Hire
+                                            <span class="cart-badge rental">Rental</span>
+                                        </h5>
+                                        <small>Duration: 3 Days | Pickup: Westlands, Nairobi</small>
+                                        <small>Seller: RentWheels Kenya</small>
                                     </td>
                                     <td class="shoping__cart__price">
-                                        $69.00
+                                        KSH 9,500 / day
                                     </td>
                                     <td class="shoping__cart__quantity">
                                         <div class="quantity">
                                             <div class="pro-qty">
-                                                <input type="text" value="1">
+                                                <input type="text" value="3">
                                             </div>
                                         </div>
                                     </td>
                                     <td class="shoping__cart__total">
-                                        $69.99
+                                        KSH 28,500
                                     </td>
                                     <td class="shoping__cart__item__close">
                                         <span class="icon_close"></span>
@@ -327,14 +441,18 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__btns">
-                        <a href="#" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
-                        <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
-                            Upadate Cart</a>
+                        <a href="./shop-grid.html" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                        <a href="#" class="primary-btn cart-btn cart-btn-right">
+                            <span class="icon_loading"></span> Update Cart
+                        </a>
                     </div>
                 </div>
+
+                <!-- Discount Code -->
                 <div class="col-lg-6">
                     <div class="shoping__continue">
                         <div class="shoping__discount">
@@ -346,20 +464,29 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Cart Totals -->
                 <div class="col-lg-6">
                     <div class="shoping__checkout">
                         <h5>Cart Total</h5>
                         <ul>
-                            <li>Subtotal <span>$454.98</span></li>
-                            <li>Total <span>$454.98</span></li>
+                            <li>Subtotal <span>KSH 178,000</span></li>
+                            <li>Delivery Fee <span>KSH 500</span></li>
+                            <li>Discount <span style="color:#e74c3c;">– KSH 1,500</span></li>
+                            <li>Total <span>KSH 177,000</span></li>
                         </ul>
-                        <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
+                        <a href="./checkout.html" class="primary-btn">PROCEED TO CHECKOUT</a>
+                        <p class="checkout-note">
+                            <i class="fa fa-lock" style="color:#7fad39;"></i>
+                            Secure checkout powered by M-Pesa &amp; Stripe. All transactions are encrypted.
+                        </p>
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
-    <!-- Shoping Cart Section End -->
+    <!-- Shopping Cart Section End -->
 
     <!-- Footer Section Begin -->
     <footer class="footer spad">
@@ -368,49 +495,52 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                            <a href="./index.html">
+                                <img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png"
+                                    alt="SokoHub" style="height:45px; object-fit:contain;">
+                            </a>
                         </div>
                         <ul>
-                            <li>Address: 60-49 Road 11378 New York</li>
-                            <li>Phone: +65 11.188.888</li>
-                            <li>Email: hello@colorlib.com</li>
+                            <li>Nairobi, Kenya</li>
+                            <li>Phone: +254 794 536597</li>
+                            <li>Email: beneditc64@gmail.com</li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
                     <div class="footer__widget">
-                        <h6>Useful Links</h6>
+                        <h6>Quick Links</h6>
                         <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">About Our Shop</a></li>
-                            <li><a href="#">Secure Shopping</a></li>
-                            <li><a href="#">Delivery infomation</a></li>
+                            <li><a href="./index.html">Home</a></li>
+                            <li><a href="./shop-grid.html">Browse Listings</a></li>
+                            <li><a href="./blog.html">Blog</a></li>
+                            <li><a href="./contact.html">Contact Us</a></li>
                             <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Our Sitemap</a></li>
+                            <li><a href="#">Terms of Service</a></li>
                         </ul>
                         <ul>
-                            <li><a href="#">Who We Are</a></li>
-                            <li><a href="#">Our Services</a></li>
-                            <li><a href="#">Projects</a></li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="#">Innovation</a></li>
-                            <li><a href="#">Testimonials</a></li>
+                            <li><a href="#">Sell on SokoHub</a></li>
+                            <li><a href="#">Buyer Protection</a></li>
+                            <li><a href="#">Verified Sellers</a></li>
+                            <li><a href="#">M-Pesa Payments</a></li>
+                            <li><a href="#">Delivery Info</a></li>
+                            <li><a href="#">Support Center</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12">
                     <div class="footer__widget">
-                        <h6>Join Our Newsletter Now</h6>
-                        <p>Get E-mail updates about our latest shop and special offers.</p>
+                        <h6>Join Our Newsletter</h6>
+                        <p>Get updates on the latest deals, new listings, and market tips.</p>
                         <form action="#">
-                            <input type="text" placeholder="Enter your mail">
+                            <input type="text" placeholder="Enter your email">
                             <button type="submit" class="site-btn">Subscribe</button>
                         </form>
                         <div class="footer__widget__social">
                             <a href="#"><i class="fa fa-facebook"></i></a>
                             <a href="#"><i class="fa fa-instagram"></i></a>
                             <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                            <a href="#"><i class="fa fa-whatsapp"></i></a>
                         </div>
                     </div>
                 </div>
@@ -418,10 +548,12 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="footer__copyright">
-                        <div class="footer__copyright__text"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p></div>
-                        <div class="footer__copyright__payment"><img src="img/payment-item.png" alt=""></div>
+                        <div class="footer__copyright__text">
+                            <p>&copy; <script>document.write(new Date().getFullYear());</script> SokoHub. All rights reserved. Kenya's Local Marketplace.</p>
+                        </div>
+                        <div class="footer__copyright__payment">
+                            <img src="img/payment-item.png" alt="Payment Methods">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -439,6 +571,44 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
 
+    <script>
+        // Dynamic cart total recalculation
+        $(document).ready(function () {
+            function updateTotals() {
+                var items = [145000, 4500, 9500];
+                var quantities = [];
+                var total = 0;
+
+                $('.pro-qty input').each(function (i) {
+                    var qty = parseInt($(this).val()) || 1;
+                    quantities.push(qty);
+                    var rowTotal = items[i] * qty;
+                    total += rowTotal;
+                    $(this).closest('tr').find('.shoping__cart__total').text('KSH ' + rowTotal.toLocaleString());
+                });
+
+                var delivery = 500;
+                var discount = 1500;
+                var grandTotal = total + delivery - discount;
+                $('.shoping__checkout ul li:nth-child(1) span').text('KSH ' + total.toLocaleString());
+                $('.shoping__checkout ul li:nth-child(3) span').text('– KSH ' + discount.toLocaleString());
+                $('.shoping__checkout ul li:nth-child(4) span').text('KSH ' + grandTotal.toLocaleString());
+                $('.header__cart__price span').text('KSH ' + grandTotal.toLocaleString());
+            }
+
+            $('.pro-qty input').on('change keyup', function () {
+                updateTotals();
+            });
+
+            // Close button removes row
+            $('.shoping__cart__item__close .icon_close').on('click', function () {
+                $(this).closest('tr').fadeOut(300, function () {
+                    $(this).remove();
+                    updateTotals();
+                });
+            });
+        });
+    </script>
 
 </body>
 
