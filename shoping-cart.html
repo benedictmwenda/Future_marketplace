@@ -23,6 +23,22 @@
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
 
+    <!-- Immediate Auth Guard: Must be logged in to view cart -->
+    <script>
+        (function () {
+            try {
+                const rawUser = localStorage.getItem('sokohub_user');
+                const user = rawUser ? JSON.parse(rawUser) : null;
+                if (!user || !user.isLoggedIn) {
+                    alert("🔒 Sign In Required\n\nYou must be signed in to view your Shopping Cart on SokoHub. Redirecting to Login...");
+                    window.location.href = './login.html?redirect=shoping-cart.html';
+                }
+            } catch (e) {
+                window.location.href = './login.html?redirect=shoping-cart.html';
+            }
+        })();
+    </script>
+
     <style>
         /* SokoHub Cart Enhancements */
         .shoping__cart__table table thead tr th {

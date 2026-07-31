@@ -140,6 +140,15 @@
             margin-top: 15px;
             border-radius: 6px;
         }
+
+        .my-listing-item:hover {
+            background: #f9fbf7;
+            border-radius: 8px;
+        }
+
+        .my-listing-item .delete-listing-btn:hover {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 
@@ -147,7 +156,6 @@
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
-    </div>
 
     <!-- Header Section Begin -->
     <header class="header">
@@ -161,7 +169,6 @@
                                 <li><i class="fa fa-phone"></i> +254 794 536597</li>
                             </ul>
                         </div>
-                    </div>
                     <div class="col-lg-6">
                         <div class="header__top__right">
                             <div class="header__top__right__social">
@@ -173,11 +180,8 @@
                             <div class="header__top__right__auth">
                                 <a href="#"><i class="fa fa-user"></i> Seller Dashboard</a>
                             </div>
-                        </div>
                     </div>
-                </div>
             </div>
-        </div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
@@ -187,7 +191,6 @@
                                 alt="SokoHub" style="height: 50px; object-fit: contain;">
                         </a>
                     </div>
-                </div>
                 <div class="col-lg-6">
                     <nav class="header__menu">
                         <ul>
@@ -204,11 +207,9 @@
                         <i class="fa fa-plus-circle"></i> SELL ITEM
                     </a>
                 </div>
-            </div>
             <div class="humberger__open">
                 <i class="fa fa-bars"></i>
             </div>
-        </div>
     </header>
     <!-- Header Section End -->
 
@@ -223,9 +224,7 @@
                             <a href="./index.html">Home</a>
                             <span>Seller Portal</span>
                         </div>
-                    </div>
                 </div>
-            </div>
         </div>
     </section>
     <!-- Breadcrumb Section End -->
@@ -301,7 +300,6 @@
                                         </div>
                                         <img id="previewImage" alt="Item Preview">
                                     </div>
-                                </div>
 
                                 <div class="col-md-12 form-group">
                                     <label for="itemDescription">Description &amp; Specifications *</label>
@@ -313,12 +311,20 @@
                                         <i class="fa fa-paper-plane"></i> PUBLISH LISTING TO SOKOHUB
                                     </button>
                                 </div>
-                            </div>
                         </form>
                     </div>
-                </div>
+
+                    <!-- MY LISTED ITEMS SECTION -->
+                    <div class="post-form-card" id="myListingsSection">
+                        <h3><i class="fa fa-list" style="color:#7fad39;"></i> My Published Listings</h3>
+                        <p style="color:#888; font-size:14px; margin-bottom:15px;">Manage your active listings — click the <strong>Remove</strong> button to delete a listing permanently from SokoHub.</p>
+                        <div id="myListingsContainer">
+                            <div class="text-center" style="padding:20px; color:#aaa;">
+                                <i class="fa fa-spinner fa-spin" style="font-size:24px;"></i>
+                                <p>Loading your listings...</p>
+                            </div>
+                    </div>
             </div>
-        </div>
     </section>
     <!-- Post Item Form Section End -->
 
@@ -339,9 +345,7 @@
                             <li>Email: beneditc64@gmail.com</li>
                         </ul>
                     </div>
-                </div>
             </div>
-        </div>
     </footer>
 
     <!-- Firebase SDKs -->
@@ -371,7 +375,7 @@
             if (!user || user.role !== 'seller') {
                 // Lock out non-seller users
                 formCard.innerHTML = `
-                    <div class="text-center style="padding: 40px 20px;">
+                    <div class="text-center" style="padding: 40px 20px;">
                         <i class="fa fa-lock" style="font-size: 64px; color: #e74c3c; margin-bottom: 20px;"></i>
                         <h3 style="border:none; margin-bottom: 10px;">Seller Authentication Required</h3>
                         <p style="color: #666; font-size: 15px; margin-bottom: 25px;">
@@ -424,59 +428,82 @@
             }
         });
 
-        // Save listing to Firebase / LocalStorage fallback
-        document.getElementById('sellerPostForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const submitBtn = document.getElementById('submitBtn');
-            const alertBox = document.getElementById('statusAlert');
+        // Get current seller email
+        function getCurrentSellerEmail() {
+            try {
+                const rawUser = localStorage.getItem('sokohub_user');
+                const user = rawUser ? JSON.parse(rawUser) : null;
+                return user && user.email ? user.email : null;
+            } catch (e) { return null; }
+        }
 
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> PUBLISHING LISTING...';
-
-            const newListing = {
-                id: 'sh_' + Date.now(),
-                title: document.getElementById('itemTitle').value,
-                category: document.getElementById('itemCategory').value,
-                listingType: document.getElementById('listingType').value,
-                price: parseFloat(document.getElementById('itemPrice').value),
-                location: document.getElementById('itemLocation').value,
-                sellerName: document.getElementById('sellerName').value,
-                sellerPhone: document.getElementById('sellerPhone').value,
-                imageUrl: selectedImageDataUrl || 'img/featured/feature-1.jpg',
-                description: document.getElementById('itemDescription').value,
-                createdAt: new Date().toISOString(),
-                status: 'active'
-            };
+        // Load & display MY listings (matched by sellerEmail)
+        function loadMyListings() {
+            const container = document.getElementById('myListingsContainer');
+            const sellerEmail = getCurrentSellerEmail();
+            if (!sellerEmail) {
+                container.innerHTML = '<div class="text-center" style="padding:20px; color:#e74c3c;"><i class="fa fa-exclamation-circle" style="font-size:24px;"></i><p>Could not identify your account. Please log in again.</p></div>';
+                return;
+            }
 
             try {
-                // Save into Firestore if Firebase db initialized
-                if (window.db && firebaseConfig.apiKey !== "YOUR_API_KEY") {
-                    await window.db.collection('listings').doc(newListing.id).set(newListing);
+                const localData = localStorage.getItem('sokohub_listings');
+                let allListings = localData ? JSON.parse(localData) : [];
+
+                // Filter listings that belong to this seller
+                const myListings = allListings.filter(item => item.sellerEmail === sellerEmail);
+
+                if (myListings.length === 0) {
+                    container.innerHTML = '<div class="text-center" style="padding:30px 20px; color:#aaa;"><i class="fa fa-inbox" style="font-size:48px; margin-bottom:15px; display:block;"></i><p style="font-size:16px;">You haven\'t published any listings yet.</p><small>Use the form above to post your first item.</small></div>';
+                    return;
                 }
 
-                // Also save to LocalStorage so items show up instantly on front-end
-                let localListings = JSON.parse(localStorage.getItem('sokohub_listings') || '[]');
-                localListings.unshift(newListing);
-                localStorage.setItem('sokohub_listings', JSON.stringify(localListings));
+                let html = '';
+                myListings.forEach(item => {
+                    const price = typeof item.price === 'number' ? 'KSH ' + item.price.toLocaleString() : item.price;
+                    const createdDate = item.createdAt ? new Date(item.createdAt).toLocaleDateString('en-KE', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Recently';
+                    const imageSrc = item.imageUrl && item.imageUrl.startsWith('data:') ? item.imageUrl : (item.imageUrl || 'img/featured/feature-1.jpg');
 
-                alertBox.className = "alert alert-status alert-success";
-                alertBox.style.display = "block";
-                alertBox.innerHTML = "<strong><i class='fa fa-check-circle'></i> Success!</strong> Your listing has been published to SokoHub. Redirecting to Shop Grid...";
+                    html += `
+                        <div class="my-listing-item" data-id="${item.id}" style="display:flex; align-items:center; gap:15px; padding:12px 0; border-bottom:1px solid #eee;">
+                            <img src="${imageSrc}" alt="${item.title}" style="width:70px; height:70px; object-fit:cover; border-radius:8px; background:#f5f5f5;">
+                            <div style="flex:1; min-width:0;">
+                                <strong style="font-size:15px; color:#1c1c1c;">${item.title}</strong>
+                                <div style="font-size:13px; color:#7fad39; font-weight:700;">${price}</div>
+                                <small style="color:#999;">${item.location || 'Nairobi'} &middot; ${item.category || ''} &middot; Posted ${createdDate}</small>
+                            </div>
+                            <button class="delete-listing-btn" data-id="${item.id}" style="background:#e74c3c; color:#fff; border:none; border-radius:6px; padding:8px 16px; font-size:13px; font-weight:600; cursor:pointer; whiteLet me try a different approach since the edit tool is having path issues. I'll fix the bugs by reading the exact content and using a more precise edit.
 
-                setTimeout(function () {
-                    window.location.href = './shop-grid.html';
-                }, 1800);
-
-            } catch (error) {
-                console.error("Error posting listing: ", error);
-                alertBox.className = "alert alert-status alert-danger";
-                alertBox.style.display = "block";
-                alertBox.innerHTML = "Error saving listing: " + error.message;
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fa fa-paper-plane"></i> PUBLISH LISTING TO SOKOHUB';
-            }
-        });
-    </script>
-</body>
-
-</html>
+<edit_file>
+<new_str>                formCard.innerHTML = `
+                    <div class="text-center" style="padding: 40px 20px;">
+                        <i class="fa fa-lock" style="font-size: 64px; color: #e74c3c; margin-bottom: 20px;"></i>
+                        <h3 style="border:none; margin-bottom: 10px;">Seller Authentication Required</h3>
+                        <p style="color: #666; font-size: 15px; margin-bottom: 25px;">
+                            You must be signed in as a <strong>Seller / Merchant</strong> on SokoHub to publish new items, rentals, or vehicles.
+                        </p>
+                        <a href="./login.html?role=seller&redirect=post-item.html" class="btn-post-item" style="display: inline-block; text-decoration: none; max-width: 320px;">
+                            <i class="fa fa-sign-in"></i> Sign In / Register as Seller
+                        </a>
+                        <br>
+                        <a href="./index.html" style="display: inline-block; margin-top: 15px; color: #888; font-size: 13px;">Return to Homepage</a>
+                    </div>
+                `;</new_str>
+<old_str>                formCard.innerHTML = `
+                    <div class="text-center style="padding: 40px 20px;">
+                        <i class="fa fa-lock" style="font-size: 64px; color: #e74c3c; margin-bottom: 20px;"></i>
+                        <h3 style="border:none; margin-bottom: 10px;">Seller Authentication Required</h3>
+                        <p style="color: #666; font-size: 15px; margin-bottom: 25px;">
+                            You must be signed in as a <strong>Seller / Merchant</strong> on SokoHub to publish new items, rentals, or vehicles.
+                        </p>
+                        <a href="./login.html?role=seller&redirect=post-item.html" class="btn-post-item" style="display: inline-block; text-decoration: none; max-width: 320px;">
+                            <i class="fa fa-sign-in"></i> Sign In / Register as Seller
+                        </a>
+                        <br>
+                        <a href="./index.html" style="display: inline-block; margin-top: 15px; color: #888; font-size: 13px;">Return to Homepage</a>
+                    </div>
+                `;</old_str>
+<path>
+post-item.html
+</path>
+</edit_file>

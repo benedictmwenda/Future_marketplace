@@ -73,7 +73,47 @@ async function renderShopGridListings() {
     gridContainer.insertAdjacentHTML('afterbegin', html);
 }
 
+// Render user-posted listings on index.html (homepage) into a container
+async function renderHomePageListings() {
+    const container = document.getElementById('home-user-listings');
+    if (!container) return;
+
+    const listings = await fetchSokoHubListings();
+    if (!listings || listings.length === 0) {
+        container.innerHTML = '<div class="text-center" style="padding:20px; color:#aaa;"><p>No user listings yet. Be the first to sell on SokoHub!</p></div>';
+        return;
+    }
+
+    let html = '';
+    listings.forEach(item => {
+        const formattedPrice = typeof item.price === 'number' ? 'KSH ' + item.price.toLocaleString() : item.price;
+        const imageSrc = item.imageUrl && item.imageUrl.startsWith('data:') ? item.imageUrl : (item.imageUrl || 'img/featured/feature-1.jpg');
+        
+        html += `
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="featured__item">
+                    <div class="featured__item__pic set-bg" data-setbg="${imageSrc}">
+                        <ul class="featured__item__pic__hover">
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="shop-details.html?id=${item.id}"><i class="fa fa-eye"></i></a></li>
+                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="featured__item__text">
+                        <h6><a href="shop-details.html?id=${item.id}">${item.title}</a></h6>
+                        <h5>${formattedPrice}</h5>
+                        <small style="color:#888;"><i class="fa fa-map-marker"></i> ${item.location || 'Nairobi'} | ${item.sellerName || 'Seller'}</small>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    container.innerHTML = html;
+}
+
 // Auto-run on DOM Ready
 $(document).ready(function () {
     renderShopGridListings();
+    renderHomePageListings();
 });

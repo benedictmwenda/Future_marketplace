@@ -22,6 +22,40 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+
+    <!-- Auth Guard for Purchase Actions -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Intercept "CONTACT SELLER" button
+            const contactSellerBtn = document.querySelector('a.primary-btn[href*="tel:"]');
+            if (contactSellerBtn) {
+                contactSellerBtn.addEventListener('click', function(e) {
+                    const rawUser = localStorage.getItem('sokohub_user');
+                    let user = null;
+                    try { if (rawUser) user = JSON.parse(rawUser); } catch(ex) {}
+                    if (!user || !user.isLoggedIn) {
+                        e.preventDefault();
+                        alert("🔒 Sign In Required\n\nYou must be logged in to contact sellers on SokoHub.");
+                        window.location.href = './login.html?redirect=shop-details.html';
+                    }
+                });
+            }
+
+            // Intercept "Add to Cart" in the quick view / product actions
+            document.querySelectorAll('.qv-btn--primary, .product__details__text a.primary-btn, .heart-icon').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    const rawUser = localStorage.getItem('sokohub_user');
+                    let user = null;
+                    try { if (rawUser) user = JSON.parse(rawUser); } catch(ex) {}
+                    if (!user || !user.isLoggedIn || user.role !== 'buyer') {
+                        e.preventDefault();
+                        alert("🔒 Buyer Sign In Required\n\nYou must be signed in as a Buyer to purchase items on SokoHub.");
+                        window.location.href = './login.html?role=buyer&redirect=shop-details.html';
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 
 <body>
