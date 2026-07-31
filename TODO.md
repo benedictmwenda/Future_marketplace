@@ -1,25 +1,21 @@
-# Buyer Authentication Enforcement - Implementation Plan
+# SokoHub - Implementation Tasks
 
-## Tasks
+## Task 1: Add close icon on top-left of login.html ✅
+- [x] Add FontAwesome close icon button at top-left of `.auth-container`
+- [x] Style close button (fixed position top-left, circular, hover effect, seller variant)
+- [x] Link to index.html for navigation back to homepage
 
-### 1. Update `js/sokohub-auth.js`
-- [x] Add "Add to Cart" button click interception for buyer login
-- [x] Add cart page navigation interception for buyer login
-- [x] Add checkout page navigation interception for buyer login
-- [x] Add wishlist interception for buyer login
-
-### 2. Add Guard to `shoping-cart.html`
-- [x] Add immediate auth guard script at top of page
-- [x] Redirect unauthenticated users to login page
-
-### 3. Add Guard to `checkout.html`
-- [x] Add immediate auth guard script at top of page
-- [x] Redirect unauthenticated users to login page
-
-### 4. Add Guard to `shop-details.html`
-- [x] Add immediate auth guard for purchase/contact actions
-- [x] Intercept Add to Cart button clicks
-
-### 5. Review `login.html`
-- [x] Already handles `redirect` and `role` URL params correctly
-
+## Task 2: Improve website responsiveness ✅
+- [x] login.html: Enhanced responsive media queries for mobile
+  - Added @media (max-width: 480px) breakpoint with compact paddings/fonts
+  - Added @media (max-width: 360px) breakpoint for very small devices
+  - Form helpers stack vertically on small screens
+- [x] css/style.css: Improved responsive breakpoints for:
+  - Header logo and navigation at 992-1199px (logo max-width, nav spacing)
+  - Hero section text sizing at 992-1199px and 768-991px
+  - Product grid item heights at 992-1199px (240px), 768-991px (230px), mobile (200px/180px)
+  - Hero search form fully responsive at small screens (button full-width)
+  - Container padding for very small screens 320-480px
+  - Quick View modal stacked layout for narrow screens
+  - Footer widgets full-width on small screens
+  - Section title and featured controls scaled down

@@ -395,6 +395,46 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Close button on top-left of auth container */
+        .login-close-btn {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(16, 0, 184, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--primary);
+            text-decoration: none;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .login-close-btn:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px rgba(16, 0, 184, 0.25);
+        }
+
+        .login-close-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Seller variant */
+        body.seller-bg .login-close-btn:hover {
+            background: var(--seller-accent);
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(218, 165, 32, 0.25);
+        }
+
         /* Responsive styling */
         @media (max-width: 850px) {
             .auth-container {
@@ -412,6 +452,115 @@
                 font-size: 1.8rem;
             }
         }
+
+        /* Extra small devices (phones, 480px and below) */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .auth-container {
+                border-radius: 16px;
+                min-height: auto;
+            }
+
+            .brand-panel {
+                padding: 28px 20px;
+                min-height: 200px;
+            }
+
+            .brand-content h2 {
+                font-size: 1.4rem;
+            }
+
+            .brand-content p {
+                font-size: 0.9rem;
+            }
+
+            .brand-logo img {
+                height: 35px;
+            }
+
+            .form-panel {
+                padding: 28px 20px;
+            }
+
+            .form-header h3 {
+                font-size: 1.4rem;
+            }
+
+            .form-header p {
+                font-size: 0.85rem;
+            }
+
+            .role-option {
+                padding: 10px 8px;
+                font-size: 0.85rem;
+                gap: 5px;
+            }
+
+            .input-wrapper input {
+                padding: 12px 12px 12px 40px;
+                font-size: 0.9rem;
+            }
+
+            .submit-btn {
+                padding: 13px;
+                font-size: 0.95rem;
+            }
+
+            .login-close-btn {
+                top: 12px;
+                left: 12px;
+                width: 38px;
+                height: 38px;
+                font-size: 18px;
+            }
+
+            .form-helpers {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+
+        /* Very small devices (320px and below) */
+        @media (max-width: 360px) {
+            .brand-panel {
+                padding: 20px 16px;
+                min-height: 160px;
+            }
+
+            .brand-content h2 {
+                font-size: 1.2rem;
+            }
+
+            .form-panel {
+                padding: 20px 14px;
+            }
+
+            .form-header h3 {
+                font-size: 1.2rem;
+            }
+
+            .input-group label {
+                font-size: 0.75rem;
+            }
+
+            .input-wrapper input {
+                padding: 10px 10px 10px 36px;
+                font-size: 0.85rem;
+            }
+
+            .role-option {
+                padding: 8px 6px;
+                font-size: 0.8rem;
+            }
+
+            .toggle-form {
+                font-size: 0.85rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -420,10 +569,15 @@
     <div class="blob blob-2"></div>
 
     <div class="auth-container" id="authContainer">
+        <!-- Close / Back Button (inside card) -->
+        <a href="./index.html" class="login-close-btn" aria-label="Close and go back to homepage">
+            <i class="fa-solid fa-xmark"></i>
+        </a>
+
         <!-- Left Branding Panel -->
         <div class="brand-panel" id="brandPanel">
             <div class="brand-logo" style="margin-bottom: 20px;">
-                <img src="logo.png" alt="SokoHub Logo" style="height: 120px; width: 120px; border-radius: 50%; background: #ffffff; padding: 5px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); object-fit: contain;">
+<img src="https://benedictmwenda.netlify.app/html&aale/img/logo/QAQA_SOFTWARE.png" alt="SokoHub Logo" style="height: 120px; width: 120px; border-radius: 50%; background: #ffffff; padding: 5px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); object-fit: contain;">
             </div>
             
             <div class="brand-content" id="brandText">
@@ -457,6 +611,14 @@
                 </div>
                 
                 <form onsubmit="handleAuthSubmit(event, 'signin')">
+                    <div class="input-group" id="signin-store-group" style="display: none;">
+                        <label for="signin-store">Store / Business Name</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-store"></i>
+                            <input type="text" id="signin-store" placeholder="e.g. SokoHub Wholesale Ltd.">
+                        </div>
+                    </div>
+                    
                     <div class="input-group">
                         <label for="signin-email">Email Address</label>
                         <div class="input-wrapper">
@@ -587,6 +749,8 @@
             const btnSeller = document.getElementById('btnSeller');
             const storeNameGroup = document.getElementById('storeNameGroup');
             const signupStoreInput = document.getElementById('signup-store');
+            const signinStoreGroup = document.getElementById('signin-store-group');
+            const signinStoreInput = document.getElementById('signin-store');
 
             if (role === 'seller') {
                 container.classList.add('seller-active');
@@ -597,6 +761,9 @@
                 
                 storeNameGroup.style.display = 'block';
                 signupStoreInput.setAttribute('required', 'true');
+                // Show store name field in sign-in form for sellers
+                if (signinStoreGroup) signinStoreGroup.style.display = 'block';
+                if (signinStoreInput) signinStoreInput.setAttribute('required', 'true');
             } else {
                 container.classList.remove('seller-active');
                 roleSelector.classList.remove('seller-selected');
@@ -606,6 +773,9 @@
                 
                 storeNameGroup.style.display = 'none';
                 signupStoreInput.removeAttribute('required');
+                // Hide store name field in sign-in form for buyers
+                if (signinStoreGroup) signinStoreGroup.style.display = 'none';
+                if (signinStoreInput) signinStoreInput.removeAttribute('required');
             }
 
             updateDynamicText();
@@ -658,7 +828,16 @@
         function handleAuthSubmit(event, type) {
             event.preventDefault();
             const email = type === 'signin' ? document.getElementById('signin-email').value : document.getElementById('signup-email').value;
-            const storeName = document.getElementById('signup-store')?.value || email.split('@')[0];
+            
+            // Get store name: for signin use signin-store field, for signup use signup-store field
+            let storeName;
+            if (type === 'signin') {
+                const signinStore = document.getElementById('signin-store')?.value?.trim();
+                storeName = signinStore || email.split('@')[0];
+            } else {
+                const signupStore = document.getElementById('signup-store')?.value?.trim();
+                storeName = signupStore || email.split('@')[0];
+            }
             
             const userSession = {
                 email: email,
@@ -673,7 +852,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const redirectUrl = urlParams.get('redirect') || (currentRole === 'seller' ? './post-item.html' : './index.html');
             
-            alert(`Welcome back, ${storeName}! Signed in as ${currentRole.toUpperCase()}`);
+            alert(`Welcome, ${storeName}! Signed in as ${currentRole === 'seller' ? 'SELLER/MERCHANT' : 'BUYER'}`);
             window.location.href = redirectUrl; 
         }
 
