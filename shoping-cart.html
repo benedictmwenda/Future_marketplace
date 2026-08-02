@@ -588,43 +588,99 @@
     <script src="js/main.js"></script>
 
     <script>
-        // Dynamic cart total recalculation
+        // Shopping Cart page — fully driven by the shared SokoCart module
+        // (localStorage). This page NEVER overwrites the cart, so the header
+        // total stays identical to the checkout Total on every page.
         $(document).ready(function () {
-            function updateTotals() {
-                var items = [145000, 4500, 9500];
-                var quantities = [];
-                var total = 0;
+            if (!window.SokoCart) return;
 
-                $('.pro-qty input').each(function (i) {
-                    var qty = parseInt($(this).val()) || 1;
-                    quantities.push(qty);
-                    var rowTotal = items[i] * qty;
-                    total += rowTotal;
-                    $(this).closest('tr').find('.shoping__cart__total').text('KSH ' + rowTotal.toLocaleString());
+            var $tbody = $('.shoping__cart__table tbody');
+
+            function renderCartRows() {
+                var cart = window.SokoCart.getCart();
+
+                if (!cart.length) {
+                    $tbody.html(
+                        '<tr><td colspan="5" style="text-align:center; padding:40px 0; color:#888;">' +
+                        'Your cart is empty. <a href="./shop-grid.html" style="color:#7fad39; font-weight:700;">Continue shopping</a></td></tr>'
+                    );
+                    return;
+                }
+
+                var html = '';
+                cart.forEach(function (item) {
+                    var qty = parseInt(item.quantity, 10) || 1;
+                    var price = parseFloat(item.price) || 0;
+                    var rowTotal = price * qty;
+                    var img = item.image || 'img/cart/cart-1.jpg';
+                    var badge = item.badge || 'Product';
+                    var seller = item.seller || 'Verified Seller';
+
+                    html +=
+                        '<tr data-id="' + item.id + '">' +
+                            '<td class="shoping__cart__item">' +
+                                '<img src="' + img + '" alt="' + item.title + '">' +
+                                '<h5>' + item.title + ' <span class="cart-badge">' + badge + '</span></h5>' +
+                                '<small>Seller: ' + seller + '</small>' +
+                            '</td>' +
+                            '<td class="shoping__cart__price">' + window.SokoCart.formatKsh(price) + '</td>' +
+                            '<td class="shoping__cart__quantity">' +
+                                '<div class="quantity"><div class="pro-qty">' +
+                                '<input type="text" value="' + qty + '">' +
+                                '</div></div>' +
+                            '</td>' +
+                            '<td class="shoping__cart__total">' + window.SokoCart.formatKsh(rowTotal) + '</td>' +
+                            '<td class="shoping__cart__item__close"><span class="icon_close"></span></td>' +
+                        '</tr>';
                 });
-
-                var delivery = 500;
-                var discount = 1500;
-                var grandTotal = total + delivery - discount;
-                $('.shoping__checkout ul li:nth-child(1) span').text('KSH ' + total.toLocaleString());
-                $('.shoping__checkout ul li:nth-child(3) span').text('– KSH ' + discount.toLocaleString());
-                $('.shoping__checkout ul li:nth-child(4) span').text('KSH ' + grandTotal.toLocaleString());
-                $('.header__cart__price span').text('KSH ' + grandTotal.toLocaleString());
+                $tbody.html(html);
             }
 
-            $('.pro-qty input').on('change keyup', function () {
-                updateTotals();
+            function updateTotalsPanel() {
+                var subtotal = window.SokoCart.getCartTotal();
+                var delivery = 500;
+                var discount = 1500;
+                var grandTotal = window.SokoCart.getCheckoutTotal();
+
+                $('.shoping__checkout ul li:nth-child(1) span').text(window.SokoCart.formatKsh(subtotal));
+                $('.shoping__checkout ul li:nth-child(2) span').text(window.SokoCart.formatKsh(delivery));
+                $('.shoping__checkout ul li:nth-child(3) span').text('– ' + window.SokoCart.formatKsh(discount));
+                $('.shoping__checkout ul li:nth-child(4) span').text(window.SokoCart.formatKsh(grandTotal));
+
+                // Header total = the exact same checkout Total (shared module).
+                window.SokoCart.updateCartUI();
+            }
+
+            // Quantity change → update shared cart, re-render, sync header
+            $tbody.on('change keyup', '.pro-qty input', function () {
+                var $row = $(this).closest('tr');
+                var id = $row.data('id');
+                var qty = parseInt($(this).val(), 10) || 1;
+                if (id) {
+                    window.SokoCart.updateCartQty(id, qty);
+                    renderCartRows();
+                    updateTotalsPanel();
+                }
             });
 
-            // Close button removes row
-            $('.shoping__cart__item__close .icon_close').on('click', function () {
-                $(this).closest('tr').fadeOut(300, function () {
-                    $(this).remove();
-                    updateTotals();
-                });
+            // Remove row → remove from shared cart, re-render, sync header
+            $tbody.on('click', '.shoping__cart__item__close .icon_close', function () {
+                var $row = $(this).closest('tr');
+                var id = $row.data('id');
+                if (id) {
+                    window.SokoCart.removeFromCart(id);
+                    renderCartRows();
+                    updateTotalsPanel();
+                }
             });
+
+            // Initial render purely from the shared cart
+            renderCartRows();
+            updateTotalsPanel();
         });
     </script>
+
+    <script src="js/sokohub-cart.js"></script>
 
 </body>
 

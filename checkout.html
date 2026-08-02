@@ -408,8 +408,39 @@
                     $('#mpesa-info').slideUp();
                 }
             });
+
+            // Render the order summary from the shared cart so checkout reflects
+            // exactly what the buyer added (same source as the header total).
+            if (window.SokoCart) {
+                var cartItems = window.SokoCart.getCart();
+                var orderList = $('.checkout__order ul').first();
+                var subtotal = window.SokoCart.getCartTotal();
+
+                if (orderList.length && cartItems.length) {
+                    var rows = '';
+                    cartItems.forEach(function (item) {
+                        var qty = parseInt(item.quantity, 10) || 1;
+                        var price = parseFloat(item.price) || 0;
+                        var rowTotal = price * qty;
+                        var label = item.title + (qty > 1 ? ' × ' + qty : '');
+                        rows += '<li>' + label + ' <span>' + window.SokoCart.formatKsh(rowTotal) + '</span></li>';
+                    });
+                    orderList.html(rows);
+
+                    $('.checkout__order .checkout__order__subtotal')
+                        .filter(function () { return $(this).text().indexOf('Subtotal') !== -1; })
+                        .find('span').text(window.SokoCart.formatKsh(subtotal));
+
+                    // Total = subtotal + delivery - discount (same as header).
+                    // Uses the shared getCheckoutTotal() so both always match.
+                    $('.checkout__order .checkout__order__total span')
+                        .text(window.SokoCart.formatKsh(window.SokoCart.getCheckoutTotal()));
+                }
+            }
         });
     </script>
+
+    <script src="js/sokohub-cart.js"></script>
 </body>
 
 </html>

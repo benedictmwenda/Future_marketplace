@@ -25,11 +25,20 @@
             $('.featured__controls li').removeClass('active');
             $(this).addClass('active');
         });
-        if ($('.featured__filter').length > 0) {
+        if ($('.featured__filter').length > 0 && typeof mixitup !== 'undefined') {
             var containerEl = document.querySelector('.featured__filter');
             var mixer = mixitup(containerEl);
         }
     });
+
+    /*------------------
+        Preloader fallback: force-hide if window.load is delayed
+        by slow/blocked external images so the overlay never blocks clicks.
+    --------------------*/
+    setTimeout(function () {
+        $("#preloder").fadeOut(400);
+        $("#preloder").css('pointer-events', 'none');
+    }, 4000);
 
     /*------------------
         Background Set
@@ -63,14 +72,17 @@
     /*------------------
 		Navigation
 	--------------------*/
-    $(".mobile-menu").slicknav({
-        prependTo: '#mobile-menu-wrap',
-        allowParentLinks: true
-    });
+    if ($.fn.slicknav !== undefined) {
+        $(".mobile-menu").slicknav({
+            prependTo: '#mobile-menu-wrap',
+            allowParentLinks: true
+        });
+    }
 
     /*-----------------------
         Categories Slider
     ------------------------*/
+    if ($.fn.owlCarousel === undefined) return;
     $(".categories__slider").owlCarousel({
         loop: true,
         margin: 0,

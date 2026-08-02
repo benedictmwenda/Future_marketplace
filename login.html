@@ -395,11 +395,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Close button on top-left of auth container */
+        /* Close button on top-left of the page (fixed, always visible) */
         .login-close-btn {
-            position: absolute;
-            top: 16px;
-            left: 16px;
+            position: fixed;
+            top: 18px;
+            left: 18px;
             width: 44px;
             height: 44px;
             border-radius: 50%;
@@ -568,12 +568,12 @@
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
 
-    <div class="auth-container" id="authContainer">
-        <!-- Close / Back Button (inside card) -->
-        <a href="./index.html" class="login-close-btn" aria-label="Close and go back to homepage">
-            <i class="fa-solid fa-xmark"></i>
-        </a>
+    <!-- Close / Back Button (fixed, top-left of viewport) -->
+    <a href="./index.html" class="login-close-btn" aria-label="Close and go back to homepage">
+        <i class="fa-solid fa-xmark"></i>
+    </a>
 
+    <div class="auth-container" id="authContainer">
         <!-- Left Branding Panel -->
         <div class="brand-panel" id="brandPanel">
             <div class="brand-logo" style="margin-bottom: 20px;">

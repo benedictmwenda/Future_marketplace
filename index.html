@@ -37,6 +37,8 @@
             <div class="qv-image">
                 <img id="qv-img" src="" alt="Item Image">
                 <span class="qv-badge" id="qv-category"></span>
+                <div class="qv-badges" id="qv-badges"></div>
+                <div class="qv-thumbs" id="qv-thumbs"></div>
             </div>
             <!-- Right: Details -->
             <div class="qv-details">
@@ -50,6 +52,14 @@
                         <i class="fa fa-list-ul"></i> Key Features
                     </h6>
                     <div id="qv-features-list"></div>
+                </div>
+
+                <!-- Attributes Section (category-specific details) -->
+                <div class="qv-features" id="qv-attributes-wrapper" style="display:none;">
+                    <h6 class="qv-features__title">
+                        <i class="fa fa-cogs"></i> Details
+                    </h6>
+                    <div id="qv-attributes-list"></div>
                 </div>
 
                 <!-- Meta Info -->
@@ -70,11 +80,11 @@
 
                 <!-- Actions -->
                 <div class="qv-actions">
+                    <a href="shop-details.html" class="qv-btn qv-btn--outline" id="qv-link-details">
+                        <i class="fa fa-external-link"></i> View Full Details
+                    </a>
                     <a href="#" class="qv-btn qv-btn--primary">
                         <i class="fa fa-shopping-cart"></i> Add to Cart
-                    </a>
-                    <a href="#" class="qv-btn qv-btn--outline">
-                        <i class="fa fa-heart"></i> Wishlist
                     </a>
                 </div>
             </div>
@@ -285,7 +295,7 @@
                             <span>SokoHub MARKETPLACE</span>
                             <h2>Buy, Sell & Rent <br />Anything Local</h2>
                             <p>Products • Rentals • Vehicles • Services</p>
-                            <a href="#" class="primary-btn">EXPLORE NOW</a>
+                            <a href="./shop-grid.html" class="primary-btn">EXPLORE NOW</a>
                         </div>
                     </div>
                 </div>
@@ -1140,6 +1150,7 @@
     <script src="js/firebase-config.js"></script>
     <script src="js/sokohub-firebase.js"></script>
     <script src="js/sokohub-auth.js"></script>
+    <script src="js/sokohub-cart.js"></script>
 
 </body>
 </html>

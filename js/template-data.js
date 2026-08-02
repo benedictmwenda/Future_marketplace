@@ -177,13 +177,223 @@ document.addEventListener('DOMContentLoaded', function () {
     const modal   = document.getElementById('quickViewModal');
     const closeBtn= document.getElementById('quickViewClose');
 
-    // Open modal when eye button is clicked
-    document.addEventListener('click', function (e) {
-        const btn = e.target.closest('.quick-view-btn');
-        if (!btn) return;
-        e.preventDefault();
+    // Registry for seller-posted listings so the quick view can render
+    // ALL data saved by the seller (features[], attributes{}, images[], ...).
+    // Keyed by listing id; populated by sokohub-firebase.js render functions.
+    window.quickViewItems = window.quickViewItems || {};
 
-        // ── Populate basic fields ──────────────────────
+    // Helper: build feature tag pills, supporting BOTH the legacy string
+    // format ("⚙️:A|B;🛡️:C") and the new array format (["Bluetooth", ...]).
+    function renderQvFeatures(featuresContainer, rawFeatures) {
+        featuresContainer.innerHTML = '';
+        if (!rawFeatures) {
+            document.getElementById('qv-features-wrapper').style.display = 'none';
+            return;
+        }
+
+        const isArray = Array.isArray(rawFeatures);
+        if (!isArray && !String(rawFeatures).trim()) {
+            document.getElementById('qv-features-wrapper').style.display = 'none';
+            return;
+        }
+
+        if (isArray) {
+            // New format: flat array of feature strings (may include prefixed ✓)
+            const tagsEl = document.createElement('div');
+            tagsEl.className = 'qv-feature-tags';
+            rawFeatures.forEach(function (ft) {
+                if (!ft) return;
+                const pill = document.createElement('span');
+                pill.className = 'qv-tag';
+                pill.textContent = ft.replace(/^✓\s*/i, '') + ' ✓';
+                tagsEl.appendChild(pill);
+            });
+            const groupEl = document.createElement('div');
+            groupEl.className = 'qv-feature-group';
+            const emojiEl = document.createElement('span');
+            emojiEl.className = 'qv-feature-emoji';
+            emojiEl.textContent = '⭐';
+            groupEl.appendChild(emojiEl);
+            groupEl.appendChild(tagsEl);
+            featuresContainer.appendChild(groupEl);
+        } else {
+            // Legacy format: "emoji:tag1|tag2;emoji2:tag3"
+            const groups = String(rawFeatures).split(';');
+            groups.forEach(function (group) {
+                const colonIdx = group.indexOf(':');
+                if (colonIdx === -1) return;
+                const emoji = group.substring(0, colonIdx).trim();
+                const tags  = group.substring(colonIdx + 1)
+                                    .split('|')
+                                    .map(t => t.trim())
+                                    .filter(t => t.length > 0);
+                if (tags.length === 0) return;
+                const groupEl = document.createElement('div');
+                groupEl.className = 'qv-feature-group';
+                const emojiEl = document.createElement('span');
+                emojiEl.className = 'qv-feature-emoji';
+                emojiEl.textContent = emoji;
+                const tagsEl = document.createElement('div');
+                tagsEl.className = 'qv-feature-tags';
+                tags.forEach(function (tag) {
+                    const pill = document.createElement('span');
+                    pill.className = 'qv-tag';
+                    pill.textContent = tag;
+                    tagsEl.appendChild(pill);
+                });
+                groupEl.appendChild(emojiEl);
+                groupEl.appendChild(tagsEl);
+                featuresContainer.appendChild(groupEl);
+            });
+        }
+        document.getElementById('qv-features-wrapper').style.display = 'block';
+    }
+
+    // Helper: build the Details (attributes{}) section from the DB schema.
+    function renderQvAttributes(attrs) {
+        const wrapper = document.getElementById('qv-attributes-wrapper');
+        const list    = document.getElementById('qv-attributes-list');
+        list.innerHTML = '';
+        if (!attrs || typeof attrs !== 'object' || Object.keys(attrs).length === 0) {
+            wrapper.style.display = 'none';
+            return;
+        }
+        Object.keys(attrs).forEach(function (key) {
+            const val = attrs[key];
+            if (val === undefined || val === null || val === '') return;
+            const row = document.createElement('div');
+            row.className = 'qv-attr-row';
+            const label = document.createElement('span');
+            label.className = 'qv-attr-label';
+            label.textContent = key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) + ':';
+            const value = document.createElement('span');
+            value.className = 'qv-attr-value';
+            value.textContent = val;
+            row.appendChild(label);
+            row.appendChild(value);
+            list.appendChild(row);
+        });
+        wrapper.style.display = list.childNodes.length ? 'block' : 'none';
+    }
+
+    // Populate the whole modal from a full listing object (seller data).
+    function populateFromItem(item) {
+        item = item || {};
+        const mainImage = (item.images && item.images[0]) || item.imageUrl || '';
+        document.getElementById('qv-img').src               = mainImage;
+        document.getElementById('qv-img').alt               = item.title || 'Item';
+        document.getElementById('qv-name').textContent      = item.title || 'No Title';
+        document.getElementById('qv-price').textContent     = (typeof item.price === 'number' ? 'KSH ' + item.price.toLocaleString() : (item.price || ''));
+        document.getElementById('qv-category').textContent  = item.category || item.listingType || '';
+        document.getElementById('qv-desc').textContent      = item.description || '';
+        document.getElementById('qv-location').textContent  = item.location || '—';
+        document.getElementById('qv-condition').textContent = item.condition || '—';
+        document.getElementById('qv-seller').textContent    = item.sellerName || item.sellerEmail || 'Verified Seller';
+
+        // Badges (status + premium)
+        const badgesEl = document.getElementById('qv-badges');
+        badgesEl.innerHTML = '';
+        if (item.status) {
+            const pills = ['Available', 'Sold', 'Reserved', 'Out of Stock'];
+            const cls = pills.indexOf(item.status) !== -1 ? item.status.toLowerCase().replace(/\s+/g, '-') : 'available';
+            badgesEl.insertAdjacentHTML('beforeend',
+                '<span class="qv-status-badge qv-status-' + cls + '">' + item.status + '</span>');
+        }
+        if (item.premium && item.premium !== 'Normal') {
+            badgesEl.insertAdjacentHTML('beforeend',
+                '<span class="qv-status-badge qv-premium">' + item.premium + '</span>');
+        } else if (item.featured) {
+            badgesEl.insertAdjacentHTML('beforeend',
+                '<span class="qv-status-badge qv-premium">Featured</span>');
+        }
+
+        // Thumbnails for all images
+        const thumbsEl = document.getElementById('qv-thumbs');
+        thumbsEl.innerHTML = '';
+        if (item.images && item.images.length > 1) {
+            item.images.forEach(function (src, idx) {
+                const img = document.createElement('img');
+                img.src = src;
+                img.className = 'qv-thumb' + (idx === 0 ? ' active' : '');
+                img.alt = 'Photo ' + (idx + 1);
+                img.addEventListener('click', function () {
+                    document.getElementById('qv-img').src = src;
+                    document.querySelectorAll('.qv-thumb').forEach(t => t.classList.remove('active'));
+                    img.classList.add('active');
+                });
+                thumbsEl.appendChild(img);
+            });
+        }
+
+        // Features + Attributes + Extras
+        renderQvFeatures(document.getElementById('qv-features-list'), item.features || item.featuresList);
+        renderQvAttributes(item.attributes);
+        renderQvExtras(item);
+    }
+
+    // Helper: build the "Seller Info & Extras" section (extra fields from the
+    // post-item form + DB schema: subcategory, contact, delivery, negotiable,
+    // status, views, dates ...). This makes ALL seller data visible in QV.
+    function renderQvExtras(item) {
+        item = item || {};
+        const wrapper = document.getElementById('qv-extra');
+        const list    = document.getElementById('qv-extra-list');
+        list.innerHTML = '';
+        if (!wrapper) return;
+
+        const rows = [];
+
+        if (item.subcategory)            rows.push(['Subcategory', item.subcategory]);
+        if (item.sellerName)             rows.push(['Seller', item.sellerName]);
+        if (item.sellerEmail)            rows.push(['Email', item.sellerEmail]);
+        if (item.sellerPhone)            rows.push(['Phone', item.sellerPhone]);
+        if (item.whatsapp)               rows.push(['WhatsApp', item.whatsapp]);
+        if (item.negotiable)             rows.push(['Negotiable', String(item.negotiable) === 'true' || item.negotiable === true ? 'Yes' : 'No']);
+        if (item.deliveryAvailable)      rows.push(['Delivery', String(item.deliveryAvailable) === 'true' || item.deliveryAvailable === true ? 'Available' : 'No']);
+        if (item.status)                 rows.push(['Status', item.status]);
+        if (item.premium && item.premium !== 'Normal') rows.push(['Listing Type', item.premium]);
+        if (typeof item.views === 'number') rows.push(['Views', item.views]);
+        if (item.createdAt)              rows.push(['Posted', formatQvDate(item.createdAt)]);
+        if (item.updatedAt)              rows.push(['Updated', formatQvDate(item.updatedAt)]);
+
+        if (rows.length === 0) {
+            wrapper.style.display = 'none';
+            return;
+        }
+
+        rows.forEach(function (pair) {
+            const row = document.createElement('div');
+            row.className = 'qv-attr-row';
+            const label = document.createElement('span');
+            label.className = 'qv-attr-label';
+            label.textContent = pair[0] + ':';
+            const value = document.createElement('span');
+            value.className = 'qv-attr-value';
+            value.textContent = pair[1];
+            row.appendChild(label);
+            row.appendChild(value);
+            list.appendChild(row);
+        });
+        wrapper.style.display = 'block';
+    }
+
+    function formatQvDate(value) {
+        try {
+            if (!value) return '';
+            if (typeof value === 'object' && value.toDate) {
+                // Firestore Timestamp
+                return value.toDate().toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+            }
+            const d = new Date(value);
+            if (isNaN(d.getTime())) return String(value);
+            return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        } catch (e) {
+            return String(value);
+        }
+    }
+
+    // Populate the modal from legacy data-* attributes (static demo items).
+    function populateFromData(btn) {
         document.getElementById('qv-img').src               = btn.dataset.img       || '';
         document.getElementById('qv-img').alt               = btn.dataset.name      || 'Item';
         document.getElementById('qv-name').textContent      = btn.dataset.name      || 'No Title';
@@ -194,46 +404,33 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('qv-condition').textContent = btn.dataset.condition || '—';
         document.getElementById('qv-seller').textContent    = btn.dataset.seller    || '—';
 
-        // ── Populate features ──────────────────────────
-        const featuresWrapper = document.getElementById('qv-features-wrapper');
-        const featuresList    = document.getElementById('qv-features-list');
-        const rawFeatures     = btn.dataset.features || '';
-        if (rawFeatures.trim()) {
-            featuresList.innerHTML = ''; // clear previous
-            // Split into groups by semicolon
-            const groups = rawFeatures.split(';');
-            groups.forEach(function (group) {
-                const colonIdx = group.indexOf(':');
-                if (colonIdx === -1) return;
-                const emoji = group.substring(0, colonIdx).trim();
-                const tags  = group.substring(colonIdx + 1)
-                                   .split('|')
-                                   .map(t => t.trim())
-                                   .filter(t => t.length > 0);
-                if (tags.length === 0) return;
-                // Build group row
-                const groupEl = document.createElement('div');
-                groupEl.className = 'qv-feature-group';
-                const emojiEl = document.createElement('span');
-                emojiEl.className   = 'qv-feature-emoji';
-                emojiEl.textContent = emoji;
-                const tagsEl = document.createElement('div');
-                tagsEl.className = 'qv-feature-tags';
-                tags.forEach(function (tag) {
-                    const pill = document.createElement('span');
-                    pill.className   = 'qv-tag';
-                    pill.textContent = tag;
-                    tagsEl.appendChild(pill);
-                });
-                groupEl.appendChild(emojiEl);
-                groupEl.appendChild(tagsEl);
-                featuresList.appendChild(groupEl);
-            });
-            featuresWrapper.style.display = 'block';
+        document.getElementById('qv-badges').innerHTML = '';
+        document.getElementById('qv-thumbs').innerHTML = '';
+        renderQvFeatures(document.getElementById('qv-features-list'), btn.dataset.features || '');
+        renderQvAttributes(null);
+        // Legacy demo items have no extras → hide that section
+        const extraWrap = document.getElementById('qv-extra');
+        if (extraWrap) extraWrap.style.display = 'none';
+    }
+
+    // Open modal when eye button is clicked
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.quick-view-btn');
+        if (!btn) return;
+        e.preventDefault();
+
+        // If the button references a seller listing id, render ALL its data.
+        const qvId = btn.dataset.qvId;
+        const item = qvId && window.quickViewItems ? window.quickViewItems[qvId] : null;
+        const detailsLink = document.getElementById('qv-link-details');
+        if (item) {
+            populateFromItem(item);
+            if (detailsLink) detailsLink.href = 'shop-details.html?id=' + encodeURIComponent(item.id);
         } else {
-            // Hide features section if no data
-            featuresWrapper.style.display = 'none';
+            populateFromData(btn);
+            if (detailsLink) detailsLink.href = 'shop-details.html';
         }
+
         // ── Show modal ─────────────────────────────────
         overlay.style.display = 'block';
         modal.classList.add('active');
