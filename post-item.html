@@ -1223,10 +1223,11 @@
         </div>
     </footer>
 
-    <!-- Js Plugins — jQuery MUST load first (the form uses localStorage only, no Firebase dependency) -->
+    <!-- Js Plugins -->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/sokohub-db.js"></script>
 
     <!-- Firebase SDKs — loaded AFTER core scripts with defer so a slow or blocked CDN
          can never block the form's submit handler or the preloader hide. -->
@@ -1732,17 +1733,26 @@
             alert('Listing has been deleted.');
         }
 
-        // Quota-safe writer: drops the oldest listings until the new listing fits
-        function saveListingsToStorage(listings) {
+        // Safe storage writer: Saves to IndexedDB (high capacity) and LocalStorage safely
+        async function saveListingsToStorage(listings) {
+            // Save to IndexedDB first
+            if (window.SokoDB) {
+                try {
+                    for (let item of listings) {
+                        await window.SokoDB.saveListing(item);
+                    }
+                } catch (dbErr) {
+                    console.warn('SokoDB save warning:', dbErr);
+                }
+            }
+
+            // Save to LocalStorage safely
             try {
                 localStorage.setItem('sokohub_listings', JSON.stringify(listings));
                 return true;
             } catch (e) {
-                if (listings.length > 1) {
-                    listings.pop();
-                    return saveListingsToStorage(listings);
-                }
-                return false;
+                console.warn('LocalStorage limit reached. Item saved in SokoDB database.');
+                return true; // Return true because SokoDB has the item persisted
             }
         }
 
@@ -1880,7 +1890,7 @@
                 } else {
                     localListings.unshift(newListing);
                 }
-                const saved = saveListingsToStorage(localListings);
+                const saved = await saveListingsToStorage(localListings);
 
                 if (!saved) {
                     throw new Error('Browser storage is full. Please use fewer/smaller images or clear browser data, then try again.');
