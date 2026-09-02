@@ -1,13 +1,13 @@
 // SokoHub Frontend MySQL API Client
-// Connects browser pages to Vercel Serverless Function (/api/listings) when on Vercel,
-// or local Express server (http://localhost:5000/api/listings) when offline/local.
+// Connects browser pages to Netlify Serverless Function / API endpoint
+// or local Express server (http://localhost:5000/api) when offline/local.
 
 const SokoMySQL = (function () {
     const API_PORTS = [5000, 5001];
 
     async function getActiveBaseUrl() {
-        // If hosted on Vercel or running on HTTPS, use Vercel Serverless Function /api
-        if (window.location.hostname.includes('vercel.app') || window.location.protocol === 'https:') {
+        // If hosted on Netlify, Vercel, or any HTTPS server, use relative /api
+        if (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app') || window.location.protocol === 'https:') {
             return `${window.location.origin}/api`;
         }
 
