@@ -1,10 +1,17 @@
 // SokoHub Frontend MySQL API Client
-// Connects browser pages to http://localhost:5000/api/listings
+// Connects browser pages to Vercel Serverless Function (/api/listings) when on Vercel,
+// or local Express server (http://localhost:5000/api/listings) when offline/local.
 
 const SokoMySQL = (function () {
     const API_PORTS = [5000, 5001];
 
     async function getActiveBaseUrl() {
+        // If hosted on Vercel or running on HTTPS, use Vercel Serverless Function /api
+        if (window.location.hostname.includes('vercel.app') || window.location.protocol === 'https:') {
+            return `${window.location.origin}/api`;
+        }
+
+        // Local development: test ports 5000 and 5001
         for (let port of API_PORTS) {
             try {
                 const res = await fetch(`http://localhost:${port}/api/listings`);
@@ -56,7 +63,8 @@ const SokoMySQL = (function () {
         // Delete listing from MySQL API
         deleteListing: async function (id) {
             try {
-                const response = await fetch(`${API_BASE_URL}/listings/${id}`, {
+                const baseUrl = await getActiveBaseUrl();
+                const response = await fetch(`${baseUrl}/listings/${id}`, {
                     method: 'DELETE'
                 });
                 const data = await response.json();
