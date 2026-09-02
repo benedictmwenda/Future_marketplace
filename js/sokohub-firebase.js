@@ -141,15 +141,16 @@ async function renderHomePageListings() {
 
     let html = '';
     listings.forEach(item => {
-        let catSlug = 'product';
+        let catSlug = 'vehicles';
         if (item.category) {
             const cat = item.category.toLowerCase();
-            if (cat.includes('vehicle')) catSlug = 'vehicles';
-            else if (cat.includes('property') || cat.includes('rental')) catSlug = 'property';
-            else if (cat.includes('elec') || cat.includes('phone')) catSlug = 'electronics';
-            else if (cat.includes('fashion')) catSlug = 'fashion';
-            else if (cat.includes('service')) catSlug = 'services';
+            if (cat.includes('vehic') || cat.includes('car') || cat.includes('auto')) catSlug = 'vehicles';
+            else if (cat.includes('prop') || cat.includes('house') || cat.includes('rent') || cat.includes('land')) catSlug = 'property';
+            else if (cat.includes('elec') || cat.includes('phone') || cat.includes('laptop') || cat.includes('tv')) catSlug = 'electronics';
+            else if (cat.includes('fash') || cat.includes('cloth') || cat.includes('shoe')) catSlug = 'fashion';
+            else if (cat.includes('serv')) catSlug = 'services';
             else if (cat.includes('job')) catSlug = 'jobs';
+            else catSlug = 'vehicles';
         }
 
         const formattedPrice = typeof item.price === 'number' ? 'KSH ' + item.price.toLocaleString() : item.price;
@@ -158,7 +159,7 @@ async function renderHomePageListings() {
         window.quickViewItems[item.id] = item;
 
         html += `
-            <div class="col-lg-3 col-md-4 col-sm-6 mix ${catSlug} user-dynamic-grid-item">
+            <div class="col-lg-3 col-md-4 col-sm-6 mix ${catSlug} user-dynamic-grid-item" style="display: block;">
                 <div class="featured__item">
                     <div class="featured__item__pic set-bg" style="background-image: url('${mainImage}'); background-size: cover; background-position: center; height: 260px; position: relative;">
                         <span class="badge badge-success" style="position: absolute; top: 10px; left: 10px; background: #7fad39; padding: 5px 10px; font-size: 11px; text-transform: uppercase; color: #fff; z-index: 2;">
@@ -183,17 +184,21 @@ async function renderHomePageListings() {
     $('.user-dynamic-grid-item').remove();
     container.insertAdjacentHTML('afterbegin', html);
 
-    // Re-initialize MixItUp so dynamic items show up on index.html
-    if (typeof mixitup !== 'undefined') {
-        try {
-            if (window.homeMixer && typeof window.homeMixer.destroy === 'function') {
-                window.homeMixer.destroy();
+    setTimeout(function () {
+        if (typeof mixitup !== 'undefined') {
+            try {
+                if (window.homeMixer && typeof window.homeMixer.destroy === 'function') {
+                    window.homeMixer.destroy();
+                }
+                window.homeMixer = mixitup(container, {
+                    selectors: { target: '.mix' },
+                    animation: { duration: 300 }
+                });
+            } catch (mErr) {
+                console.warn('MixItUp re-init notice:', mErr);
             }
-            window.homeMixer = mixitup(container);
-        } catch (mErr) {
-            console.warn('MixItUp re-init notice:', mErr);
         }
-    }
+    }, 100);
 }
 
 // Render single listing details on shop-details.html if ?id= is present in URL
