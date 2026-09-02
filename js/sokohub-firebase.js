@@ -252,9 +252,63 @@ async function renderShopDetailsPage() {
     if (breadcrumbItem) breadcrumbItem.textContent = item.title;
 }
 
+// Dynamic Hero Categories Sidebar Counter & Auto-Filter
+function updateHeroCategories(listings) {
+    const list = document.getElementById('hero-categories-list');
+    if (!list) return;
+
+    listings = listings || [];
+
+    const counts = {
+        vehicles: 0,
+        property: 0,
+        electronics: 0,
+        fashion: 0,
+        home: 0,
+        services: 0,
+        jobs: 0
+    };
+
+    listings.forEach(item => {
+        const cat = (item.category || '').toLowerCase();
+        if (cat.includes('vehic') || cat.includes('car') || cat.includes('auto')) counts.vehicles++;
+        else if (cat.includes('prop') || cat.includes('house') || cat.includes('rent') || cat.includes('land')) counts.property++;
+        else if (cat.includes('elec') || cat.includes('phone') || cat.includes('laptop') || cat.includes('tv')) counts.electronics++;
+        else if (cat.includes('fash') || cat.includes('cloth') || cat.includes('shoe')) counts.fashion++;
+        else if (cat.includes('home') || cat.includes('furnit')) counts.home++;
+        else if (cat.includes('serv')) counts.services++;
+        else if (cat.includes('job')) counts.jobs++;
+        else counts.vehicles++;
+    });
+
+    list.innerHTML = `
+        <li><a href="./shop-grid.html?category=vehicles"><i class="fa fa-car" style="margin-right: 10px; width: 18px; color: #7fad39;"></i> Vehicles <span class="badge badge-light float-right" style="margin-top:3px; background:#eef7e6; color:#7fad39; font-weight:700;">${counts.vehicles}</span></a></li>
+        <li><a href="./shop-grid.html?category=property"><i class="fa fa-home" style="margin-right: 10px; width: 18px; color: #7fad39;"></i> Property & Rentals <span class="badge badge-light float-right" style="margin-top:3px; background:#eef7e6; color:#7fad39; font-weight:700;">${counts.property}</span></a></li>
+        <li><a href="./shop-grid.html?category=electronics"><i class="fa fa-laptop" style="margin-right: 10px; width: 18px; color: #7fad39;"></i> Electronics <span class="badge badge-light float-right" style="margin-top:3px; background:#eef7e6; color:#7fad39; font-weight:700;">${counts.electronics}</span></a></li>
+        <li><a href="./shop-grid.html?category=fashion"><i class="fa fa-shopping-bag" style="margin-right: 10px; width: 18px; color: #7fad39;"></i> Fashion & Beauty <span class="badge badge-light float-right" style="margin-top:3px; background:#eef7e6; color:#7fad39; font-weight:700;">${counts.fashion}</span></a></li>
+        <li><a href="./shop-grid.html?category=home"><i class="fa fa-couch" style="margin-right: 10px; width: 18px; color: #7fad39;"></i> Home & Furniture <span class="badge badge-light float-right" style="margin-top:3px; background:#eef7e6; color:#7fad39; font-weight:700;">${counts.home}</span></a></li>
+        <li><a href="./shop-grid.html?category=services"><i class="fa fa-cogs" style="margin-right: 10px; width: 18px; color: #7fad39;"></i> Services <span class="badge badge-light float-right" style="margin-top:3px; background:#eef7e6; color:#7fad39; font-weight:700;">${counts.services}</span></a></li>
+        <li><a href="./shop-grid.html?category=jobs"><i class="fa fa-briefcase" style="margin-right: 10px; width: 18px; color: #7fad39;"></i> Jobs <span class="badge badge-light float-right" style="margin-top:3px; background:#eef7e6; color:#7fad39; font-weight:700;">${counts.jobs}</span></a></li>
+    `;
+}
+
+function handleUrlCategoryFilter() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const cat = urlParams.get('category');
+    if (!cat) return;
+
+    setTimeout(function () {
+        const filterBtn = document.querySelector(`[data-filter=".${cat}"]`);
+        if (filterBtn) filterBtn.click();
+    }, 300);
+}
+
 // Auto-run on DOM Ready
-$(document).ready(function () {
+$(document).ready(async function () {
+    const listings = await fetchSokoHubListings();
+    updateHeroCategories(listings);
     renderShopGridListings();
     renderHomePageListings();
     renderShopDetailsPage();
+    handleUrlCategoryFilter();
 });
