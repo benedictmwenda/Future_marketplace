@@ -78,29 +78,30 @@ async function renderShopGridListings() {
 
     let html = '';
     listings.forEach(item => {
-        let catSlug = 'product';
+        let catSlug = 'vehicles';
         if (item.category) {
             const cat = item.category.toLowerCase();
-            if (cat.includes('vehicle')) catSlug = 'vehicles';
-            else if (cat.includes('property') || cat.includes('rental')) catSlug = 'property';
-            else if (cat.includes('elec') || cat.includes('phone')) catSlug = 'electronics';
-            else if (cat.includes('fashion')) catSlug = 'fashion';
-            else if (cat.includes('service')) catSlug = 'services';
+            if (cat.includes('vehic') || cat.includes('car') || cat.includes('auto')) catSlug = 'vehicles';
+            else if (cat.includes('prop') || cat.includes('house') || cat.includes('rent') || cat.includes('land')) catSlug = 'property';
+            else if (cat.includes('elec') || cat.includes('phone') || cat.includes('laptop') || cat.includes('tv')) catSlug = 'electronics';
+            else if (cat.includes('fash') || cat.includes('cloth') || cat.includes('shoe')) catSlug = 'fashion';
+            else if (cat.includes('home') || cat.includes('furnit')) catSlug = 'home';
+            else if (cat.includes('serv')) catSlug = 'services';
             else if (cat.includes('job')) catSlug = 'jobs';
-            else if (cat.includes('home')) catSlug = 'home';
         }
 
+        const subcatSlug = item.subcategory ? item.subcategory.toLowerCase().replace(/[^a-z0-9]/g, '-') : '';
         const formattedPrice = typeof item.price === 'number' ? item.price.toLocaleString() : item.price;
         const mainImage = (item.images && item.images[0]) || item.imageUrl || 'img/featured/feature-1.jpg';
 
         window.quickViewItems[item.id] = item;
 
         html += `
-            <div class="col-lg-4 col-md-6 col-sm-6 mix ${catSlug} user-dynamic-grid-item">
+            <div class="col-lg-4 col-md-6 col-sm-6 mix ${catSlug} ${subcatSlug} user-dynamic-grid-item">
                 <div class="product__item">
                     <div class="product__item__pic set-bg" style="background-image: url('${mainImage}'); background-size: cover; background-position: center; height: 260px; position: relative;">
                         <span class="badge badge-success" style="position: absolute; top: 10px; left: 10px; background: #7fad39; padding: 5px 10px; font-size: 11px; text-transform: uppercase;">
-                            ${item.category || item.listingType || 'Product'}
+                            ${item.category || 'Product'} ${item.subcategory ? '▸ ' + item.subcategory : ''}
                         </span>
                         <span class="badge" style="position: absolute; top: 10px; right: 10px; background: ${item.status === 'Sold' ? '#dc3545' : (item.status === 'Reserved' ? '#ffc107' : (item.status === 'Out of Stock' ? '#6c757d' : '#28a745'))}; padding: 5px 10px; font-size: 11px; text-transform: uppercase; color: #fff;">
                             ${item.status || 'Available'}
@@ -148,22 +149,24 @@ async function renderHomePageListings() {
             else if (cat.includes('prop') || cat.includes('house') || cat.includes('rent') || cat.includes('land')) catSlug = 'property';
             else if (cat.includes('elec') || cat.includes('phone') || cat.includes('laptop') || cat.includes('tv')) catSlug = 'electronics';
             else if (cat.includes('fash') || cat.includes('cloth') || cat.includes('shoe')) catSlug = 'fashion';
+            else if (cat.includes('home') || cat.includes('furnit')) catSlug = 'home';
             else if (cat.includes('serv')) catSlug = 'services';
             else if (cat.includes('job')) catSlug = 'jobs';
             else catSlug = 'vehicles';
         }
 
+        const subcatSlug = item.subcategory ? item.subcategory.toLowerCase().replace(/[^a-z0-9]/g, '-') : '';
         const formattedPrice = typeof item.price === 'number' ? 'KSH ' + item.price.toLocaleString() : item.price;
         const mainImage = (item.images && item.images[0]) || item.imageUrl || 'img/featured/feature-1.jpg';
 
         window.quickViewItems[item.id] = item;
 
         html += `
-            <div class="col-lg-3 col-md-4 col-sm-6 mix ${catSlug} user-dynamic-grid-item" style="display: block;">
+            <div class="col-lg-3 col-md-4 col-sm-6 mix ${catSlug} ${subcatSlug} user-dynamic-grid-item" style="display: block;">
                 <div class="featured__item">
                     <div class="featured__item__pic set-bg" style="background-image: url('${mainImage}'); background-size: cover; background-position: center; height: 260px; position: relative;">
                         <span class="badge badge-success" style="position: absolute; top: 10px; left: 10px; background: #7fad39; padding: 5px 10px; font-size: 11px; text-transform: uppercase; color: #fff; z-index: 2;">
-                            ${item.category || 'Product'}
+                            ${item.category || 'Product'} ${item.subcategory ? '▸ ' + item.subcategory : ''}
                         </span>
                         <ul class="featured__item__pic__hover">
                             <li><a href="#"><i class="fa fa-heart"></i></a></li>
@@ -252,44 +255,74 @@ async function renderShopDetailsPage() {
     if (breadcrumbItem) breadcrumbItem.textContent = item.title;
 }
 
-// Dynamic Hero Categories Sidebar Counter & Auto-Filter
+// Dynamic Hero Categories Sidebar Counter & Auto-Filter with Subcategories
 function updateHeroCategories(listings) {
     const list = document.getElementById('hero-categories-list');
     if (!list) return;
 
     listings = listings || [];
 
-    const counts = {
-        vehicles: 0,
-        property: 0,
-        electronics: 0,
-        fashion: 0,
-        home: 0,
-        services: 0,
-        jobs: 0
-    };
+    const subCounts = {};
+    const catCounts = { vehicles: 0, property: 0, electronics: 0, fashion: 0, services: 0, jobs: 0 };
 
     listings.forEach(item => {
+        if (item.subcategory) {
+            const subKey = item.subcategory.trim();
+            subCounts[subKey] = (subCounts[subKey] || 0) + 1;
+        }
+
         const cat = (item.category || '').toLowerCase();
-        if (cat.includes('vehic') || cat.includes('car') || cat.includes('auto')) counts.vehicles++;
-        else if (cat.includes('prop') || cat.includes('house') || cat.includes('rent') || cat.includes('land')) counts.property++;
-        else if (cat.includes('elec') || cat.includes('phone') || cat.includes('laptop') || cat.includes('tv')) counts.electronics++;
-        else if (cat.includes('fash') || cat.includes('cloth') || cat.includes('shoe')) counts.fashion++;
-        else if (cat.includes('home') || cat.includes('furnit')) counts.home++;
-        else if (cat.includes('serv')) counts.services++;
-        else if (cat.includes('job')) counts.jobs++;
-        else counts.vehicles++;
+        if (cat.includes('vehic') || cat.includes('car') || cat.includes('auto')) catCounts.vehicles++;
+        else if (cat.includes('prop') || cat.includes('house') || cat.includes('rent') || cat.includes('land')) catCounts.property++;
+        else if (cat.includes('elec') || cat.includes('phone') || cat.includes('laptop') || cat.includes('tv')) catCounts.electronics++;
+        else if (cat.includes('fash') || cat.includes('cloth') || cat.includes('shoe')) catCounts.fashion++;
+        else if (cat.includes('serv')) catCounts.services++;
+        else if (cat.includes('job')) catCounts.jobs++;
+        else catCounts.vehicles++;
     });
 
-    list.innerHTML = `
-        <li><a href="./shop-grid.html?category=vehicles"><i class="fa fa-car" style="margin-right: 10px; width: 18px; color: #7fad39;"></i> Vehicles <span class="badge badge-light float-right" style="margin-top:3px; background:#eef7e6; color:#7fad39; font-weight:700;">${counts.vehicles}</span></a></li>
-        <li><a href="./shop-grid.html?category=property"><i class="fa fa-home" style="margin-right: 10px; width: 18px; color: #7fad39;"></i> Property & Rentals <span class="badge badge-light float-right" style="margin-top:3px; background:#eef7e6; color:#7fad39; font-weight:700;">${counts.property}</span></a></li>
-        <li><a href="./shop-grid.html?category=electronics"><i class="fa fa-laptop" style="margin-right: 10px; width: 18px; color: #7fad39;"></i> Electronics <span class="badge badge-light float-right" style="margin-top:3px; background:#eef7e6; color:#7fad39; font-weight:700;">${counts.electronics}</span></a></li>
-        <li><a href="./shop-grid.html?category=fashion"><i class="fa fa-shopping-bag" style="margin-right: 10px; width: 18px; color: #7fad39;"></i> Fashion & Beauty <span class="badge badge-light float-right" style="margin-top:3px; background:#eef7e6; color:#7fad39; font-weight:700;">${counts.fashion}</span></a></li>
-        <li><a href="./shop-grid.html?category=home"><i class="fa fa-couch" style="margin-right: 10px; width: 18px; color: #7fad39;"></i> Home & Furniture <span class="badge badge-light float-right" style="margin-top:3px; background:#eef7e6; color:#7fad39; font-weight:700;">${counts.home}</span></a></li>
-        <li><a href="./shop-grid.html?category=services"><i class="fa fa-cogs" style="margin-right: 10px; width: 18px; color: #7fad39;"></i> Services <span class="badge badge-light float-right" style="margin-top:3px; background:#eef7e6; color:#7fad39; font-weight:700;">${counts.services}</span></a></li>
-        <li><a href="./shop-grid.html?category=jobs"><i class="fa fa-briefcase" style="margin-right: 10px; width: 18px; color: #7fad39;"></i> Jobs <span class="badge badge-light float-right" style="margin-top:3px; background:#eef7e6; color:#7fad39; font-weight:700;">${counts.jobs}</span></a></li>
-    `;
+    const categoryMap = [
+        { name: 'Vehicles', icon: 'fa-car', cat: 'vehicles', total: catCounts.vehicles, subs: ['Cars', 'Motorcycles', 'Trucks / Lorries', 'Buses / Vans', 'Spare Parts'] },
+        { name: 'Property Rentals', icon: 'fa-home', cat: 'property', total: catCounts.property, subs: ['Apartments', 'Houses', 'Land', 'Commercial Space', 'Offices'] },
+        { name: 'Electronics', icon: 'fa-laptop', cat: 'electronics', total: catCounts.electronics, subs: ['Phones & Tablets', 'Computers & Laptops', 'TVs & Audio', 'Cameras', 'Appliances'] },
+        { name: 'Fashion & Beauty', icon: 'fa-shopping-bag', cat: 'fashion', total: catCounts.fashion, subs: ['Men', 'Women', 'Kids', 'Shoes', 'Bags & Accessories'] },
+        { name: 'Services', icon: 'fa-cogs', cat: 'services', total: catCounts.services, subs: ['Home Services', 'Automotive Services', 'Beauty & Health', 'Events', 'Digital Services'] },
+        { name: 'Jobs', icon: 'fa-briefcase', cat: 'jobs', total: catCounts.jobs, subs: ['Full-time', 'Part-time', 'Contract', 'Internship', 'Freelance'] }
+    ];
+
+    let html = '';
+    categoryMap.forEach(c => {
+        let subListHtml = '';
+
+        c.subs.forEach(s => {
+            const count = subCounts[s] || 0;
+            const subSlug = s.toLowerCase().replace(/[^a-z0-9]/g, '-');
+            subListHtml += `
+                <li style="padding-left: 24px; font-size: 12px; margin: 2px 0;">
+                    <a href="./shop-grid.html?category=${subSlug}" style="color: #666; display: flex; justify-content: space-between; align-items: center;">
+                        <span>• ${s}</span>
+                        ${count > 0 ? `<span class="badge" style="background:#7fad39; color:#fff; font-size:10px; padding:2px 6px;">${count}</span>` : ''}
+                    </a>
+                </li>
+            `;
+        });
+
+        html += `
+            <li style="border-bottom: 1px solid #f4f4f4; padding: 6px 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                    <a href="./shop-grid.html?category=${c.cat}" style="font-weight: 700; color: #1c1c1c; font-size: 14px;">
+                        <i class="fa ${c.icon}" style="margin-right: 8px; width: 18px; color: #7fad39;"></i> ${c.name}
+                    </a>
+                    <span class="badge badge-light" style="background:#eef7e6; color:#7fad39; font-weight:700;">${c.total}</span>
+                </div>
+                <ul style="list-style: none; padding-left: 0; margin-bottom: 4px;">
+                    ${subListHtml}
+                </ul>
+            </li>
+        `;
+    });
+
+    list.innerHTML = html;
 }
 
 function handleUrlCategoryFilter() {
