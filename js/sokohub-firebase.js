@@ -3,6 +3,18 @@
 async function fetchSokoHubListings() {
     let allListings = [];
 
+    // 0. Fetch from MySQL Backend Server (if running on http://localhost:5000)
+    if (window.SokoMySQL) {
+        try {
+            const mysqlListings = await window.SokoMySQL.fetchListings();
+            if (Array.isArray(mysqlListings) && mysqlListings.length > 0) {
+                allListings = mysqlListings;
+            }
+        } catch (mErr) {
+            console.warn("MySQL fetch warning:", mErr);
+        }
+    }
+
     // 1. Read from IndexedDB (High Capacity Persistent Database)
     if (window.SokoDB) {
         try {

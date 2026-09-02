@@ -1228,6 +1228,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/sokohub-db.js"></script>
+    <script src="js/sokohub-mysql.js"></script>
 
     <!-- Firebase SDKs — loaded AFTER core scripts with defer so a slow or blocked CDN
          can never block the form's submit handler or the preloader hide. -->
@@ -1733,8 +1734,19 @@
             alert('Listing has been deleted.');
         }
 
-        // Safe storage writer: Saves to IndexedDB (high capacity) and LocalStorage safely
+        // Safe storage writer: Saves to MySQL, IndexedDB (high capacity) and LocalStorage safely
         async function saveListingsToStorage(listings) {
+            // Save to MySQL database if backend server is running
+            if (window.SokoMySQL) {
+                try {
+                    for (let item of listings) {
+                        await window.SokoMySQL.saveListing(item);
+                    }
+                } catch (sqlErr) {
+                    console.warn('SokoMySQL save warning:', sqlErr);
+                }
+            }
+
             // Save to IndexedDB first
             if (window.SokoDB) {
                 try {
