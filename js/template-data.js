@@ -338,8 +338,8 @@ document.addEventListener('DOMContentLoaded', function () {
         item = item || {};
         const wrapper = document.getElementById('qv-extra');
         const list    = document.getElementById('qv-extra-list');
+        if (!wrapper || !list) return;
         list.innerHTML = '';
-        if (!wrapper) return;
 
         const rows = [];
 
