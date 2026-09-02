@@ -4435,3 +4435,150 @@ ol {
 .qv-btn--primary:hover {
     background: #6a962f;
 }
+
+/* ============================================================
+   SOKOHUB HERO CATEGORIES FLYOUT MENU STYLES
+   ============================================================ */
+.hero__categories ul#hero-categories-list {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #ffffff !important;
+    border: 1px solid #e1e1e1 !important;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.hero-cat-item {
+    position: relative !important;
+    list-style: none !important;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.hero-cat-item:last-child {
+    border-bottom: none;
+}
+
+.hero-cat-link {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 12px 18px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #252525 !important;
+    transition: all 0.2s ease !important;
+    text-decoration: none !important;
+}
+
+.hero-cat-link i.fa {
+    width: 20px;
+    color: #7fad39;
+    font-size: 15px;
+    margin-right: 8px;
+}
+
+.hero-cat-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.hero-cat-right .main-badge {
+    background: #eef7e6;
+    color: #7fad39;
+    font-weight: 700;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.hero-cat-right .arrow-icon {
+    font-size: 13px;
+    color: #aaa;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.hero-cat-item:hover > .hero-cat-link {
+    background: #f8faf5 !important;
+    color: #7fad39 !important;
+    padding-left: 22px !important;
+}
+
+.hero-cat-item:hover > .hero-cat-link .arrow-icon {
+    color: #7fad39;
+    transform: translateX(3px);
+}
+
+/* Hover Flyout Submenu */
+.hero-sub-flyout {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 240px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    border: 1px solid #e2e8f0;
+    z-index: 9999;
+    padding: 14px 16px;
+    animation: fadeInFlyout 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInFlyout {
+    from { opacity: 0; transform: translateX(-8px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.hero-cat-item:hover .hero-sub-flyout {
+    display: block !important;
+}
+
+.flyout-header {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #7fad39;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #eef7e6;
+}
+
+.flyout-list {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.flyout-list li {
+    margin-bottom: 4px;
+}
+
+.flyout-list li a {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 7px 10px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: #4a5568 !important;
+    border-radius: 6px !important;
+    line-height: 1.4 !important;
+    transition: background 0.2s ease, color 0.2s ease !important;
+}
+
+.flyout-list li a:hover {
+    background: #eef7e6 !important;
+    color: #7fad39 !important;
+    font-weight: 700 !important;
+}
+
+.flyout-list li a .sub-badge {
+    background: #7fad39;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 10px;
+}

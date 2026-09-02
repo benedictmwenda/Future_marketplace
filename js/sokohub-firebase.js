@@ -255,7 +255,7 @@ async function renderShopDetailsPage() {
     if (breadcrumbItem) breadcrumbItem.textContent = item.title;
 }
 
-// Dynamic Hero Categories Sidebar Counter & Auto-Filter with Subcategories
+// Dynamic Hero Categories Sidebar Counter & Auto-Filter with Hover Flyout
 function updateHeroCategories(listings) {
     const list = document.getElementById('hero-categories-list');
     if (!list) return;
@@ -292,32 +292,38 @@ function updateHeroCategories(listings) {
 
     let html = '';
     categoryMap.forEach(c => {
-        let subListHtml = '';
+        let subItemsHtml = '';
 
         c.subs.forEach(s => {
             const count = subCounts[s] || 0;
             const subSlug = s.toLowerCase().replace(/[^a-z0-9]/g, '-');
-            subListHtml += `
-                <li style="padding-left: 24px; font-size: 12px; margin: 2px 0;">
-                    <a href="./shop-grid.html?category=${subSlug}" style="color: #666; display: flex; justify-content: space-between; align-items: center;">
-                        <span>• ${s}</span>
-                        ${count > 0 ? `<span class="badge" style="background:#7fad39; color:#fff; font-size:10px; padding:2px 6px;">${count}</span>` : ''}
+            subItemsHtml += `
+                <li>
+                    <a href="./shop-grid.html?category=${subSlug}">
+                        <span>${s}</span>
+                        ${count > 0 ? `<span class="sub-badge">${count}</span>` : ''}
                     </a>
                 </li>
             `;
         });
 
         html += `
-            <li style="border-bottom: 1px solid #f4f4f4; padding: 6px 0;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                    <a href="./shop-grid.html?category=${c.cat}" style="font-weight: 700; color: #1c1c1c; font-size: 14px;">
-                        <i class="fa ${c.icon}" style="margin-right: 8px; width: 18px; color: #7fad39;"></i> ${c.name}
-                    </a>
-                    <span class="badge badge-light" style="background:#eef7e6; color:#7fad39; font-weight:700;">${c.total}</span>
+            <li class="hero-cat-item">
+                <a href="./shop-grid.html?category=${c.cat}" class="hero-cat-link">
+                    <span class="hero-cat-title">
+                        <i class="fa ${c.icon}"></i> ${c.name}
+                    </span>
+                    <span class="hero-cat-right">
+                        <span class="main-badge">${c.total}</span>
+                        <i class="fa fa-angle-right arrow-icon"></i>
+                    </span>
+                </a>
+                <div class="hero-sub-flyout">
+                    <div class="flyout-header">${c.name}</div>
+                    <ul class="flyout-list">
+                        ${subItemsHtml}
+                    </ul>
                 </div>
-                <ul style="list-style: none; padding-left: 0; margin-bottom: 4px;">
-                    ${subListHtml}
-                </ul>
             </li>
         `;
     });
