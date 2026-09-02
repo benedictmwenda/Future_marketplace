@@ -180,7 +180,20 @@ async function renderHomePageListings() {
         `;
     });
 
+    $('.user-dynamic-grid-item').remove();
     container.insertAdjacentHTML('afterbegin', html);
+
+    // Re-initialize MixItUp so dynamic items show up on index.html
+    if (typeof mixitup !== 'undefined') {
+        try {
+            if (window.homeMixer && typeof window.homeMixer.destroy === 'function') {
+                window.homeMixer.destroy();
+            }
+            window.homeMixer = mixitup(container);
+        } catch (mErr) {
+            console.warn('MixItUp re-init notice:', mErr);
+        }
+    }
 }
 
 // Render single listing details on shop-details.html if ?id= is present in URL

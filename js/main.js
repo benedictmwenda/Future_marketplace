@@ -27,7 +27,7 @@
         });
         if ($('.featured__filter').length > 0 && typeof mixitup !== 'undefined') {
             var containerEl = document.querySelector('.featured__filter');
-            var mixer = mixitup(containerEl);
+            window.homeMixer = mixitup(containerEl);
         }
     });
 

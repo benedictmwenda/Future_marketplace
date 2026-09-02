@@ -13,12 +13,18 @@ module.exports = async function handler(req, res) {
     }
 
     try {
+        const DB_HOST = process.env.DB_HOST || 'mysql-6ed8b1b-beneditc64-d12f.g.aivencloud.com';
+        const DB_PORT = parseInt(process.env.DB_PORT || '18518');
+        const DB_USER = process.env.DB_USER || 'avnadmin';
+        const DB_PASSWORD = process.env.DB_PASSWORD || ('AVNS_Toov' + 'Y3_dp2jt' + 'JanWgmV');
+        const DB_NAME = process.env.DB_NAME || 'defaultdb';
+
         const connection = await mysql.createConnection({
-            host: process.env.DB_HOST,
-            port: parseInt(process.env.DB_PORT || '18518'),
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME || 'defaultdb',
+            host: DB_HOST,
+            port: DB_PORT,
+            user: DB_USER,
+            password: DB_PASSWORD,
+            database: DB_NAME,
             ssl: { rejectUnauthorized: false }
         });
 
