@@ -4506,28 +4506,28 @@ ol {
 
 .hero-cat-item:hover > .hero-cat-link .arrow-icon {
     color: #7fad39;
-    transform: translateX(3px);
+    transform: rotate(90deg) !important;
 }
 
-/* Hover Flyout Submenu */
+/* Expandable Accordion Submenu (Appears directly BELOW the hovered category) */
 .hero-sub-flyout {
     display: none;
-    position: absolute;
-    top: 0;
-    left: 100%;
-    width: 240px;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-    border: 1px solid #e2e8f0;
-    z-index: 9999;
-    padding: 14px 16px;
-    animation: fadeInFlyout 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    position: static !important;
+    width: 100% !important;
+    background: #fbfdf9 !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 6px 12px 10px 24px !important;
+    border-left: 3px solid #7fad39 !important;
+    margin-top: 2px;
+    margin-bottom: 6px;
+    border-radius: 0 0 6px 6px;
+    animation: slideDownAccordion 0.25s ease-out;
 }
 
-@keyframes fadeInFlyout {
-    from { opacity: 0; transform: translateX(-8px); }
-    to { opacity: 1; transform: translateX(0); }
+@keyframes slideDownAccordion {
+    from { opacity: 0; max-height: 0; }
+    to { opacity: 1; max-height: 300px; }
 }
 
 .hero-cat-item:hover .hero-sub-flyout {
@@ -4535,14 +4535,7 @@ ol {
 }
 
 .flyout-header {
-    font-size: 12px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #7fad39;
-    margin-bottom: 10px;
-    padding-bottom: 6px;
-    border-bottom: 2px solid #eef7e6;
+    display: none !important;
 }
 
 .flyout-list {
@@ -4552,26 +4545,28 @@ ol {
 }
 
 .flyout-list li {
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
 .flyout-list li a {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
-    padding: 7px 10px !important;
+    padding: 6px 10px !important;
     font-size: 13px !important;
     font-weight: 500 !important;
-    color: #4a5568 !important;
+    color: #555555 !important;
     border-radius: 6px !important;
     line-height: 1.4 !important;
     transition: background 0.2s ease, color 0.2s ease !important;
+    text-decoration: none !important;
 }
 
 .flyout-list li a:hover {
     background: #eef7e6 !important;
     color: #7fad39 !important;
     font-weight: 700 !important;
+    padding-left: 14px !important;
 }
 
 .flyout-list li a .sub-badge {
