@@ -67,9 +67,78 @@ exports.handler = async function (event, context) {
             };
         }
 
-        // POST: Save new listing to Aiven MySQL
+        // POST: Save listing OR Login / Register User
         if (event.httpMethod === 'POST') {
-            const item = typeof event.body === 'string' ? JSON.parse(event.body || '{}') : event.body;
+            const body = typeof event.body === 'string' ? JSON.parse(event.body || '{}') : event.body;
+
+            // Handle AUTH: LOGIN
+            if (event.path.includes('/auth/login') || body.action === 'login') {
+                const { email, password, role } = body;
+                const [rows] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
+                
+                if (rows.length === 0) {
+                    // Auto register on initial sign-in if new user
+                    const query = `INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)`;
+                    const name = email.split('@')[0];
+                    await connection.query(query, [name, email, password, role || 'buyer']);
+                    await connection.end();
+                    return {
+                        statusCode: 200,
+                        headers,
+                        body: JSON.stringify({ success: true, user: { name, email, role: role || 'buyer' } })
+                    };
+                }
+
+                const user = rows[0];
+                if (user.password !== password) {
+                    await connection.end();
+                    return {
+                        statusCode: 401,
+                        headers,
+                        body: JSON.stringify({ success: false, message: '🔒 Incorrect Password! Please enter the correct password.' })
+                    };
+                }
+
+                await connection.end();
+                return {
+                    statusCode: 200,
+                    headers,
+                    body: JSON.stringify({
+                        success: true,
+                        user: { name: user.name, email: user.email, role: user.role || role || 'buyer', phone: user.phone || '' }
+                    })
+                };
+            }
+
+            // Handle AUTH: REGISTER
+            if (event.path.includes('/auth/register') || body.action === 'register') {
+                const { name, email, password, role, phone } = body;
+                const [existing] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
+                if (existing.length > 0) {
+                    await connection.end();
+                    return {
+                        statusCode: 400,
+                        headers,
+                        body: JSON.stringify({ success: false, message: 'An account with this email already exists. Please sign in.' })
+                    };
+                }
+
+                const query = `INSERT INTO users (name, email, password, phone, role) VALUES (?, ?, ?, ?, ?)`;
+                await connection.query(query, [name || email.split('@')[0], email, password, phone || '', role || 'buyer']);
+                await connection.end();
+
+                return {
+                    statusCode: 200,
+                    headers,
+                    body: JSON.stringify({
+                        success: true,
+                        user: { name: name || email.split('@')[0], email, role: role || 'buyer', phone: phone || '' }
+                    })
+                };
+            }
+
+            // Save listing...
+            const item = body;
             const id = item.id || ('sh_' + Date.now());
             const imagesJson = JSON.stringify(item.images || [item.imageUrl]);
             const featuresJson = JSON.stringify(item.features || []);

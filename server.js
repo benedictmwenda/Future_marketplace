@@ -181,6 +181,71 @@ app.delete('/api/listings/:id', async (req, res) => {
     }
 });
 
+// ==========================================
+// 5. AUTH: REGISTER USER IN MYSQL
+// ==========================================
+app.post('/api/auth/register', async (req, res) => {
+    try {
+        const { name, email, password, role, phone } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ success: false, message: 'Email and password are required' });
+        }
+
+        // Check if email already registered
+        const [existing] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+        if (existing.length > 0) {
+            return res.status(400).json({ success: false, message: 'An account with this email already exists. Please sign in.' });
+        }
+
+        const query = `INSERT INTO users (name, email, password, phone, role) VALUES (?, ?, ?, ?, ?)`;
+        await pool.query(query, [name || email.split('@')[0], email, password, phone || '', role || 'buyer']);
+
+        res.json({
+            success: true,
+            user: { name: name || email.split('@')[0], email, role: role || 'buyer', phone: phone || '' }
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// ==========================================
+// 6. AUTH: LOGIN USER WITH PASSWORD IN MYSQL
+// ==========================================
+app.post('/api/auth/login', async (req, res) => {
+    try {
+        const { email, password, role } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ success: false, message: 'Email and password are required' });
+        }
+
+        const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+        if (rows.length === 0) {
+            // Auto-create initial account if user table empty or legacy account
+            const query = `INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)`;
+            const name = email.split('@')[0];
+            await pool.query(query, [name, email, password, role || 'buyer']);
+            return res.json({
+                success: true,
+                message: 'Account created & logged in',
+                user: { name, email, role: role || 'buyer' }
+            });
+        }
+
+        const user = rows[0];
+        if (user.password !== password) {
+            return res.status(401).json({ success: false, message: '🔒 Incorrect Password! Please enter the correct password.' });
+        }
+
+        res.json({
+            success: true,
+            user: { name: user.name, email: user.email, role: user.role || role || 'buyer', phone: user.phone || '' }
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
 // Start Server with EADDRINUSE fallback
 const server = app.listen(PORT, () => {
     console.log(`🚀 SokoHub MySQL Backend Server running on http://localhost:${PORT}`);

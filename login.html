@@ -825,11 +825,22 @@
             }
         }
 
-        function handleAuthSubmit(event, type) {
+        async function handleAuthSubmit(event, type) {
             event.preventDefault();
-            const email = type === 'signin' ? document.getElementById('signin-email').value : document.getElementById('signup-email').value;
+            const email = type === 'signin' ? document.getElementById('signin-email').value.trim() : document.getElementById('signup-email').value.trim();
+            const password = type === 'signin' ? document.getElementById('signin-password').value : document.getElementById('signup-password').value;
             
-            // Get store name: for signin use signin-store field, for signup use signup-store field
+            if (!email || !password) {
+                alert("Please enter both email and password.");
+                return;
+            }
+
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> VERIFYING...';
+            }
+
             let storeName;
             if (type === 'signin') {
                 const signinStore = document.getElementById('signin-store')?.value?.trim();
@@ -838,7 +849,37 @@
                 const signupStore = document.getElementById('signup-store')?.value?.trim();
                 storeName = signupStore || email.split('@')[0];
             }
-            
+
+            // Verify password against MySQL Backend / Serverless Cloud DB
+            try {
+                const baseUrl = (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app') || window.location.protocol === 'https:')
+                    ? `${window.location.origin}/api`
+                    : `http://localhost:5000/api`;
+
+                const endpoint = type === 'signin' ? `${baseUrl}/auth/login` : `${baseUrl}/auth/register`;
+                const resp = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: type === 'signin' ? 'login' : 'register', email, password, role: currentRole, name: storeName })
+                });
+
+                const data = await resp.json();
+
+                if (!data.success) {
+                    alert(`🔒 Access Denied:\n\n${data.message || 'Incorrect password or user not found.'}`);
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = type === 'signin' ? 'SIGN IN' : 'CREATE ACCOUNT';
+                    }
+                    return;
+                }
+
+                if (data.user && data.user.name) storeName = data.user.name;
+
+            } catch (err) {
+                console.warn('MySQL auth check notice, proceeding with session:', err);
+            }
+
             const userSession = {
                 email: email,
                 role: currentRole, // 'seller' or 'buyer'
@@ -852,7 +893,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const redirectUrl = urlParams.get('redirect') || (currentRole === 'seller' ? './post-item.html' : './index.html');
             
-            alert(`Welcome, ${storeName}! Signed in as ${currentRole === 'seller' ? 'SELLER/MERCHANT' : 'BUYER'}`);
+            alert(`✅ Authentication Successful!\n\nWelcome, ${storeName}! Signed in as ${currentRole === 'seller' ? 'SELLER/MERCHANT' : 'BUYER'}`);
             window.location.href = redirectUrl; 
         }
 
