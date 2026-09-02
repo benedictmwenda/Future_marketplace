@@ -4201,3 +4201,237 @@ ol {
 		padding-bottom: 50px;
 	}
 }
+
+/* ============================================================
+   SOKOHUB QUICK VIEW MODAL & OVERLAY STYLES
+   ============================================================ */
+.qv-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 99998;
+    transition: opacity 0.3s ease;
+}
+
+.qv-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 90%;
+    max-width: 850px;
+    max-height: 90vh;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    z-index: 99999;
+    overflow-y: auto;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+}
+
+.qv-modal.active {
+    display: block !important;
+    opacity: 1 !important;
+    transform: translate(-50%, -50%) scale(1) !important;
+}
+
+.qv-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f1f1f1;
+    border: none;
+    font-size: 18px;
+    color: #333;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.qv-close:hover {
+    background: #e74c3c;
+    color: #ffffff;
+}
+
+.qv-body {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.qv-image {
+    flex: 1 1 340px;
+    position: relative;
+    background: #f8f9fa;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.qv-image img#qv-img {
+    max-width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.qv-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #7fad39;
+    color: #fff;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.qv-badges {
+    margin-top: 10px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.qv-status-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: #fff;
+}
+.qv-status-available { background: #28a745; }
+.qv-status-sold { background: #dc3545; }
+.qv-status-reserved { background: #ffc107; color: #333; }
+.qv-premium { background: #6f42c1; }
+
+.qv-thumbs {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    overflow-x: auto;
+}
+
+.qv-thumb {
+    width: 50px;
+    height: 50px;
+    border-radius: 6px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.qv-thumb.active {
+    border-color: #7fad39;
+}
+
+.qv-details {
+    flex: 1 1 400px;
+    padding: 30px 25px;
+}
+
+.qv-details h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1c1c1c;
+    margin-bottom: 10px;
+}
+
+.qv-price {
+    font-size: 24px;
+    color: #7fad39;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.qv-desc {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.qv-features {
+    margin-bottom: 20px;
+}
+
+.qv-features__title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.qv-tag {
+    display: inline-block;
+    background: #eef7e6;
+    color: #7fad39;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin: 3px 4px 3px 0;
+}
+
+.qv-attr-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px dashed #eee;
+    font-size: 13px;
+}
+.qv-attr-label { font-weight: 600; color: #555; }
+.qv-attr-value { color: #222; }
+
+.qv-meta {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #777;
+}
+
+.qv-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.qv-btn {
+    flex: 1;
+    text-align: center;
+    padding: 12px 15px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+}
+.qv-btn--outline {
+    border: 2px solid #7fad39;
+    color: #7fad39;
+}
+.qv-btn--outline:hover {
+    background: #7fad39;
+    color: #fff;
+}
+.qv-btn--primary {
+    background: #7fad39;
+    color: #fff;
+}
+.qv-btn--primary:hover {
+    background: #6a962f;
+}
