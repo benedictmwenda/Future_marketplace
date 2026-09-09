@@ -100,25 +100,25 @@ async function renderShopGridListings() {
             <div class="col-lg-4 col-md-6 col-sm-6 mix ${catSlug} ${subcatSlug} user-dynamic-grid-item">
                 <div class="product__item">
                     <div class="product__item__pic set-bg" style="background-image: url('${mainImage}'); background-size: cover; background-position: center; height: 260px; position: relative;">
-                        <span class="badge badge-success" style="position: absolute; top: 10px; left: 10px; background: #7fad39; padding: 5px 10px; font-size: 11px; text-transform: uppercase;">
+                        <span class="badge" style="position: absolute; top: 10px; left: 10px; background: #1000B8; color: #F3F3E6; padding: 5px 10px; font-size: 11px; text-transform: uppercase; border-radius: 4px; font-weight: 700;">
                             ${item.category || 'Product'} ${item.subcategory ? '▸ ' + item.subcategory : ''}
                         </span>
-                        <span class="badge" style="position: absolute; top: 10px; right: 10px; background: ${item.status === 'Sold' ? '#dc3545' : (item.status === 'Reserved' ? '#ffc107' : (item.status === 'Out of Stock' ? '#6c757d' : '#28a745'))}; padding: 5px 10px; font-size: 11px; text-transform: uppercase; color: #fff;">
+                        <span class="badge" style="position: absolute; top: 10px; right: 10px; background: ${item.status === 'Sold' ? '#dc3545' : (item.status === 'Reserved' ? '#DAA520' : (item.status === 'Out of Stock' ? '#6c757d' : '#28a745'))}; padding: 5px 10px; font-size: 11px; text-transform: uppercase; color: #F3F3E6; border-radius: 4px;">
                             ${item.status || 'Available'}
                         </span>
                         <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#" class="quick-view-btn" data-qv-id="${item.id}"><i class="fa fa-eye"></i></a></li>
-                            <li><a href="shop-details.html?id=${item.id}"><i class="fa fa-external-link"></i></a></li>
+                            <li><a href="#" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#" class="quick-view-btn" data-qv-id="${item.id}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-eye"></i></a></li>
+                            <li><a href="shop-details.html?id=${item.id}" style="background:#DAA520; color:#1D1912;"><i class="fa fa-external-link"></i></a></li>
                         </ul>
                     </div>
                     <div class="product__item__text" style="padding-top: 15px;">
-                        <h6><a href="shop-details.html?id=${item.id}">${item.title}</a></h6>
-                        <h5 style="color: #7fad39; font-weight: 700; margin-top: 5px;">
+                        <h6><a href="shop-details.html?id=${item.id}" style="color:#1D1912; font-weight:700;">${item.title}</a></h6>
+                        <h5 style="color: #1000B8; font-weight: 800; margin-top: 5px;">
                             ${typeof item.price === 'number' ? 'KSH ' + formattedPrice : item.price}
                         </h5>
-                        <small style="color: #888; display: block; margin-top: 3px;">
-                            <i class="fa fa-map-marker"></i> ${item.location || 'Nairobi'} | <i class="fa fa-user"></i> ${item.sellerName || 'Verified Seller'}
+                        <small style="color: #666; display: block; margin-top: 3px;">
+                            <i class="fa fa-map-marker" style="color:#1000B8;"></i> ${item.location || 'Nairobi'} | <i class="fa fa-user" style="color:#DAA520;"></i> ${item.sellerName || 'Verified Seller'}
                         </small>
                     </div>
                 </div>
@@ -165,19 +165,19 @@ async function renderHomePageListings() {
             <div class="col-lg-3 col-md-4 col-sm-6 mix ${catSlug} ${subcatSlug} user-dynamic-grid-item" style="display: block;">
                 <div class="featured__item">
                     <div class="featured__item__pic set-bg" style="background-image: url('${mainImage}'); background-size: cover; background-position: center; height: 260px; position: relative;">
-                        <span class="badge badge-success" style="position: absolute; top: 10px; left: 10px; background: #7fad39; padding: 5px 10px; font-size: 11px; text-transform: uppercase; color: #fff; z-index: 2;">
+                        <span class="badge" style="position: absolute; top: 10px; left: 10px; background: #1000B8; color: #F3F3E6; padding: 5px 10px; font-size: 11px; text-transform: uppercase; font-weight:700; border-radius:4px; z-index: 2;">
                             ${item.category || 'Product'} ${item.subcategory ? '▸ ' + item.subcategory : ''}
                         </span>
                         <ul class="featured__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#" class="quick-view-btn" data-qv-id="${item.id}"><i class="fa fa-eye"></i></a></li>
-                            <li><a href="shop-details.html?id=${item.id}"><i class="fa fa-external-link"></i></a></li>
+                            <li><a href="#" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#" class="quick-view-btn" data-qv-id="${item.id}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-eye"></i></a></li>
+                            <li><a href="shop-details.html?id=${item.id}" style="background:#DAA520; color:#1D1912;"><i class="fa fa-external-link"></i></a></li>
                         </ul>
                     </div>
                     <div class="featured__item__text">
-                        <h6><a href="shop-details.html?id=${item.id}">${item.title}</a></h6>
-                        <h5>${formattedPrice}</h5>
-                        <small style="color:#888;"><i class="fa fa-map-marker"></i> ${item.location || 'Nairobi'} | ${item.sellerName || 'Seller'}</small>
+                        <h6><a href="shop-details.html?id=${item.id}" style="color:#1D1912; font-weight:700;">${item.title}</a></h6>
+                        <h5 style="color:#1000B8; font-weight:800;">${formattedPrice}</h5>
+                        <small style="color:#666;"><i class="fa fa-map-marker" style="color:#1000B8;"></i> ${item.location || 'Nairobi'} | ${item.sellerName || 'Seller'}</small>
                     </div>
                 </div>
             </div>
@@ -300,8 +300,8 @@ function updateHeroCategories(listings) {
             subItemsHtml += `
                 <li>
                     <a href="./shop-grid.html?category=${subSlug}">
-                        <span>${s}</span>
-                        ${count > 0 ? `<span class="sub-badge">${count}</span>` : ''}
+                        <span style="color:#1D1912;">${s}</span>
+                        ${count > 0 ? `<span class="sub-badge" style="background:#28a745; color:#F3F3E6;">${count}</span>` : ''}
                     </a>
                 </li>
             `;
@@ -310,16 +310,15 @@ function updateHeroCategories(listings) {
         html += `
             <li class="hero-cat-item">
                 <a href="./shop-grid.html?category=${c.cat}" class="hero-cat-link">
-                    <span class="hero-cat-title">
-                        <i class="fa ${c.icon}"></i> ${c.name}
+                    <span class="hero-cat-title" style="color:#1D1912;">
+                        <i class="fa ${c.icon}" style="color:#1000B8;"></i> ${c.name}
                     </span>
                     <span class="hero-cat-right">
-                        <span class="main-badge">${c.total}</span>
-                        <i class="fa fa-angle-right arrow-icon"></i>
+                        <span class="main-badge" style="background:#DAA520; color:#1D1912;">${c.total}</span>
+                        <i class="fa fa-angle-right arrow-icon" style="color:#DAA520;"></i>
                     </span>
                 </a>
                 <div class="hero-sub-flyout">
-                    <div class="flyout-header">${c.name}</div>
                     <ul class="flyout-list">
                         ${subItemsHtml}
                     </ul>

@@ -4479,7 +4479,7 @@ ol {
 
 .hero-cat-link i.fa {
     width: 20px;
-    color: #7fad39;
+    color: #1000B8;
     font-size: 15px;
     margin-right: 8px;
 }
@@ -4491,8 +4491,8 @@ ol {
 }
 
 .hero-cat-right .main-badge {
-    background: #eef7e6;
-    color: #7fad39;
+    background: #DAA520;
+    color: #1D1912;
     font-weight: 700;
     font-size: 11px;
     padding: 2px 8px;
@@ -4501,18 +4501,18 @@ ol {
 
 .hero-cat-right .arrow-icon {
     font-size: 13px;
-    color: #aaa;
+    color: #DAA520;
     transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .hero-cat-item:hover > .hero-cat-link {
-    background: #f8faf5 !important;
-    color: #7fad39 !important;
+    background: #F3F3E6 !important;
+    color: #1000B8 !important;
     padding-left: 22px !important;
 }
 
 .hero-cat-item:hover > .hero-cat-link .arrow-icon {
-    color: #7fad39;
+    color: #1000B8;
     transform: rotate(90deg) !important;
 }
 
@@ -4523,11 +4523,11 @@ ol {
     top: 0 !important;
     left: 0 !important;
     width: 100% !important;
-    background: #f8faf5 !important;
+    background: #F3F3E6 !important;
     border: none !important;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04) !important;
     padding: 6px 12px 10px 24px !important;
-    border-left: 4px solid #7fad39 !important;
+    border-left: 4px solid #DAA520 !important;
     margin: 4px 0 8px 0 !important;
     box-sizing: border-box !important;
     z-index: 100 !important;
@@ -4563,7 +4563,7 @@ ol {
     padding: 6px 10px !important;
     font-size: 13px !important;
     font-weight: 500 !important;
-    color: #555555 !important;
+    color: #1D1912 !important;
     border-radius: 6px !important;
     line-height: 1.4 !important;
     transition: background 0.2s ease, color 0.2s ease !important;
@@ -4571,17 +4571,156 @@ ol {
 }
 
 .flyout-list li a:hover {
-    background: #eef7e6 !important;
-    color: #7fad39 !important;
+    background: #1000B8 !important;
+    color: #F3F3E6 !important;
     font-weight: 700 !important;
     padding-left: 14px !important;
 }
 
+.flyout-list li a:hover span {
+    color: #F3F3E6 !important;
+}
+
 .flyout-list li a .sub-badge {
-    background: #7fad39;
-    color: #ffffff;
+    background: #28a745;
+    color: #F3F3E6;
     font-size: 10px;
     font-weight: 700;
     padding: 2px 7px;
     border-radius: 10px;
+}
+
+/* SokoHub palette: keep the storefront on the approved five-color system. */
+:root {
+	--soko-white: #F3F3E6;
+	--soko-black: #1D1912;
+	--soko-gold: #DAA520;
+	--soko-blue: #1000B8;
+	--soko-green: #28a745;
+}
+
+body {
+	background-color: var(--soko-white);
+	color: var(--soko-black);
+}
+
+h1, h2, h3, h4, h5, h6,
+p, label, th, td, input, select, textarea,
+.header__top__right__language a,
+.header__top__right__auth a,
+.header__cart__price,
+.header__cart__price span,
+.shoping__cart__table table tbody tr td,
+.shoping__checkout ul li,
+.checkout__order ul li,
+.checkout__order .checkout__order__subtotal,
+.contact__widget span,
+.blog__sidebar__item ul li a,
+.blog__details__text p,
+.blog__details__widget ul li,
+.qv-attr-label,
+.qv-attr-value,
+.qv-meta {
+	color: var(--soko-black);
+}
+
+a,
+a:hover,
+a:focus,
+.header__menu ul li a,
+.header__cart ul li a,
+.blog__sidebar__item ul li a:hover,
+.blog__details__widget .blog__details__social a:hover {
+	color: var(--soko-blue);
+}
+
+.primary-btn,
+.site-btn,
+.hero__search__form form button,
+.header__top__right__auth a:last-child,
+.qv-btn--primary,
+.qv-btn--primary:hover {
+	background-color: var(--soko-blue);
+	color: var(--soko-white);
+}
+
+.section-title h2:after,
+.product__item__pic .product__item__pic__hover li a:hover,
+.qv-btn--outline:hover {
+	background-color: var(--soko-gold);
+}
+
+.qv-status-available,
+.qv-attr-row .qv-attr-value--available,
+.flyout-list li a .sub-badge {
+	background-color: var(--soko-green);
+	color: var(--soko-white);
+}
+
+.header__top,
+.footer,
+.qv-modal,
+.hero__categories,
+.hero__categories ul#hero-categories-list,
+.contact-form,
+.checkout__order,
+.shoping__cart__table,
+.blog__sidebar__item__tags a {
+	background-color: var(--soko-white);
+}
+
+input,
+select,
+textarea,
+.hero__search__form,
+.hero__categories,
+.hero__categories ul#hero-categories-list,
+.qv-btn--outline {
+	border-color: var(--soko-black);
+}
+
+.qv-premium,
+.header__top__right__language .arrow_carrot-down,
+.product__details__rating i,
+.shoping__cart__table table tbody tr td.shoping__cart__price,
+.shoping__cart__table table tbody tr td.shoping__cart__total {
+	color: var(--soko-gold);
+}
+
+.qv-premium {
+	background-color: var(--soko-gold);
+	color: var(--soko-black);
+}
+
+.qv-overlay,
+.humberger__menu__overlay {
+	background-color: var(--soko-black);
+}
+
+.qv-status-sold,
+.qv-status-reserved,
+.qv-status-out-of-stock,
+.product__discount__item__pic .product__discount__item__pic__hover li a,
+.shoping__cart__table table tbody tr td.shoping__cart__item__close span,
+.checkout__order__products span,
+.shoping__discount form button {
+	background-color: var(--soko-gold);
+	color: var(--soko-black);
+}
+
+.product__discount__item__pic .product__discount__item__pic__hover li a:hover,
+.shoping__cart__table table tbody tr td.shoping__cart__item__close span:hover {
+	background-color: var(--soko-blue);
+	color: var(--soko-white);
+}
+
+.loader {
+	border-color: var(--soko-gold);
+	border-left-color: transparent;
+}
+
+.qv-modal,
+.qv-overlay,
+.humberger__menu__overlay {
+	box-shadow: none;
 }
