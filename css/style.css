@@ -170,6 +170,7 @@ ol {
 	font-weight: 700;
 	background: #1000B8;
 	letter-spacing: 2px;
+	border-radius: 8px;
 }
 
 .site-btn {
@@ -402,6 +403,8 @@ ol {
 	display: block;
 	font-size: 14px;
 	color: #1D1912;
+	padding: 5px 10px;
+	border-radius: 8px;
 }
 
 .header__top__right__auth a i {
@@ -4640,7 +4643,7 @@ a:focus,
 .header__top__right__auth a:last-child,
 .qv-btn--primary,
 .qv-btn--primary:hover {
-	background-color: var(--soko-blue);
+	background-color: var(--soko-gold);
 	color: var(--soko-white);
 }
 
