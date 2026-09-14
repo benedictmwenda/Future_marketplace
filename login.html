@@ -850,7 +850,7 @@
                 storeName = signupStore || email.split('@')[0];
             }
 
-            // Verify password against MySQL Backend / Serverless Cloud DB
+                    // Verify password against MySQL Backend / Serverless Cloud DB
             try {
                 const baseUrl = (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app') || window.location.protocol === 'https:')
                     ? `${window.location.origin}/api`
@@ -862,6 +862,10 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: type === 'signin' ? 'login' : 'register', email, password, role: currentRole, name: storeName })
                 });
+
+                if (!resp.ok) {
+                    throw new Error(`Server responded with status ${resp.status}`);
+                }
 
                 const data = await resp.json();
 
@@ -877,7 +881,13 @@
                 if (data.user && data.user.name) storeName = data.user.name;
 
             } catch (err) {
-                console.warn('MySQL auth check notice, proceeding with session:', err);
+                console.error('Auth request failed:', err);
+                alert('⚠️ We could not reach the server to verify your account. Please check your connection and try again.\n\n(' + err.message + ')');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = type === 'signin' ? 'SIGN IN' : 'CREATE ACCOUNT';
+                }
+                return;
             }
 
             const userSession = {
