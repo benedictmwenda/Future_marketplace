@@ -13,11 +13,11 @@ module.exports = async function handler(req, res) {
     }
 
     try {
-        const DB_HOST = process.env.DB_HOST || 'mysql-6ed8b1b-beneditc64-d12f.g.aivencloud.com';
-        const DB_PORT = parseInt(process.env.DB_PORT || '18518');
-        const DB_USER = process.env.DB_USER || 'avnadmin';
-        const DB_PASSWORD = process.env.DB_PASSWORD || ('AVNS_Toov' + 'Y3_dp2jt' + 'JanWgmV');
-        const DB_NAME = process.env.DB_NAME || 'defaultdb';
+        const DB_HOST = process.env.DB_HOST;
+        const DB_PORT = parseInt(process.env.DB_PORT);
+        const DB_USER = process.env.DB_USER;
+        const DB_PASSWORD = process.env.DB_PASSWORD; // no hardcoded fallback
+        const DB_NAME = process.env.DB_NAME;
 
         const connection = await mysql.createConnection({
             host: DB_HOST,
