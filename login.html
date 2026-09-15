@@ -863,14 +863,15 @@
                     body: JSON.stringify({ action: type === 'signin' ? 'login' : 'register', email, password, role: currentRole, name: storeName })
                 });
 
-                if (!resp.ok) {
-                    throw new Error(`Server responded with status ${resp.status}`);
+                let data;
+                try {
+                    data = await resp.json();
+                } catch (parseErr) {
+                    throw new Error('Unexpected server response');
                 }
 
-                const data = await resp.json();
-
                 if (!data.success) {
-                    alert(`🔒 Access Denied:\n\n${data.message || 'Incorrect password or user not found.'}`);
+                    alert(`🔒 ${data.message || 'Incorrect password or user not found.'}`);
                     if (submitBtn) {
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = type === 'signin' ? 'SIGN IN' : 'CREATE ACCOUNT';
