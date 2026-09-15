@@ -221,15 +221,7 @@ app.post('/api/auth/login', async (req, res) => {
 
         const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
         if (rows.length === 0) {
-            // Auto-create initial account if user table empty or legacy account
-            const query = `INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)`;
-            const name = email.split('@')[0];
-            await pool.query(query, [name, email, password, role || 'buyer']);
-            return res.json({
-                success: true,
-                message: 'Account created & logged in',
-                user: { name, email, role: role || 'buyer' }
-            });
+            return res.status(404).json({ success: false, message: 'No account found with this email. Please sign up first.' });
         }
 
         const user = rows[0];

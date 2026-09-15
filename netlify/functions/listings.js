@@ -75,17 +75,13 @@ exports.handler = async function (event, context) {
             if (event.path.includes('/auth/login') || body.action === 'login') {
                 const { email, password, role } = body;
                 const [rows] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
-                
+
                 if (rows.length === 0) {
-                    // Auto register on initial sign-in if new user
-                    const query = `INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)`;
-                    const name = email.split('@')[0];
-                    await connection.query(query, [name, email, password, role || 'buyer']);
                     await connection.end();
                     return {
-                        statusCode: 200,
+                        statusCode: 404,
                         headers,
-                        body: JSON.stringify({ success: true, user: { name, email, role: role || 'buyer' } })
+                        body: JSON.stringify({ success: false, message: 'No account found with this email. Please sign up first.' })
                     };
                 }
 
