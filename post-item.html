@@ -1518,7 +1518,7 @@
             return name.toLowerCase().replace(/[^a-z0-9]+/g, '');
         }
 
-        function renderSellerListings() {
+        async function renderSellerListings() {
             const container = document.getElementById('sellerListingsContainer');
             if (!container) return;
 
@@ -1527,11 +1527,16 @@
                 return;
             }
 
+            container.innerHTML = '<div class="seller-listings-empty"><p style="margin:0;">Loading your listings...</p></div>';
+
             let listings = [];
             try {
-                listings = JSON.parse(localStorage.getItem('sokohub_listings') || '[]');
+                listings = await fetchSokoHubListings();
             } catch (e) {
-                console.warn("Could not read local listings:", e);
+                console.warn("Could not fetch listings:", e);
+                try {
+                    listings = JSON.parse(localStorage.getItem('sokohub_listings') || '[]');
+                } catch (e2) { }
             }
 
             const sellerSlug = getSellerSlug(currentUser);
