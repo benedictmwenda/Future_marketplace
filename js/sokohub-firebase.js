@@ -232,8 +232,46 @@ async function renderShopDetailsPage() {
     if (descEl && item.description) descEl.textContent = item.description;
 
     const mainImg = document.querySelector('.product__details__pic__item--large');
-    const imageSrc = (item.images && item.images[0]) || item.imageUrl || 'img/featured/feature-1.jpg';
+    const itemImages = (Array.isArray(item.images) && item.images.length > 0) ? item.images : [item.imageUrl || 'img/featured/feature-1.jpg'];
+    const imageSrc = itemImages[0];
     if (mainImg) mainImg.src = imageSrc;
+
+    // Rebuild the thumbnail strip from this item's actual uploaded photos.
+    // (It used to be static demo markup — same 4 stock images on every listing.)
+    const oldSlider = document.querySelector('.product__details__pic__slider');
+    if (oldSlider) {
+        const thumbsHtml = itemImages.map(function (img) {
+            const safe = String(img).replace(/"/g, '&quot;');
+            return `<img data-imgbigurl="${safe}" src="${safe}" alt="${(item.title || 'Product photo').replace(/"/g, '&quot;')}">`;
+        }).join('');
+
+        const freshSlider = document.createElement('div');
+        freshSlider.className = 'product__details__pic__slider owl-carousel';
+        freshSlider.innerHTML = thumbsHtml;
+        oldSlider.replaceWith(freshSlider);
+
+        if (window.jQuery && window.jQuery.fn.owlCarousel) {
+            window.jQuery(freshSlider).owlCarousel({
+                loop: itemImages.length > 1,
+                margin: 20,
+                items: 4,
+                dots: true,
+                smartSpeed: 1200,
+                autoHeight: false,
+                autoplay: itemImages.length > 1
+            });
+        }
+
+        // Bind the click-to-swap behavior once, delegated so it also covers
+        // carousel-cloned thumbnails and any future re-renders.
+        if (window.jQuery && !window.__sokoThumbClickBound) {
+            window.__sokoThumbClickBound = true;
+            window.jQuery(document).on('click', '.product__details__pic__slider img', function () {
+                const imgurl = window.jQuery(this).data('imgbigurl');
+                window.jQuery('.product__details__pic__item--large').attr('src', imgurl);
+            });
+        }
+    }
 
     const contactBtn = document.querySelector('.product__details__text a.primary-btn');
     if (contactBtn && item.sellerPhone) {
