@@ -3,6 +3,18 @@
 
 <head>
     <meta charset="UTF-8">
+    <script>
+        // Start fetching listings immediately, before any other scripts/styles load,
+        // so the data is already in flight (or ready) by the time the page finishes loading.
+        window.__earlyListingsPromise = (function () {
+            var isProd = window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app') || window.location.protocol === 'https:';
+            if (!isProd) return null;
+            return fetch(window.location.origin + '/api/listings')
+                .then(function (r) { return r.json(); })
+                .then(function (data) { return (data && data.success && Array.isArray(data.listings)) ? data.listings : null; })
+                .catch(function (err) { console.warn('Early listings prefetch failed:', err); return null; });
+        })();
+    </script>
     <meta name="description" content="SokoHub - Post Your Item, Rental, Vehicle or Service">
     <meta name="keywords" content="SokoHub, sell, post listing, Kenya marketplace, Nairobi">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
