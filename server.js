@@ -1,5 +1,6 @@
 const express = require('express');
 const mysql = require('mysql2/promise');
+const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config();
@@ -198,7 +199,8 @@ app.post('/api/auth/register', async (req, res) => {
         }
 
         const query = `INSERT INTO users (name, email, password, phone, role) VALUES (?, ?, ?, ?, ?)`;
-        await pool.query(query, [name || email.split('@')[0], email, password, phone || '', role || 'buyer']);
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await pool.query(query, [name || email.split('@')[0], email, hashedPassword, phone || '', role || 'buyer']);
 
         res.json({
             success: true,
@@ -225,7 +227,8 @@ app.post('/api/auth/login', async (req, res) => {
         }
 
         const user = rows[0];
-        if (user.password !== password) {
+        const passwordMatches = await bcrypt.compare(password, user.password);
+        if (!passwordMatches) {
             return res.status(401).json({ success: false, message: '🔒 Incorrect Password! Please enter the correct password.' });
         }
 

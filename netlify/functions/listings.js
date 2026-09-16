@@ -1,4 +1,5 @@
 const mysql = require('mysql2/promise');
+const bcrypt = require('bcryptjs');
 
 // Netlify Serverless Function connecting directly to Aiven Cloud MySQL
 exports.handler = async function (event, context) {
@@ -86,7 +87,8 @@ exports.handler = async function (event, context) {
                 }
 
                 const user = rows[0];
-                if (user.password !== password) {
+                const passwordMatches = await bcrypt.compare(password, user.password);
+                if (!passwordMatches) {
                     await connection.end();
                     return {
                         statusCode: 401,
@@ -120,7 +122,8 @@ exports.handler = async function (event, context) {
                 }
 
                 const query = `INSERT INTO users (name, email, password, phone, role) VALUES (?, ?, ?, ?, ?)`;
-                await connection.query(query, [name || email.split('@')[0], email, password, phone || '', role || 'buyer']);
+                const hashedPassword = await bcrypt.hash(password, 10);
+                await connection.query(query, [name || email.split('@')[0], email, hashedPassword, phone || '', role || 'buyer']);
                 await connection.end();
 
                 return {
