@@ -308,6 +308,48 @@ async function renderShopDetailsPage() {
     const breadcrumbItem = document.querySelector('.breadcrumb__option span');
     if (breadcrumbItem) breadcrumbItem.textContent = item.title;
 
+    // Description, Specifications & Reviews tabs — these were static BMW demo
+    // content in the template and are now built from the real listing.
+    const descTab = document.querySelector('#tabs-1 .product__details__tab__desc');
+    if (descTab) {
+        const desc = (item.description && item.description.trim()) || 'No description provided by the seller.';
+        descTab.innerHTML = `<h6>Listing Overview</h6><p>${desc.replace(/</g, '&lt;')}</p>`;
+    }
+
+    const specsTab = document.querySelector('#tabs-2 .product__details__tab__desc');
+    if (specsTab) {
+        const rows = [];
+        if (item.category) rows.push(['Category', item.category]);
+        if (item.subcategory) rows.push(['Subcategory', item.subcategory]);
+        if (item.condition) rows.push(['Condition', item.condition]);
+        if (item.location) rows.push(['Location', item.location]);
+        if (item.negotiable) rows.push(['Price Negotiable', item.negotiable]);
+        if (item.deliveryAvailable) rows.push(['Delivery Available', item.deliveryAvailable]);
+        if (item.attributes && typeof item.attributes === 'object') {
+            Object.keys(item.attributes).forEach(function (key) {
+                const val = item.attributes[key];
+                if (val === undefined || val === null || val === '') return;
+                const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, function (c) { return c.toUpperCase(); });
+                rows.push([label, val]);
+            });
+        }
+        if (rows.length > 0) {
+            const rowsHtml = rows.map(function (r) {
+                return `<tr><td><b>${r[0]}</b></td><td>${String(r[1]).replace(/</g, '&lt;')}</td></tr>`;
+            }).join('');
+            specsTab.innerHTML = `<h6>Specifications</h6><table class="table table-bordered mt-3"><tbody>${rowsHtml}</tbody></table>`;
+        } else {
+            specsTab.innerHTML = '<h6>Specifications</h6><p>No additional specifications provided by the seller.</p>';
+        }
+    }
+
+    const reviewsTab = document.querySelector('#tabs-3 .product__details__tab__desc');
+    if (reviewsTab) {
+        reviewsTab.innerHTML = '<h6>Reviews</h6><p>This seller has not received any reviews yet.</p>';
+    }
+    const reviewsCountEl = document.querySelector('a[href="#tabs-3"] span');
+    if (reviewsCountEl) reviewsCountEl.textContent = '(0)';
+
     if (loadingOverlay) loadingOverlay.remove();
 }
 
