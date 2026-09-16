@@ -48,6 +48,14 @@ const SokoMySQL = (function () {
         // Fetch all listings from MySQL API
         fetchListings: async function () {
             try {
+                // Reuse the request kicked off in <head> as soon as the page started loading,
+                // instead of waiting until now to start a brand new one.
+                if (window.__earlyListingsPromise) {
+                    const early = await window.__earlyListingsPromise;
+                    if (Array.isArray(early)) {
+                        return early;
+                    }
+                }
                 const baseUrl = await getActiveBaseUrl();
                 const response = await fetch(`${baseUrl}/listings`);
                 const data = await response.json();
