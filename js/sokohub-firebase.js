@@ -15,8 +15,8 @@ async function fetchSokoHubListings() {
         }
     }
 
-    // 1. Read from IndexedDB — only used as a fallback if MySQL didn't return anything
-    if (window.SokoDB && allListings.length === 0) {
+    // 1. Read from IndexedDB (High Capacity Persistent Database)
+    if (window.SokoDB) {
         try {
             const dbListings = await window.SokoDB.getAllListings();
             if (Array.isArray(dbListings) && dbListings.length > 0) {
@@ -72,7 +72,10 @@ async function renderShopGridListings() {
     if (!gridContainer) return;
 
     const listings = await fetchSokoHubListings();
-    if (!listings || listings.length === 0) return;
+    if (!listings || listings.length === 0) {
+        gridContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#7a7a7a;">No listings yet. Be the first to post one!</div>';
+        return;
+    }
 
     window.quickViewItems = window.quickViewItems || {};
 
@@ -127,7 +130,7 @@ async function renderShopGridListings() {
     });
 
     $('.user-dynamic-grid-item').remove();
-    gridContainer.insertAdjacentHTML('afterbegin', html);
+    gridContainer.innerHTML = html; // full replace: clears loading placeholder
 }
 
 // Render dynamic listings on index.html homepage
@@ -136,7 +139,10 @@ async function renderHomePageListings() {
     if (!container) return;
 
     const listings = await fetchSokoHubListings();
-    if (!listings || listings.length === 0) return;
+    if (!listings || listings.length === 0) {
+        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#7a7a7a;">No listings yet. Be the first to post one!</div>';
+        return;
+    }
 
     window.quickViewItems = window.quickViewItems || {};
 
@@ -185,7 +191,7 @@ async function renderHomePageListings() {
     });
 
     $('.user-dynamic-grid-item').remove();
-    container.insertAdjacentHTML('afterbegin', html);
+    container.innerHTML = html; // full replace: clears loading placeholder
 
     setTimeout(function () {
         if (typeof mixitup !== 'undefined') {
