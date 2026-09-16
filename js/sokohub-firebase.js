@@ -214,11 +214,21 @@ async function renderHomePageListings() {
 async function renderShopDetailsPage() {
     const urlParams = new URLSearchParams(window.location.search);
     const itemId = urlParams.get('id');
-    if (!itemId) return;
+    const loadingOverlay = document.getElementById('product-loading-overlay');
+
+    if (!itemId) {
+        if (loadingOverlay) loadingOverlay.remove();
+        return;
+    }
 
     const listings = await fetchSokoHubListings();
     const item = listings.find(l => String(l.id) === String(itemId));
-    if (!item) return;
+    if (!item) {
+        if (loadingOverlay) {
+            loadingOverlay.innerHTML = '<p style="color:#7a7a7a;">Sorry, this listing could not be found.</p>';
+        }
+        return;
+    }
 
     const titleEl = document.querySelector('.product__details__text h3');
     if (titleEl) titleEl.textContent = item.title;
@@ -297,6 +307,8 @@ async function renderShopDetailsPage() {
     if (breadcrumbTitle) breadcrumbTitle.textContent = item.title;
     const breadcrumbItem = document.querySelector('.breadcrumb__option span');
     if (breadcrumbItem) breadcrumbItem.textContent = item.title;
+
+    if (loadingOverlay) loadingOverlay.remove();
 }
 
 // Dynamic Hero Categories Sidebar Counter & Auto-Filter with Hover Flyout

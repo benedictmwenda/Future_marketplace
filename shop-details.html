@@ -60,6 +60,13 @@
 
 <body>
 
+    <!-- Covers the page until the real listing data has loaded, so the static
+         template content never flashes on screen. Removed by renderShopDetailsPage(). -->
+    <div id="product-loading-overlay" style="position:fixed;inset:0;background:#fff;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;">
+        <i class="fa fa-spinner fa-spin" style="font-size:36px;color:#c1a175;"></i>
+        <p style="margin-top:14px;color:#7a7a7a;">Loading product details...</p>
+    </div>
+
     <!-- ===================== Quick View Modal ===================== -->
     <div class="qv-overlay" id="quickViewOverlay"></div>
     <div class="qv-modal" id="quickViewModal" role="dialog" aria-modal="true">
