@@ -3,6 +3,18 @@
 
 <head>
     <meta charset="UTF-8">
+    <script>
+        // Start fetching listings immediately, before any other scripts/styles load,
+        // so the data is already in flight (or ready) by the time the page finishes loading.
+        window.__earlyListingsPromise = (function () {
+            var isProd = window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app') || window.location.protocol === 'https:';
+            if (!isProd) return null;
+            return fetch(window.location.origin + '/api/listings')
+                .then(function (r) { return r.json(); })
+                .then(function (data) { return (data && data.success && Array.isArray(data.listings)) ? data.listings : null; })
+                .catch(function (err) { console.warn('Early listings prefetch failed:', err); return null; });
+        })();
+    </script>
     <meta name="description" content="SokoHub - Your Local Marketplace for Products, Rentals, Vehicles & Services">
     <meta name="keywords" content="SokoHub, marketplace, Kenya, shop, cart, products, rentals, vehicles, services">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -279,18 +291,8 @@
                             <i class="fa fa-bars"></i>
                             <span>All Categories</span>
                         </div>
-                        <ul>
-                            <li><a href="./shop-grid.html">Electronics</a></li>
-                            <li><a href="./shop-grid.html">Vehicles &amp; Cars</a></li>
-                            <li><a href="./shop-grid.html">Property Rentals</a></li>
-                            <li><a href="./shop-grid.html">Fashion &amp; Clothing</a></li>
-                            <li><a href="./shop-grid.html">Home &amp; Furniture</a></li>
-                            <li><a href="./shop-grid.html">Professional Services</a></li>
-                            <li><a href="./shop-grid.html">Food &amp; Groceries</a></li>
-                            <li><a href="./shop-grid.html">Health &amp; Beauty</a></li>
-                            <li><a href="./shop-grid.html">Sports &amp; Fitness</a></li>
-                            <li><a href="./shop-grid.html">Agriculture</a></li>
-                            <li><a href="./shop-grid.html">Baby &amp; Kids</a></li>
+                        <ul id="hero-categories-list">
+                            <li class="soko-cat-loading" style="padding:10px 0;color:#7a7a7a;"><i class="fa fa-spinner fa-spin" style="margin-right:10px;width:18px;"></i> Loading categories...</li>
                         </ul>
                     </div>
                 </div>
@@ -586,6 +588,9 @@
     <script src="js/mixitup.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/sokohub-db.js"></script>
+    <script src="js/sokohub-mysql.js"></script>
+    <script src="js/sokohub-firebase.js"></script>
 
     <script>
         // Shopping Cart page — fully driven by the shared SokoCart module

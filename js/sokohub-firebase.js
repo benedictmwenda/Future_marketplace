@@ -458,6 +458,43 @@ function updateHeroCategories(listings) {
     });
 
     list.innerHTML = html;
+
+    // Click-to-toggle for the subcategory flyout: works on touch devices where
+    // :hover never "un-hovers", unlike the pure-CSS hover behavior alone.
+    if (!window.__sokoHeroCatToggleBound) {
+        window.__sokoHeroCatToggleBound = true;
+        document.addEventListener('click', function (e) {
+            const arrow = e.target.closest('.arrow-icon');
+            if (arrow) {
+                e.preventDefault();
+                e.stopPropagation();
+                const li = arrow.closest('.hero-cat-item');
+                if (!li) return;
+                const wasOpen = li.classList.contains('hero-cat-open');
+                document.querySelectorAll('.hero-cat-item.hero-cat-open').forEach(function (openLi) {
+                    if (openLi !== li) openLi.classList.remove('hero-cat-open');
+                });
+                li.classList.toggle('hero-cat-open', !wasOpen);
+                return;
+            }
+            if (!e.target.closest('.hero-cat-item')) {
+                document.querySelectorAll('.hero-cat-item.hero-cat-open').forEach(function (openLi) {
+                    openLi.classList.remove('hero-cat-open');
+                });
+            }
+        });
+    }
+
+    // The shop-grid page also has its own simpler "Categories" filter widget
+    // in the sidebar — populate it from the same data instead of duplicating logic.
+    const sidebarList = document.getElementById('shop-sidebar-categories');
+    if (sidebarList) {
+        let sidebarHtml = '';
+        categoryMap.forEach(c => {
+            sidebarHtml += `<li><a href="./shop-grid.html?category=${c.cat}">${c.name} ${c.total > 0 ? `<span style="color:#999;">(${c.total})</span>` : ''}</a></li>`;
+        });
+        sidebarList.innerHTML = sidebarHtml;
+    }
 }
 
 // Auto-run on DOM Ready

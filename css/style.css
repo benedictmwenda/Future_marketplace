@@ -4276,13 +4276,15 @@ ol {
     transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.hero-cat-item:hover > .hero-cat-link {
+.hero-cat-item:hover > .hero-cat-link,
+.hero-cat-item.hero-cat-open > .hero-cat-link {
     background: #F3F3E6 !important;
     color: #1000B8 !important;
     padding-left: 22px !important;
 }
 
-.hero-cat-item:hover > .hero-cat-link .arrow-icon {
+.hero-cat-item:hover > .hero-cat-link .arrow-icon,
+.hero-cat-item.hero-cat-open > .hero-cat-link .arrow-icon {
     color: #1000B8;
     transform: rotate(90deg) !important;
 }
@@ -4309,7 +4311,8 @@ ol {
     to { opacity: 1; max-height: 300px; }
 }
 
-.hero-cat-item:hover .hero-sub-flyout {
+.hero-cat-item:hover .hero-sub-flyout,
+.hero-cat-item.hero-cat-open .hero-sub-flyout {
     display: block !important;
 }
 
