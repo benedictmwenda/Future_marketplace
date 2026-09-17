@@ -71,16 +71,20 @@ async function renderShopGridListings() {
     const gridContainer = document.getElementById('shop-grid-items-container');
     if (!gridContainer) return;
 
-    const listings = await fetchSokoHubListings();
-    if (!listings || listings.length === 0) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterCat = urlParams.get('category');
+
+    const allListings = await fetchSokoHubListings();
+    if (!allListings || allListings.length === 0) {
         gridContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#7a7a7a;">No listings yet. Be the first to post one!</div>';
         return;
     }
 
     window.quickViewItems = window.quickViewItems || {};
 
-    let html = '';
-    listings.forEach(item => {
+    // Work out each item's category/subcategory slug up front so we can both
+    // filter by it (if a ?category= is in the URL) and use it for the card's class.
+    const withSlugs = allListings.map(function (item) {
         let catSlug = 'vehicles';
         if (item.category) {
             const cat = item.category.toLowerCase();
@@ -92,8 +96,36 @@ async function renderShopGridListings() {
             else if (cat.includes('serv')) catSlug = 'services';
             else if (cat.includes('job')) catSlug = 'jobs';
         }
-
         const subcatSlug = item.subcategory ? item.subcategory.toLowerCase().replace(/[^a-z0-9]/g, '-') : '';
+        return { item: item, catSlug: catSlug, subcatSlug: subcatSlug };
+    });
+
+    const filtered = filterCat
+        ? withSlugs.filter(function (x) { return x.catSlug === filterCat || x.subcatSlug === filterCat; })
+        : withSlugs;
+
+    // Let the page know which category is active, for a heading + "clear filter" link.
+    const headingEl = document.querySelector('.shop-grid-category-heading');
+    if (headingEl) {
+        if (filterCat) {
+            const label = filterCat.replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+            headingEl.innerHTML = `Showing: <b>${label}</b> &nbsp; <a href="shop-grid.html" style="font-size:13px;color:#1000B8;">(clear filter)</a>`;
+            headingEl.style.display = 'block';
+        } else {
+            headingEl.style.display = 'none';
+        }
+    }
+
+    if (filtered.length === 0) {
+        gridContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#7a7a7a;">No listings in this category yet. <a href="shop-grid.html">View all listings</a></div>';
+        return;
+    }
+
+    let html = '';
+    filtered.forEach(function (entry) {
+        const item = entry.item;
+        const catSlug = entry.catSlug;
+        const subcatSlug = entry.subcatSlug;
         const formattedPrice = typeof item.price === 'number' ? item.price.toLocaleString() : item.price;
         const mainImage = (item.images && item.images[0]) || item.imageUrl || 'img/featured/feature-1.jpg';
 
@@ -428,17 +460,6 @@ function updateHeroCategories(listings) {
     list.innerHTML = html;
 }
 
-function handleUrlCategoryFilter() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const cat = urlParams.get('category');
-    if (!cat) return;
-
-    setTimeout(function () {
-        const filterBtn = document.querySelector(`[data-filter=".${cat}"]`);
-        if (filterBtn) filterBtn.click();
-    }, 300);
-}
-
 // Auto-run on DOM Ready
 $(document).ready(async function () {
     const listings = await fetchSokoHubListings();
@@ -446,5 +467,4 @@ $(document).ready(async function () {
     renderShopGridListings();
     renderHomePageListings();
     renderShopDetailsPage();
-    handleUrlCategoryFilter();
 });
