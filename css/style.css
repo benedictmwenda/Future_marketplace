@@ -1457,7 +1457,7 @@ ol {
 
     .qv-badges { top: 10px; right: 10px; }
     .qv-thumbs { left: 8px; right: 8px; bottom: 8px; }
-    .qv-thumb { width: 28px; height: 28px; }
+    .qv-thumb { width: 18px; height: 18px; }
 
     .qv-attr-row { font-size: 13px; }
     .qv-attr-label { min-width: 0; flex: 0 0 40%; }
