@@ -166,80 +166,98 @@ async function renderShopGridListings() {
 }
 
 // Render dynamic listings on index.html homepage
-async function renderHomePageListings() {
-    const container = document.querySelector('.featured__filter') || document.getElementById('home-user-listings');
-    if (!container) return;
-
-    const listings = await fetchSokoHubListings();
-    if (!listings || listings.length === 0) {
-        container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#7a7a7a;">No listings yet. Be the first to post one!</div>';
-        return;
+function buildHomeListingCard(item) {
+    let catSlug = 'vehicles';
+    if (item.category) {
+        const cat = item.category.toLowerCase();
+        if (cat.includes('vehic') || cat.includes('car') || cat.includes('auto')) catSlug = 'vehicles';
+        else if (cat.includes('prop') || cat.includes('house') || cat.includes('rent') || cat.includes('land')) catSlug = 'property';
+        else if (cat.includes('elec') || cat.includes('phone') || cat.includes('laptop') || cat.includes('tv')) catSlug = 'electronics';
+        else if (cat.includes('fash') || cat.includes('cloth') || cat.includes('shoe')) catSlug = 'fashion';
+        else if (cat.includes('home') || cat.includes('furnit')) catSlug = 'home';
+        else if (cat.includes('serv')) catSlug = 'services';
+        else if (cat.includes('job')) catSlug = 'jobs';
+        else catSlug = 'vehicles';
     }
 
+    const subcatSlug = item.subcategory ? item.subcategory.toLowerCase().replace(/[^a-z0-9]/g, '-') : '';
+    const formattedPrice = typeof item.price === 'number' ? 'KSH ' + item.price.toLocaleString() : item.price;
+    const mainImage = (item.images && item.images[0]) || item.imageUrl || 'img/featured/feature-1.jpg';
+
     window.quickViewItems = window.quickViewItems || {};
+    window.quickViewItems[item.id] = item;
 
-    let html = '';
-    listings.forEach(item => {
-        let catSlug = 'vehicles';
-        if (item.category) {
-            const cat = item.category.toLowerCase();
-            if (cat.includes('vehic') || cat.includes('car') || cat.includes('auto')) catSlug = 'vehicles';
-            else if (cat.includes('prop') || cat.includes('house') || cat.includes('rent') || cat.includes('land')) catSlug = 'property';
-            else if (cat.includes('elec') || cat.includes('phone') || cat.includes('laptop') || cat.includes('tv')) catSlug = 'electronics';
-            else if (cat.includes('fash') || cat.includes('cloth') || cat.includes('shoe')) catSlug = 'fashion';
-            else if (cat.includes('home') || cat.includes('furnit')) catSlug = 'home';
-            else if (cat.includes('serv')) catSlug = 'services';
-            else if (cat.includes('job')) catSlug = 'jobs';
-            else catSlug = 'vehicles';
-        }
-
-        const subcatSlug = item.subcategory ? item.subcategory.toLowerCase().replace(/[^a-z0-9]/g, '-') : '';
-        const formattedPrice = typeof item.price === 'number' ? 'KSH ' + item.price.toLocaleString() : item.price;
-        const mainImage = (item.images && item.images[0]) || item.imageUrl || 'img/featured/feature-1.jpg';
-
-        window.quickViewItems[item.id] = item;
-
-        html += `
-            <div class="col-lg-3 col-md-4 col-sm-6 mix ${catSlug} ${subcatSlug} user-dynamic-grid-item" style="display: block;">
-                <div class="featured__item">
-                    <div class="featured__item__pic set-bg" style="background-image: url('${mainImage}'); background-size: cover; background-position: center; height: 260px; position: relative;">
-                        <span class="badge" style="position: absolute; top: 10px; left: 10px; background: #1000B8; color: #F3F3E6; padding: 5px 10px; font-size: 11px; text-transform: uppercase; font-weight:700; border-radius:4px; z-index: 2;">
-                            ${item.category || 'Product'} ${item.subcategory ? '▸ ' + item.subcategory : ''}
-                        </span>
-                        <ul class="featured__item__pic__hover">
-                            <li><a href="#" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#" class="quick-view-btn" data-qv-id="${item.id}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-eye"></i></a></li>
-                            <li><a href="shop-details.html?id=${item.id}" style="background:#DAA520; color:#1D1912;"><i class="fa fa-external-link"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="featured__item__text">
-                        <h6><a href="shop-details.html?id=${item.id}" style="color:#1D1912; font-weight:700;">${item.title}</a></h6>
-                        <h5 style="color:#1000B8; font-weight:800;">${formattedPrice}</h5>
-                        <small style="color:#666;"><i class="fa fa-map-marker" style="color:#1000B8;"></i> ${item.location || 'Nairobi'} | ${item.sellerName || 'Seller'}</small>
-                    </div>
+    return `
+        <div class="col-lg-3 col-md-4 col-sm-6 mix ${catSlug} ${subcatSlug} user-dynamic-grid-item" style="display: block;">
+            <div class="featured__item">
+                <div class="featured__item__pic set-bg" style="background-image: url('${mainImage}'); background-size: cover; background-position: center; height: 260px; position: relative;">
+                    <span class="badge" style="position: absolute; top: 10px; left: 10px; background: #1000B8; color: #F3F3E6; padding: 5px 10px; font-size: 11px; text-transform: uppercase; font-weight:700; border-radius:4px; z-index: 2;">
+                        ${item.category || 'Product'} ${item.subcategory ? '▸ ' + item.subcategory : ''}
+                    </span>
+                    <ul class="featured__item__pic__hover">
+                        <li><a href="#" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-heart"></i></a></li>
+                        <li><a href="#" class="quick-view-btn" data-qv-id="${item.id}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-eye"></i></a></li>
+                        <li><a href="shop-details.html?id=${item.id}" style="background:#DAA520; color:#1D1912;"><i class="fa fa-external-link"></i></a></li>
+                    </ul>
+                </div>
+                <div class="featured__item__text">
+                    <h6><a href="shop-details.html?id=${item.id}" style="color:#1D1912; font-weight:700;">${item.title}</a></h6>
+                    <h5 style="color:#1000B8; font-weight:800;">${formattedPrice}</h5>
+                    <small style="color:#666;"><i class="fa fa-map-marker" style="color:#1000B8;"></i> ${item.location || 'Nairobi'} | ${item.sellerName || 'Seller'}</small>
                 </div>
             </div>
-        `;
-    });
+        </div>
+    `;
+}
 
-    $('.user-dynamic-grid-item').remove();
-    container.innerHTML = html; // full replace: clears loading placeholder
+async function renderHomePageListings() {
+    const featuredContainer = document.querySelector('.featured__filter');
+    const recentContainer = document.getElementById('home-user-listings');
+    if (!featuredContainer && !recentContainer) return;
 
-    setTimeout(function () {
-        if (typeof mixitup !== 'undefined') {
-            try {
-                if (window.homeMixer && typeof window.homeMixer.destroy === 'function') {
-                    window.homeMixer.destroy();
-                }
-                window.homeMixer = mixitup(container, {
-                    selectors: { target: '.mix' },
-                    animation: { duration: 300 }
-                });
-            } catch (mErr) {
-                console.warn('MixItUp re-init notice:', mErr);
+    const listings = await fetchSokoHubListings();
+
+    // --- Featured Listings: only items the seller explicitly marked as featured ---
+    if (featuredContainer) {
+        if (!listings || listings.length === 0) {
+            featuredContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#7a7a7a;">No listings yet. Be the first to post one!</div>';
+        } else {
+            const featured = listings.filter(function (item) { return item.featured === 'Yes' || item.featured === true; });
+            if (featured.length === 0) {
+                featuredContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:#7a7a7a;">No featured listings yet. Sellers can highlight their best items when posting.</div>';
+            } else {
+                featuredContainer.innerHTML = featured.map(buildHomeListingCard).join('');
             }
         }
-    }, 100);
+
+        setTimeout(function () {
+            if (typeof mixitup !== 'undefined') {
+                try {
+                    if (window.homeMixer && typeof window.homeMixer.destroy === 'function') {
+                        window.homeMixer.destroy();
+                    }
+                    window.homeMixer = mixitup(featuredContainer, {
+                        selectors: { target: '.mix' },
+                        animation: { duration: 300 }
+                    });
+                } catch (mErr) {
+                    console.warn('MixItUp re-init notice:', mErr);
+                }
+            }
+        }, 100);
+    }
+
+    // --- Recent Listings from Our Sellers: everything, newest first ---
+    if (recentContainer) {
+        if (!listings || listings.length === 0) {
+            recentContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#7a7a7a;">No listings yet. Be the first to post one!</div>';
+        } else {
+            const sorted = listings.slice().sort(function (a, b) {
+                return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+            });
+            recentContainer.innerHTML = sorted.map(buildHomeListingCard).join('');
+        }
+    }
 }
 
 // Render single listing details on shop-details.html if ?id= is present in URL

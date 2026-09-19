@@ -55,6 +55,7 @@ module.exports = async function handler(req, res) {
                 attributes: typeof item.attributes === 'string' ? JSON.parse(item.attributes || '{}') : (item.attributes || {}),
                 status: item.status,
                 premium: item.premium,
+                featured: item.featured,
                 views: item.views,
                 createdAt: item.created_at
             }));
@@ -72,10 +73,10 @@ module.exports = async function handler(req, res) {
 
             const query = `
                 INSERT INTO listings 
-                (id, title, category, subcategory, price, description, \`condition\`, location, seller_id, seller_name, seller_email, seller_phone, whatsapp, negotiable, delivery_available, image_url, images, features, attributes, status, premium)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (id, title, category, subcategory, price, description, \`condition\`, location, seller_id, seller_name, seller_email, seller_phone, whatsapp, negotiable, delivery_available, image_url, images, features, attributes, status, premium, featured)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON DUPLICATE KEY UPDATE
-                title=VALUES(title), category=VALUES(category), subcategory=VALUES(subcategory), price=VALUES(price), description=VALUES(description), \`condition\`=VALUES(\`condition\`), location=VALUES(location), seller_name=VALUES(seller_name), seller_email=VALUES(seller_email), seller_phone=VALUES(seller_phone), whatsapp=VALUES(whatsapp), negotiable=VALUES(negotiable), delivery_available=VALUES(delivery_available), image_url=VALUES(image_url), images=VALUES(images), features=VALUES(features), attributes=VALUES(attributes), status=VALUES(status), premium=VALUES(premium)
+                title=VALUES(title), category=VALUES(category), subcategory=VALUES(subcategory), price=VALUES(price), description=VALUES(description), \`condition\`=VALUES(\`condition\`), location=VALUES(location), seller_name=VALUES(seller_name), seller_email=VALUES(seller_email), seller_phone=VALUES(seller_phone), whatsapp=VALUES(whatsapp), negotiable=VALUES(negotiable), delivery_available=VALUES(delivery_available), image_url=VALUES(image_url), images=VALUES(images), features=VALUES(features), attributes=VALUES(attributes), status=VALUES(status), premium=VALUES(premium), featured=VALUES(featured)
             `;
 
             await connection.query(query, [
@@ -84,7 +85,8 @@ module.exports = async function handler(req, res) {
                 item.location || 'Nairobi', item.sellerId || '', item.sellerName || 'Verified Seller',
                 item.sellerEmail || '', item.sellerPhone || '', item.whatsapp || '', item.negotiable || 'Yes',
                 item.deliveryAvailable || 'No', item.imageUrl || (item.images && item.images[0]) || '',
-                imagesJson, featuresJson, attributesJson, item.status || 'Available', item.premium || 'Normal'
+                imagesJson, featuresJson, attributesJson, item.status || 'Available', item.premium || 'Normal',
+                item.featured || 'No'
             ]);
 
             await connection.end();

@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS listings (
     attributes JSON,
     status VARCHAR(50) DEFAULT 'Available',
     premium VARCHAR(50) DEFAULT 'Normal',
+    featured VARCHAR(10) DEFAULT 'No',
     views INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

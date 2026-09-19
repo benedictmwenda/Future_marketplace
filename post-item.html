@@ -1180,6 +1180,13 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-12 form-group" style="margin-top:10px;">
+                                <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-weight:normal;">
+                                    <input type="checkbox" id="itemFeatured" style="width:auto;">
+                                    <span>✨ Highlight this as one of my best listings (shows in the homepage "Featured Listings" section)</span>
+                                </label>
+                            </div>
+
                             <div class="col-md-12" style="padding-left:0; padding-right:0;">
                                 <button type="submit" class="btn-post-item" id="submitBtn">
                                     <i class="fa fa-paper-plane"></i> PUBLISH LISTING TO SOKOHUB
@@ -1658,6 +1665,7 @@
             // Status / Negotiable
             document.getElementById('itemStatus').value = item.status || 'Available';
             document.getElementById('itemNegotiable').value = item.negotiable || 'Yes';
+            document.getElementById('itemFeatured').checked = (item.featured === 'Yes' || item.featured === true);
 
             // Premium
             selectPremium(selectedPremium);
@@ -1888,6 +1896,7 @@
                 whatsapp: document.getElementById('sellerWhatsapp').value.trim(),
                 negotiable: document.getElementById('itemNegotiable').value,
                 deliveryAvailable: document.getElementById('itemDelivery').value,
+                featured: document.getElementById('itemFeatured').checked ? 'Yes' : 'No',
                 images: selectedImages.filter(Boolean),
                 imageUrl: selectedImages[0] || (existingItem && existingItem.imageUrl) || 'img/featured/feature-1.jpg',
                 features: features,
