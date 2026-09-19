@@ -1,4 +1,33 @@
 const mysql = require('mysql2/promise');
+const crypto = require('crypto');
+let bcrypt;
+try {
+    bcrypt = require('bcryptjs');
+} catch (e) {
+    bcrypt = null;
+}
+
+function hashPassword(password) {
+    if (bcrypt) {
+        return bcrypt.hashSync(password, 10);
+    }
+    const salt = crypto.randomBytes(16).toString('hex');
+    const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
+    return `${salt}:${hash}`;
+}
+
+function verifyPassword(password, storedHash) {
+    if (!storedHash) return false;
+    if (storedHash.startsWith('$2a$') || storedHash.startsWith('$2b$')) {
+        if (bcrypt) return bcrypt.compareSync(password, storedHash);
+    }
+    if (storedHash.includes(':')) {
+        const [salt, hash] = storedHash.split(':');
+        const verifyHash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
+        return hash === verifyHash;
+    }
+    return password === storedHash;
+}
 
 // Vercel Serverless Function connecting directly to Aiven Cloud MySQL
 module.exports = async function handler(req, res) {
@@ -16,7 +45,7 @@ module.exports = async function handler(req, res) {
         const DB_HOST = process.env.DB_HOST;
         const DB_PORT = parseInt(process.env.DB_PORT);
         const DB_USER = process.env.DB_USER;
-        const DB_PASSWORD = process.env.DB_PASSWORD; // no hardcoded fallback
+        const DB_PASSWORD = process.env.DB_PASSWORD;
         const DB_NAME = process.env.DB_NAME;
 
         const connection = await mysql.createConnection({
@@ -63,9 +92,68 @@ module.exports = async function handler(req, res) {
             return res.status(200).json({ success: true, count: listings.length, listings });
         }
 
-        // POST: Save new listing to Aiven MySQL
+        // DELETE: Delete a listing
+        if (req.method === 'DELETE') {
+            const id = req.query.id || req.url.split('/').pop();
+            if (id) {
+                await connection.query('DELETE FROM listings WHERE id = ?', [id]);
+            }
+            await connection.end();
+            return res.status(200).json({ success: true, message: 'Listing deleted from database' });
+        }
+
+        // POST: Save new listing or Auth action
         if (req.method === 'POST') {
-            const item = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+            const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+
+            // Handle AUTH: LOGIN
+            if (req.url.includes('/auth/login') || body.action === 'login') {
+                const { email, password, role } = body;
+                const [rows] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
+
+                if (rows.length === 0) {
+                    await connection.end();
+                    return res.status(404).json({ success: false, message: 'No account found with this email. Please sign up first.' });
+                }
+
+                const user = rows[0];
+                const passwordMatches = verifyPassword(password, user.password);
+                if (!passwordMatches) {
+                    await connection.end();
+                    return res.status(401).json({ success: false, message: '🔒 Incorrect Password! Please enter the correct password.' });
+                }
+
+                await connection.end();
+                return res.status(200).json({
+                    success: true,
+                    user: { name: user.name, email: user.email, role: user.role || role || 'buyer', phone: user.phone || '' }
+                });
+            }
+
+            // Handle AUTH: REGISTER
+            if (req.url.includes('/auth/register') || body.action === 'register') {
+                const { name, email, password, role, phone } = body;
+                const [existing] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
+                if (existing.length > 0) {
+                    await connection.end();
+                    return res.status(400).json({ success: false, message: 'An account with this email already exists. Please sign in.' });
+                }
+
+                const userRole = (role && role.toLowerCase() === 'seller') ? 'seller' : 'buyer';
+                const displayName = (name && name.trim()) ? name.trim() : email.split('@')[0];
+                const hashedPassword = hashPassword(password);
+                const query = `INSERT INTO users (name, email, password, phone, role) VALUES (?, ?, ?, ?, ?)`;
+                await connection.query(query, [displayName, email, hashedPassword, phone || '', userRole]);
+                await connection.end();
+
+                return res.status(200).json({
+                    success: true,
+                    user: { name: displayName, email, role: userRole, phone: phone || '' }
+                });
+            }
+
+            // Save listing
+            const item = body;
             const id = item.id || ('sh_' + Date.now());
             const imagesJson = JSON.stringify(item.images || [item.imageUrl]);
             const featuresJson = JSON.stringify(item.features || []);
@@ -74,7 +162,7 @@ module.exports = async function handler(req, res) {
             const query = `
                 INSERT INTO listings 
                 (id, title, category, subcategory, price, description, \`condition\`, location, seller_id, seller_name, seller_email, seller_phone, whatsapp, negotiable, delivery_available, image_url, images, features, attributes, status, premium, featured)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON DUPLICATE KEY UPDATE
                 title=VALUES(title), category=VALUES(category), subcategory=VALUES(subcategory), price=VALUES(price), description=VALUES(description), \`condition\`=VALUES(\`condition\`), location=VALUES(location), seller_name=VALUES(seller_name), seller_email=VALUES(seller_email), seller_phone=VALUES(seller_phone), whatsapp=VALUES(whatsapp), negotiable=VALUES(negotiable), delivery_available=VALUES(delivery_available), image_url=VALUES(image_url), images=VALUES(images), features=VALUES(features), attributes=VALUES(attributes), status=VALUES(status), premium=VALUES(premium), featured=VALUES(featured)
             `;
@@ -86,7 +174,7 @@ module.exports = async function handler(req, res) {
                 item.sellerEmail || '', item.sellerPhone || '', item.whatsapp || '', item.negotiable || 'Yes',
                 item.deliveryAvailable || 'No', item.imageUrl || (item.images && item.images[0]) || '',
                 imagesJson, featuresJson, attributesJson, item.status || 'Available', item.premium || 'Normal',
-                item.featured || 'No'
+                (item.featured === 'Yes' || item.featured === true) ? 'Yes' : 'No'
             ]);
 
             await connection.end();

@@ -1436,9 +1436,6 @@
                     compressImage(file).then(function (dataUrl) {
                         selectedImages[slotIndex] = dataUrl;
                         updateSlotUI(slotIndex);
-                        // Auto-advance to the next empty slot
-                        const nextEmpty = selectedImages.findIndex(function (img, i) { return i > slotIndex && !img; });
-                        if (nextEmpty !== -1 && nextEmpty < 6) handleSlotClick(nextEmpty);
                     }).catch(function (err) {
                         alert(err.message);
                         if (placeholder) {
@@ -1737,8 +1734,8 @@
             if (alertBox) alertBox.style.display = 'none';
         }
 
-        // Delete a seller's listing from localStorage (and Firestore if configured)
-        function deleteSellerListing(listingId) {
+        // Delete a seller's listing from localStorage, MySQL, and IndexedDB
+        async function deleteSellerListing(listingId) {
             if (!confirm('Are you sure you want to permanently delete this listing?')) return;
 
             let listings = [];
@@ -1748,7 +1745,24 @@
 
             const filtered = listings.filter(function (item) { return item.id !== listingId; });
             localStorage.setItem('sokohub_listings', JSON.stringify(filtered));
-            renderSellerListings();
+
+            // Delete from MySQL API
+            if (window.SokoMySQL) {
+                try {
+                    await window.SokoMySQL.deleteListing(listingId);
+                } catch (e) {
+                    console.warn('Could not delete from MySQL API:', e);
+                }
+            }
+
+            // Delete from IndexedDB
+            if (window.SokoDB) {
+                try {
+                    await window.SokoDB.deleteListing(listingId);
+                } catch (e) {
+                    console.warn('Could not delete from SokoDB:', e);
+                }
+            }
 
             // Also try to delete from Firestore if configured
             if (window.db && typeof firebaseConfig !== 'undefined' && firebaseConfig.apiKey !== "YOUR_API_KEY") {
@@ -1757,23 +1771,13 @@
                     .catch(function (err) { console.warn('Could not delete from Firestore:', err.message); });
             }
 
+            renderSellerListings();
             alert('Listing has been deleted.');
         }
 
-        // Safe storage writer: Saves to MySQL, IndexedDB (high capacity) and LocalStorage safely
+        // Safe storage writer: Saves to IndexedDB (high capacity) and LocalStorage safely
         async function saveListingsToStorage(listings) {
-            // Save to MySQL database if backend server is running
-            if (window.SokoMySQL) {
-                try {
-                    for (let item of listings) {
-                        await window.SokoMySQL.saveListing(item);
-                    }
-                } catch (sqlErr) {
-                    console.warn('SokoMySQL save warning:', sqlErr);
-                }
-            }
-
-            // Save to IndexedDB first
+            // Save to IndexedDB
             if (window.SokoDB) {
                 try {
                     for (let item of listings) {
@@ -1790,7 +1794,7 @@
                 return true;
             } catch (e) {
                 console.warn('LocalStorage limit reached. Item saved in SokoDB database.');
-                return true; // Return true because SokoDB has the item persisted
+                return true;
             }
         }
 
@@ -1911,6 +1915,15 @@
             };
 
             try {
+                // Save to Aiven Cloud MySQL database directly
+                if (window.SokoMySQL) {
+                    try {
+                        await window.SokoMySQL.saveListing(newListing);
+                    } catch (sqlErr) {
+                        console.warn('SokoMySQL save warning:', sqlErr);
+                    }
+                }
+
                 // Save into Firestore if Firebase db initialized (best-effort; images are local data URLs)
                 if (window.db && typeof firebaseConfig !== 'undefined' && firebaseConfig.apiKey !== "YOUR_API_KEY") {
                     try {
@@ -1920,7 +1933,7 @@
                     }
                 }
 
-                // Save to LocalStorage so items show up instantly on front-end.
+                // Save to LocalStorage & SokoDB so items show up instantly on front-end.
                 let localListings = JSON.parse(localStorage.getItem('sokohub_listings') || '[]');
                 if (isEditing) {
                     localListings = localListings.map(function (l) {

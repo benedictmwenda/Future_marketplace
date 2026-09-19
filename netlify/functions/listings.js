@@ -1,5 +1,33 @@
 const mysql = require('mysql2/promise');
-const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
+let bcrypt;
+try {
+    bcrypt = require('bcryptjs');
+} catch (e) {
+    bcrypt = null;
+}
+
+function hashPassword(password) {
+    if (bcrypt) {
+        return bcrypt.hashSync(password, 10);
+    }
+    const salt = crypto.randomBytes(16).toString('hex');
+    const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
+    return `${salt}:${hash}`;
+}
+
+function verifyPassword(password, storedHash) {
+    if (!storedHash) return false;
+    if (storedHash.startsWith('$2a$') || storedHash.startsWith('$2b$')) {
+        if (bcrypt) return bcrypt.compareSync(password, storedHash);
+    }
+    if (storedHash.includes(':')) {
+        const [salt, hash] = storedHash.split(':');
+        const verifyHash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
+        return hash === verifyHash;
+    }
+    return password === storedHash;
+}
 
 // Netlify Serverless Function connecting directly to Aiven Cloud MySQL
 exports.handler = async function (event, context) {
@@ -18,7 +46,7 @@ exports.handler = async function (event, context) {
         const DB_HOST = process.env.DB_HOST;
         const DB_PORT = parseInt(process.env.DB_PORT);
         const DB_USER = process.env.DB_USER;
-        const DB_PASSWORD = process.env.DB_PASSWORD; // no hardcoded fallback
+        const DB_PASSWORD = process.env.DB_PASSWORD;
         const DB_NAME = process.env.DB_NAME;
 
         const connection = await mysql.createConnection({
@@ -69,9 +97,23 @@ exports.handler = async function (event, context) {
             };
         }
 
+        // DELETE: Delete a listing
+        if (event.httpMethod === 'DELETE') {
+            const id = (event.queryStringParameters && event.queryStringParameters.id) || event.path.split('/').pop();
+            if (id) {
+                await connection.query('DELETE FROM listings WHERE id = ?', [id]);
+            }
+            await connection.end();
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify({ success: true, message: 'Listing deleted from database' })
+            };
+        }
+
         // POST: Save listing OR Login / Register User
         if (event.httpMethod === 'POST') {
-            const body = typeof event.body === 'string' ? JSON.parse(event.body || '{}') : event.body;
+            const body = typeof event.body === 'string' ? JSON.parse(event.body || '{}') : (event.body || {});
 
             // Handle AUTH: LOGIN
             if (event.path.includes('/auth/login') || body.action === 'login') {
@@ -88,7 +130,7 @@ exports.handler = async function (event, context) {
                 }
 
                 const user = rows[0];
-                const passwordMatches = await bcrypt.compare(password, user.password);
+                const passwordMatches = verifyPassword(password, user.password);
                 if (!passwordMatches) {
                     await connection.end();
                     return {
@@ -122,9 +164,11 @@ exports.handler = async function (event, context) {
                     };
                 }
 
+                const userRole = (role && role.toLowerCase() === 'seller') ? 'seller' : 'buyer';
+                const displayName = (name && name.trim()) ? name.trim() : email.split('@')[0];
+                const hashedPassword = hashPassword(password);
                 const query = `INSERT INTO users (name, email, password, phone, role) VALUES (?, ?, ?, ?, ?)`;
-                const hashedPassword = await bcrypt.hash(password, 10);
-                await connection.query(query, [name || email.split('@')[0], email, hashedPassword, phone || '', role || 'buyer']);
+                await connection.query(query, [displayName, email, hashedPassword, phone || '', userRole]);
                 await connection.end();
 
                 return {
@@ -132,12 +176,12 @@ exports.handler = async function (event, context) {
                     headers,
                     body: JSON.stringify({
                         success: true,
-                        user: { name: name || email.split('@')[0], email, role: role || 'buyer', phone: phone || '' }
+                        user: { name: displayName, email, role: userRole, phone: phone || '' }
                     })
                 };
             }
 
-            // Save listing...
+            // Save listing to MySQL
             const item = body;
             const id = item.id || ('sh_' + Date.now());
             const imagesJson = JSON.stringify(item.images || [item.imageUrl]);
@@ -147,7 +191,7 @@ exports.handler = async function (event, context) {
             const query = `
                 INSERT INTO listings 
                 (id, title, category, subcategory, price, description, \`condition\`, location, seller_id, seller_name, seller_email, seller_phone, whatsapp, negotiable, delivery_available, image_url, images, features, attributes, status, premium, featured)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON DUPLICATE KEY UPDATE
                 title=VALUES(title), category=VALUES(category), subcategory=VALUES(subcategory), price=VALUES(price), description=VALUES(description), \`condition\`=VALUES(\`condition\`), location=VALUES(location), seller_name=VALUES(seller_name), seller_email=VALUES(seller_email), seller_phone=VALUES(seller_phone), whatsapp=VALUES(whatsapp), negotiable=VALUES(negotiable), delivery_available=VALUES(delivery_available), image_url=VALUES(image_url), images=VALUES(images), features=VALUES(features), attributes=VALUES(attributes), status=VALUES(status), premium=VALUES(premium), featured=VALUES(featured)
             `;
@@ -159,7 +203,7 @@ exports.handler = async function (event, context) {
                 item.sellerEmail || '', item.sellerPhone || '', item.whatsapp || '', item.negotiable || 'Yes',
                 item.deliveryAvailable || 'No', item.imageUrl || (item.images && item.images[0]) || '',
                 imagesJson, featuresJson, attributesJson, item.status || 'Available', item.premium || 'Normal',
-                item.featured || 'No'
+                (item.featured === 'Yes' || item.featured === true) ? 'Yes' : 'No'
             ]);
 
             await connection.end();
