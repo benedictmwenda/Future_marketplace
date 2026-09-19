@@ -35,18 +35,18 @@
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
 
-    <!-- Immediate Seller Auth Check (Prevents unauthorized page render) -->
+    <!-- Immediate Auth Check (Redirects if not logged in) -->
     <script>
         (function () {
             try {
                 const rawUser = localStorage.getItem('sokohub_user');
                 const user = rawUser ? JSON.parse(rawUser) : null;
-                if (!user || !user.isLoggedIn || user.role !== 'seller') {
-                    alert("🔒 Seller Sign In Required\n\nYou must be signed in as a Seller to post items on SokoHub. Redirecting to Seller Login...");
-                    window.location.href = './login.html?role=seller&redirect=post-item.html';
+                if (!user || !user.isLoggedIn) {
+                    alert("🔒 Sign In Required\n\nPlease sign in or register to publish items on SokoHub.");
+                    window.location.href = './login.html?redirect=post-item.html';
                 }
             } catch (e) {
-                window.location.href = './login.html?role=seller&redirect=post-item.html';
+                window.location.href = './login.html?redirect=post-item.html';
             }
         })();
     </script>
@@ -1814,22 +1814,28 @@
 
             const formCard = document.querySelector('.post-form-card');
 
-            if (!user || user.role !== 'seller') {
+            if (!user || !user.isLoggedIn) {
                 formCard.innerHTML = `
                     <div class="text-center" style="padding: 40px 20px;">
-                        <i class="fa fa-lock" style="font-size: 64px; color: #e74c3c; margin-bottom: 20px;"></i>
-                        <h3 style="border:none; margin-bottom: 10px;">Seller Authentication Required</h3>
+                        <i class="fa fa-lock" style="font-size: 64px; color: #1000B8; margin-bottom: 20px;"></i>
+                        <h3 style="border:none; margin-bottom: 10px; color: #1D1912;">Sign In Required</h3>
                         <p style="color: #666; font-size: 15px; margin-bottom: 25px;">
-                            You must be signed in as a <strong>Seller / Merchant</strong> on SokoHub to publish new items, rentals, or vehicles.
+                            You must be signed in to publish and manage items on SokoHub.
                         </p>
-                        <a href="./login.html?role=seller&redirect=post-item.html" class="btn-post-item" style="display: inline-block; text-decoration: none; max-width: 320px;">
-                            <i class="fa fa-sign-in"></i> Sign In / Register as Seller
+                        <a href="./login.html?redirect=post-item.html" class="btn-post-item" style="display: inline-block; text-decoration: none; max-width: 320px; background: #28a745; color: #F3F3E6;">
+                            <i class="fa fa-sign-in"></i> Sign In / Register
                         </a>
                         <br>
                         <a href="./index.html" style="display: inline-block; margin-top: 15px; color: #888; font-size: 13px;">Return to Homepage</a>
                     </div>
                 `;
                 return;
+            }
+
+            // Ensure seller role for this session
+            if (user.role !== 'seller') {
+                user.role = 'seller';
+                try { localStorage.setItem('sokohub_user', JSON.stringify(user)); } catch (e) { }
             }
 
             // Authenticated seller — auto-fill contact info
@@ -1839,8 +1845,8 @@
             const headerRight = document.querySelector('.header__top__right__auth');
             if (headerRight) {
                 headerRight.innerHTML = `
-                    <span style="color:#7fad39; font-weight:600;"><i class="fa fa-check-circle"></i> Seller: ${user.name || user.email}</span>
-                    <a href="#" id="logoutBtn" style="margin-left:12px; color:#e74c3c;"><i class="fa fa-sign-out"></i> Logout</a>
+                    <span style="color:#28a745; font-weight:600;"><i class="fa fa-check-circle"></i> ${user.name || user.email}</span>
+                    <a href="#" id="logoutBtn" style="margin-left:12px; color:#1D1912;"><i class="fa fa-sign-out"></i> Logout</a>
                 `;
                 const logoutBtn = document.getElementById('logoutBtn');
                 if (logoutBtn) logoutBtn.addEventListener('click', function (e) {

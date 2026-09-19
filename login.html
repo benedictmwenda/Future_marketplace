@@ -611,14 +611,6 @@
                 </div>
                 
                 <form onsubmit="handleAuthSubmit(event, 'signin')">
-                    <div class="input-group" id="signin-store-group" style="display: none;">
-                        <label for="signin-store">Store / Business Name</label>
-                        <div class="input-wrapper">
-                            <i class="fa-solid fa-store"></i>
-                            <input type="text" id="signin-store" placeholder="e.g. SokoHub Wholesale Ltd.">
-                        </div>
-                    </div>
-                    
                     <div class="input-group">
                         <label for="signin-email">Email Address</label>
                         <div class="input-wrapper">
@@ -744,13 +736,10 @@
             
             const container = document.getElementById('authContainer');
             const roleSelector = document.getElementById('roleSelector');
-            const brandPanel = document.getElementById('brandPanel');
             const btnBuyer = document.getElementById('btnBuyer');
             const btnSeller = document.getElementById('btnSeller');
             const storeNameGroup = document.getElementById('storeNameGroup');
             const signupStoreInput = document.getElementById('signup-store');
-            const signinStoreGroup = document.getElementById('signin-store-group');
-            const signinStoreInput = document.getElementById('signin-store');
 
             if (role === 'seller') {
                 container.classList.add('seller-active');
@@ -759,11 +748,8 @@
                 btnBuyer.classList.remove('active');
                 document.body.classList.add('seller-bg');
                 
-                storeNameGroup.style.display = 'block';
-                signupStoreInput.setAttribute('required', 'true');
-                // Show store name field in sign-in form for sellers
-                if (signinStoreGroup) signinStoreGroup.style.display = 'block';
-                if (signinStoreInput) signinStoreInput.setAttribute('required', 'true');
+                if (storeNameGroup) storeNameGroup.style.display = 'block';
+                if (signupStoreInput) signupStoreInput.setAttribute('required', 'true');
             } else {
                 container.classList.remove('seller-active');
                 roleSelector.classList.remove('seller-selected');
@@ -771,11 +757,8 @@
                 btnSeller.classList.remove('active');
                 document.body.classList.remove('seller-bg');
                 
-                storeNameGroup.style.display = 'none';
-                signupStoreInput.removeAttribute('required');
-                // Hide store name field in sign-in form for buyers
-                if (signinStoreGroup) signinStoreGroup.style.display = 'none';
-                if (signinStoreInput) signinStoreInput.removeAttribute('required');
+                if (storeNameGroup) storeNameGroup.style.display = 'none';
+                if (signupStoreInput) signupStoreInput.removeAttribute('required');
             }
 
             updateDynamicText();
@@ -825,6 +808,17 @@
             }
         }
 
+        async function getAuthBaseUrl() {
+            if (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app') || (window.location.protocol === 'https:' && !window.location.hostname.includes('localhost'))) {
+                return `${window.location.origin}/api`;
+            }
+            try {
+                const testRes = await fetch('http://localhost:5000/api/listings', { method: 'HEAD', signal: AbortSignal.timeout(1200) });
+                if (testRes.ok) return 'http://localhost:5000/api';
+            } catch(e) {}
+            return 'https://mysokohub.netlify.app/api';
+        }
+
         async function handleAuthSubmit(event, type) {
             event.preventDefault();
             const email = type === 'signin' ? document.getElementById('signin-email').value.trim() : document.getElementById('signup-email').value.trim();
@@ -843,8 +837,7 @@
 
             let displayName;
             if (type === 'signin') {
-                const signinStore = document.getElementById('signin-store')?.value?.trim();
-                displayName = signinStore || email.split('@')[0];
+                displayName = email.split('@')[0];
             } else {
                 const signupName = document.getElementById('signup-name')?.value?.trim();
                 const signupStore = document.getElementById('signup-store')?.value?.trim();
@@ -853,10 +846,7 @@
 
             // Verify password against MySQL Backend / Serverless Cloud DB
             try {
-                const baseUrl = (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app') || window.location.protocol === 'https:')
-                    ? `${window.location.origin}/api`
-                    : `http://localhost:5000/api`;
-
+                const baseUrl = await getAuthBaseUrl();
                 const endpoint = type === 'signin' ? `${baseUrl}/auth/login` : `${baseUrl}/auth/register`;
                 const resp = await fetch(endpoint, {
                     method: 'POST',
@@ -880,9 +870,8 @@
                     return;
                 }
 
-                if (data.user) {
-                    if (data.user.name) displayName = data.user.name;
-                    if (data.user.role) currentRole = data.user.role;
+                if (data.user && data.user.name) {
+                    displayName = data.user.name;
                 }
 
             } catch (err) {
@@ -895,9 +884,14 @@
                 return;
             }
 
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectParam = urlParams.get('redirect');
+            const isSellerIntent = currentRole === 'seller' || (redirectParam && redirectParam.includes('post-item'));
+            const sessionRole = isSellerIntent ? 'seller' : 'buyer';
+
             const userSession = {
                 email: email,
-                role: currentRole, // 'seller' or 'buyer'
+                role: sessionRole,
                 name: displayName,
                 isLoggedIn: true,
                 loggedInAt: new Date().toISOString()
@@ -905,10 +899,9 @@
             
             localStorage.setItem('sokohub_user', JSON.stringify(userSession));
             
-            const urlParams = new URLSearchParams(window.location.search);
-            const redirectUrl = urlParams.get('redirect') || (currentRole === 'seller' ? './post-item.html' : './index.html');
+            const redirectUrl = redirectParam || (sessionRole === 'seller' ? './post-item.html' : './index.html');
             
-            alert(`✅ Authentication Successful!\n\nWelcome, ${displayName}! Signed in as ${currentRole === 'seller' ? 'SELLER/MERCHANT' : 'BUYER'}`);
+            alert(`✅ Authentication Successful!\n\nWelcome back, ${displayName}!`);
             window.location.href = redirectUrl; 
         }
 

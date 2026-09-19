@@ -59,10 +59,10 @@
                     const rawUser = localStorage.getItem('sokohub_user');
                     let user = null;
                     try { if (rawUser) user = JSON.parse(rawUser); } catch(ex) {}
-                    if (!user || !user.isLoggedIn || user.role !== 'buyer') {
+                    if (!user || !user.isLoggedIn) {
                         e.preventDefault();
-                        alert("🔒 Buyer Sign In Required\n\nYou must be signed in as a Buyer to purchase items on SokoHub.");
-                        window.location.href = './login.html?role=buyer&redirect=shop-details.html';
+                        alert("🔒 Sign In Required\n\nYou must be signed in to add items to your Cart or Wishlist on SokoHub.");
+                        window.location.href = './login.html?redirect=shop-details.html';
                     }
                 });
             });

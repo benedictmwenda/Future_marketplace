@@ -12,13 +12,13 @@ document.addEventListener('DOMContentLoaded', function () {
         return user && user.isLoggedIn === true;
     }
 
-    // Helper: Require buyer login and redirect if not
-    function requireBuyerLogin(e, redirectUrl) {
-        if (!isLoggedIn() || user.role !== 'buyer') {
-            e.preventDefault();
+    // Helper: Require any login and redirect if not
+    function requireAuth(e, redirectUrl) {
+        if (!isLoggedIn()) {
+            if (e) e.preventDefault();
             const target = redirectUrl || window.location.pathname.split('/').pop() || 'index.html';
-            alert("🔒 Buyer Sign In Required\n\nYou must be signed in as a Buyer to purchase items on SokoHub. Redirecting to Buyer Login...");
-            window.location.href = './login.html?role=buyer&redirect=' + encodeURIComponent(target);
+            alert("🔒 Sign In Required\n\nYou must be signed in to perform this action on SokoHub. Redirecting to Login...");
+            window.location.href = './login.html?redirect=' + encodeURIComponent(target);
             return false;
         }
         return true;
@@ -26,33 +26,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Helper: Require any login (buyer or seller) and redirect if not
     function requireAnyLogin(e, redirectUrl) {
-        if (!isLoggedIn()) {
-            e.preventDefault();
-            const target = redirectUrl || window.location.pathname.split('/').pop() || 'index.html';
-            alert("🔒 Sign In Required\n\nYou must be signed in to access this page on SokoHub. Redirecting to Login...");
-            window.location.href = './login.html?redirect=' + encodeURIComponent(target);
-            return false;
-        }
-        return true;
+        return requireAuth(e, redirectUrl);
     }
 
     // 1. Intercept "+ Sell Item" clicks
     const sellBtns = document.querySelectorAll('a[href="./post-item.html"], a[href="post-item.html"]');
     sellBtns.forEach(btn => {
         btn.addEventListener('click', function (e) {
-            if (!user || user.role !== 'seller') {
+            if (!isLoggedIn()) {
                 e.preventDefault();
-                alert("🔒 Seller Sign In Required\n\nYou must be signed in as a seller to post items on SokoHub. Redirecting to Seller Login...");
-                window.location.href = './login.html?role=seller&redirect=post-item.html';
+                alert("🔒 Sign In Required\n\nPlease sign in or create an account to post items on SokoHub.");
+                window.location.href = './login.html?redirect=post-item.html';
             }
         });
     });
 
-    // 2. Intercept "Add to Cart" button clicks (buyer login required)
+    // 2. Intercept "Add to Cart" button clicks
     document.querySelectorAll('.product__item__pic__hover li a, .featured__item__pic__hover li a, .product__discount__item__pic__hover li a').forEach(btn => {
         btn.addEventListener('click', function (e) {
             if (btn.innerHTML.includes('fa-shopping-cart') || btn.innerHTML.includes('Add to Cart')) {
-                requireBuyerLogin(e, window.location.pathname.split('/').pop());
+                requireAuth(e, window.location.pathname.split('/').pop());
             }
         });
     });
@@ -60,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 3. Intercept "Add to Cart" in quick view modal
     document.querySelectorAll('.qv-btn--primary').forEach(btn => {
         btn.addEventListener('click', function (e) {
-            requireBuyerLogin(e, 'shop-grid.html');
+            requireAuth(e, 'shop-grid.html');
         });
     });
 
@@ -83,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 6. Intercept wishlist / heart icon clicks
     document.querySelectorAll('.fa-heart').forEach(icon => {
         icon.closest('a')?.addEventListener('click', function (e) {
-            requireBuyerLogin(e, window.location.pathname.split('/').pop());
+            requireAuth(e, window.location.pathname.split('/').pop());
         });
     });
 
@@ -91,10 +84,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const headerAuth = document.querySelectorAll('.header__top__right__auth');
     headerAuth.forEach(el => {
         if (user && user.isLoggedIn) {
-            const roleBadge = user.role === 'seller' ? ' [Seller]' : ' [Buyer]';
             el.innerHTML = `
-                <a href="#" style="color:#7fad39; font-weight:600;"><i class="fa fa-user-circle"></i> ${user.name || user.email}${roleBadge}</a>
-                <a href="#" class="logout-btn" style="margin-left:10px; color:#e74c3c;"><i class="fa fa-sign-out"></i> Logout</a>
+                <a href="#" style="color:#28a745; font-weight:600;"><i class="fa fa-user-circle"></i> ${user.name || user.email}</a>
+                <a href="#" class="logout-btn" style="margin-left:10px; color:#1D1912;"><i class="fa fa-sign-out"></i> Logout</a>
             `;
         } else {
             el.innerHTML = `
