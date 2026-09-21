@@ -15,8 +15,10 @@ async function fetchSokoHubListings() {
         }
     }
 
-    // 1. Read from IndexedDB (High Capacity Persistent Database)
-    if (window.SokoDB) {
+    // 1. Read from IndexedDB — only as a fallback if MySQL returned nothing
+    // (e.g. offline). Must NOT run when MySQL already succeeded, otherwise this
+    // browser's local cache silently replaces the full catalog after posting.
+    if (window.SokoDB && allListings.length === 0) {
         try {
             const dbListings = await window.SokoDB.getAllListings();
             if (Array.isArray(dbListings) && dbListings.length > 0) {
