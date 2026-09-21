@@ -68,6 +68,7 @@ app.get('/api/listings', async (req, res) => {
             attributes: typeof item.attributes === 'string' ? JSON.parse(item.attributes || '{}') : (item.attributes || {}),
             status: item.status,
             premium: item.premium,
+            featured: item.featured,
             views: item.views,
             createdAt: item.created_at
         }));
@@ -110,6 +111,7 @@ app.get('/api/listings/:id', async (req, res) => {
             attributes: typeof item.attributes === 'string' ? JSON.parse(item.attributes || '{}') : (item.attributes || {}),
             status: item.status,
             premium: item.premium,
+            featured: item.featured,
             views: item.views,
             createdAt: item.created_at
         };
