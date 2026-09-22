@@ -1610,13 +1610,17 @@
         }
 
         // Load an existing listing into the form for editing
-        function editSellerListing(listingId) {
+        async function editSellerListing(listingId) {
             let listings = [];
             try {
-                listings = JSON.parse(localStorage.getItem('sokohub_listings') || '[]');
-            } catch (e) { return; }
+                listings = await fetchSokoHubListings();
+            } catch (e) {
+                try {
+                    listings = JSON.parse(localStorage.getItem('sokohub_listings') || '[]');
+                } catch (e2) { }
+            }
 
-            const item = listings.find(function (l) { return l.id === listingId; });
+            const item = listings.find(function (l) { return String(l.id) === String(listingId); });
             if (!item) {
                 alert('Listing not found.');
                 return;
