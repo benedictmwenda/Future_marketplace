@@ -1,5 +1,35 @@
 // SokoHub Dynamic Listing Fetcher & Realtime Sync
 
+// Categories that are high-value / negotiated / require viewing — these stay
+// contact-only (call/WhatsApp the seller), never go through cart + checkout.
+// Everything else (electronics, fashion, home goods, etc.) is shop-type and
+// can be bought directly through the cart.
+window.SOKO_LISTING_ONLY_CATEGORIES = ['vehicles', 'property', 'services', 'jobs'];
+
+function getSokoCatSlug(categoryText) {
+    let catSlug = 'vehicles';
+    if (categoryText) {
+        const cat = categoryText.toLowerCase();
+        if (cat.includes('vehic') || cat.includes('car') || cat.includes('auto')) catSlug = 'vehicles';
+        else if (cat.includes('prop') || cat.includes('house') || cat.includes('rent') || cat.includes('land')) catSlug = 'property';
+        else if (cat.includes('elec') || cat.includes('phone') || cat.includes('laptop') || cat.includes('tv')) catSlug = 'electronics';
+        else if (cat.includes('fash') || cat.includes('cloth') || cat.includes('shoe')) catSlug = 'fashion';
+        else if (cat.includes('home') || cat.includes('furnit')) catSlug = 'home';
+        else if (cat.includes('serv')) catSlug = 'services';
+        else if (cat.includes('job')) catSlug = 'jobs';
+    }
+    return catSlug;
+}
+window.getSokoCatSlug = getSokoCatSlug;
+
+// True if this item should show "Add to Cart"; false if it should be
+// contact-only (call/WhatsApp), e.g. vehicles, property, services, jobs.
+function isSokoShopType(item) {
+    const catSlug = getSokoCatSlug(item && item.category);
+    return window.SOKO_LISTING_ONLY_CATEGORIES.indexOf(catSlug) === -1;
+}
+window.isSokoShopType = isSokoShopType;
+
 async function fetchSokoHubListings() {
     let allListings = [];
 
@@ -336,9 +366,57 @@ async function renderShopDetailsPage() {
     }
 
     const contactBtn = document.querySelector('.product__details__text a.primary-btn');
-    if (contactBtn && item.sellerPhone) {
-        contactBtn.href = `tel:${item.sellerPhone}`;
-        contactBtn.innerHTML = `<i class="fa fa-phone"></i> CALL ${item.sellerPhone}`;
+    const shopType = isSokoShopType(item);
+
+    if (contactBtn) {
+        if (shopType) {
+            // Shop-type item: real "Add to Cart" wired to the cart module.
+            contactBtn.href = '#';
+            contactBtn.innerHTML = '<i class="fa fa-shopping-cart"></i> ADD TO CART';
+            contactBtn.onclick = function (e) {
+                e.preventDefault();
+                if (!window.SokoCart) return;
+                const qtyInput = document.querySelector('.product__details__quantity input');
+                const qty = Math.max(parseInt(qtyInput && qtyInput.value, 10) || 1, 1);
+                const mainImage = (item.images && item.images[0]) || item.imageUrl || 'img/featured/feature-1.jpg';
+                window.SokoCart.addToCart({
+                    id: item.id,
+                    title: item.title,
+                    price: item.price,
+                    image: mainImage,
+                    badge: item.category || 'Product',
+                    seller: item.sellerName || 'Verified Seller'
+                }, qty);
+                contactBtn.innerHTML = '<i class="fa fa-check"></i> ADDED TO CART';
+                setTimeout(function () {
+                    contactBtn.innerHTML = '<i class="fa fa-shopping-cart"></i> ADD TO CART';
+                }, 1500);
+            };
+        } else if (item.sellerPhone) {
+            // Listing-type item (vehicles, property, services, jobs): contact only.
+            contactBtn.href = `tel:${item.sellerPhone}`;
+            contactBtn.innerHTML = `<i class="fa fa-phone"></i> CALL ${item.sellerPhone}`;
+            contactBtn.onclick = null;
+        }
+    }
+
+    // Wire the WhatsApp share icon to a real chat link for listing-type items
+    // (it was previously a dead href="#" for every listing).
+    const whatsappIcon = document.querySelector('.product__details__text .share a .fa-whatsapp');
+    if (whatsappIcon && whatsappIcon.parentElement) {
+        const waNumber = (item.whatsapp || item.sellerPhone || '').replace(/[^0-9]/g, '');
+        if (!shopType && waNumber) {
+            const waText = encodeURIComponent(`Hi, I'm interested in your listing "${item.title}" on SokoHub.`);
+            whatsappIcon.parentElement.href = `https://wa.me/${waNumber}?text=${waText}`;
+            whatsappIcon.parentElement.target = '_blank';
+        }
+    }
+
+    // Quantity selector only makes sense for shop-type items you can buy more
+    // than one of — hide it for vehicles/property/services/jobs.
+    const qtyWrapper = document.querySelector('.product__details__quantity');
+    if (qtyWrapper) {
+        qtyWrapper.style.display = shopType ? '' : 'none';
     }
 
     const listItems = document.querySelectorAll('.product__details__text ul li');

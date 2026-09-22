@@ -329,6 +329,49 @@ document.addEventListener('DOMContentLoaded', function () {
         renderQvFeatures(document.getElementById('qv-features-list'), item.features || item.featuresList);
         renderQvAttributes(item.attributes);
         renderQvExtras(item);
+        wireQvActions(item);
+    }
+
+    // Shop-type items (electronics, fashion, home) get a real "Add to Cart".
+    // Listing-type items (vehicles, property, services, jobs) get a contact
+    // button instead — no cart, matches the seller-negotiated nature of those.
+    function wireQvActions(item) {
+        const primaryBtn = document.querySelector('.qv-actions .qv-btn--primary');
+        if (!primaryBtn) return;
+
+        const shopType = window.isSokoShopType ? window.isSokoShopType(item) : true;
+
+        if (shopType) {
+            primaryBtn.href = '#';
+            primaryBtn.innerHTML = '<i class="fa fa-shopping-cart"></i> Add to Cart';
+            primaryBtn.onclick = function (e) {
+                e.preventDefault();
+                if (!window.SokoCart) return;
+                const mainImage = (item.images && item.images[0]) || item.imageUrl || 'img/featured/feature-1.jpg';
+                window.SokoCart.addToCart({
+                    id: item.id,
+                    title: item.title,
+                    price: item.price,
+                    image: mainImage,
+                    badge: item.category || 'Product',
+                    seller: item.sellerName || 'Verified Seller'
+                }, 1);
+                primaryBtn.innerHTML = '<i class="fa fa-check"></i> Added!';
+                setTimeout(function () {
+                    primaryBtn.innerHTML = '<i class="fa fa-shopping-cart"></i> Add to Cart';
+                }, 1500);
+            };
+        } else {
+            const phone = item.sellerPhone || item.whatsapp || '';
+            primaryBtn.onclick = null;
+            if (phone) {
+                primaryBtn.href = `tel:${phone}`;
+                primaryBtn.innerHTML = `<i class="fa fa-phone"></i> Call ${phone}`;
+            } else {
+                primaryBtn.href = `shop-details.html?id=${item.id}`;
+                primaryBtn.innerHTML = '<i class="fa fa-info-circle"></i> View Details';
+            }
+        }
     }
 
     // Helper: build the "Seller Info & Extras" section (extra fields from the
@@ -411,6 +454,16 @@ document.addEventListener('DOMContentLoaded', function () {
         // Legacy demo items have no extras → hide that section
         const extraWrap = document.getElementById('qv-extra');
         if (extraWrap) extraWrap.style.display = 'none';
+
+        wireQvActions({
+            id: 'demo-' + (btn.dataset.name || 'item').toLowerCase().replace(/[^a-z0-9]/g, '-'),
+            title: btn.dataset.name,
+            price: parseFloat((btn.dataset.price || '0').replace(/[^0-9.]/g, '')) || btn.dataset.price,
+            category: btn.dataset.category,
+            imageUrl: btn.dataset.img,
+            sellerName: btn.dataset.seller,
+            sellerPhone: btn.dataset.phone || ''
+        });
     }
 
     // Open modal when eye button is clicked
