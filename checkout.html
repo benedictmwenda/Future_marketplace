@@ -292,15 +292,15 @@
                             <div class="checkout__order">
                                 <h4>Your Order</h4>
                                 <div class="checkout__order__products">Products / Listings <span>Total</span></div>
-                                <ul>
+                                <ul id="checkoutItemsList">
                                     <li>iPhone 15 Pro Max <span>KSH 145,000</span></li>
                                     <li>Leather Handbag <span>KSH 4,500</span></li>
                                     <li>Prado Rental (3 days) <span>KSH 28,500</span></li>
                                 </ul>
-                                <div class="checkout__order__subtotal">Subtotal <span>KSH 178,000</span></div>
-                                <div class="checkout__order__subtotal">Delivery <span>KSH 500</span></div>
-                                <div class="checkout__order__subtotal">Discount <span style="color:#e74c3c;">- KSH 1,500</span></div>
-                                <div class="checkout__order__total">Total <span>KSH 177,000</span></div>
+                                <div class="checkout__order__subtotal">Subtotal <span id="checkoutSubtotal">KSH 178,000</span></div>
+                                <div class="checkout__order__subtotal">Delivery <span id="checkoutDelivery">KSH 500</span></div>
+                                <div class="checkout__order__subtotal">Discount <span id="checkoutDiscount" style="color:#e74c3c;">- KSH 1,500</span></div>
+                                <div class="checkout__order__total">Total <span id="checkoutTotal">KSH 177,000</span></div>
 
                                 <h5 style="font-weight:700; margin-top:20px; font-size:16px;">Select Payment Method</h5>
 
@@ -442,6 +442,50 @@
 
     <script src="js/sokohub-auth.js"></script>
     <script src="js/sokohub-cart.js"></script>
+    <script>
+        // Populate the order summary from the REAL cart — this used to be
+        // hardcoded fake data, showing the wrong order/total regardless of
+        // what the buyer actually had in their cart.
+        document.addEventListener('DOMContentLoaded', function () {
+            if (!window.SokoCart) return;
+            const cart = window.SokoCart.getCart();
+            const listEl = document.getElementById('checkoutItemsList');
+
+            if (listEl) {
+                if (cart.length === 0) {
+                    listEl.innerHTML = '<li>Your cart is empty <span></span></li>';
+                } else {
+                    listEl.innerHTML = cart.map(function (item) {
+                        const qty = parseInt(item.quantity, 10) || 1;
+                        const lineTotal = (parseFloat(item.price) || 0) * qty;
+                        const label = item.title + (qty > 1 ? ' × ' + qty : '');
+                        return '<li>' + label + ' <span>' + window.SokoCart.formatKsh(lineTotal) + '</span></li>';
+                    }).join('');
+                }
+            }
+
+            const subtotalEl = document.getElementById('checkoutSubtotal');
+            const deliveryEl = document.getElementById('checkoutDelivery');
+            const discountEl = document.getElementById('checkoutDiscount');
+            const totalEl = document.getElementById('checkoutTotal');
+
+            const subtotal = window.SokoCart.getCartTotal();
+            const total = window.SokoCart.getCheckoutTotal();
+            // Reverse-derive the delivery/discount constants actually used, so this
+            // page never drifts out of sync with the cart module's own math.
+            const deliveryAndDiscountDelta = total - subtotal;
+
+            if (subtotalEl) subtotalEl.textContent = window.SokoCart.formatKsh(subtotal);
+            if (totalEl) totalEl.textContent = window.SokoCart.formatKsh(total);
+            // Delivery/discount lines are informational; keep their labels but
+            // avoid implying a fee structure that isn't actually being charged
+            // when the cart is empty.
+            if (cart.length === 0) {
+                if (deliveryEl) deliveryEl.textContent = window.SokoCart.formatKsh(0);
+                if (discountEl) discountEl.textContent = window.SokoCart.formatKsh(0);
+            }
+        });
+    </script>
 </body>
 
 </html>

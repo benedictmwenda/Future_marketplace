@@ -299,7 +299,9 @@ async function renderShopDetailsPage() {
     const loadingOverlay = document.getElementById('product-loading-overlay');
 
     if (!itemId) {
-        if (loadingOverlay) loadingOverlay.remove();
+        if (loadingOverlay) {
+            loadingOverlay.innerHTML = '<p style="color:#7a7a7a; text-align:center; padding:0 20px;">No listing selected.<br><a href="shop-grid.html" style="color:#1000B8; font-weight:700;">Browse all listings</a></p>';
+        }
         return;
     }
 
@@ -480,6 +482,19 @@ async function renderShopDetailsPage() {
     }
     const reviewsCountEl = document.querySelector('a[href="#tabs-3"] span');
     if (reviewsCountEl) reviewsCountEl.textContent = '(0)';
+
+    // Related Products: real listings from the same category, excluding this one.
+    const relatedContainer = document.getElementById('related-products-container');
+    if (relatedContainer) {
+        const related = listings
+            .filter(function (l) { return String(l.id) !== String(item.id) && l.category === item.category; })
+            .slice(0, 4);
+        if (related.length === 0) {
+            relatedContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:#7a7a7a;">No other listings in this category yet.</div>';
+        } else {
+            relatedContainer.innerHTML = related.map(buildHomeListingCard).join('');
+        }
+    }
 
     if (loadingOverlay) loadingOverlay.remove();
 }

@@ -15,39 +15,6 @@
     var DELIVERY_FEE = 500;
     var DISCOUNT = 1500;
 
-    // Default demo seed used the FIRST time a buyer opens the site.
-    // Matches the original static cart so nothing looks empty.
-    function getDefaultCart() {
-        return [
-            {
-                id: 'demo-iphone',
-                title: 'iPhone 15 Pro Max 256GB',
-                price: 145000,
-                quantity: 1,
-                image: 'img/cart/cart-1.jpg',
-                badge: 'Product',
-                seller: 'TechZone Nairobi'
-            },
-            {
-                id: 'demo-handbag',
-                title: 'Premium Leather Handbag – Brown',
-                price: 4500,
-                quantity: 1,
-                image: 'img/cart/cart-2.jpg',
-                badge: 'Product',
-                seller: 'Fashionista CBD'
-            },
-            {
-                id: 'demo-prado',
-                title: 'Toyota Land Cruiser Prado – Day Hire',
-                price: 9500,
-                quantity: 3,
-                image: 'img/cart/cart-3.jpg',
-                badge: 'Rental',
-                seller: 'RentWheels Kenya'
-            }
-        ];
-    }
 
     // ---- Read helpers -------------------------------------------------
 
@@ -55,14 +22,12 @@
         try {
             var raw = localStorage.getItem(CART_KEY);
             if (!raw) {
-                var seeded = getDefaultCart();
-                try { localStorage.setItem(CART_KEY, JSON.stringify(seeded)); } catch (e) { /* noop */ }
-                return seeded;
+                return [];
             }
             var parsed = JSON.parse(raw);
-            return Array.isArray(parsed) ? parsed : getDefaultCart();
+            return Array.isArray(parsed) ? parsed : [];
         } catch (e) {
-            return getDefaultCart();
+            return [];
         }
     }
 
