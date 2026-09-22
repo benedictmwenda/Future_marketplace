@@ -337,6 +337,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // button instead — no cart, matches the seller-negotiated nature of those.
     function wireQvActions(item) {
         const primaryBtn = document.querySelector('.qv-actions .qv-btn--primary');
+        const wishlistBtn = document.querySelector('.qv-actions .qv-btn--outline');
+        if (wishlistBtn && item && item.id) {
+            wishlistBtn.dataset.qvId = item.id;
+            const liked = window.SokoWishlist && window.SokoWishlist.isInWishlist(item.id);
+            wishlistBtn.innerHTML = liked
+                ? '<i class="fa fa-heart" style="color:#e74c3c;"></i> Liked'
+                : '<i class="fa fa-heart"></i> Wishlist';
+        }
         if (!primaryBtn) return;
 
         const shopType = window.isSokoShopType ? window.isSokoShopType(item) : true;

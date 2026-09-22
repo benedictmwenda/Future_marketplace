@@ -174,7 +174,7 @@ async function renderShopGridListings() {
                             ${item.status || 'Available'}
                         </span>
                         <ul class="product__item__pic__hover">
-                            <li><a href="#" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#" data-qv-id="${item.id}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-heart"></i></a></li>
                             <li><a href="#" class="quick-view-btn" data-qv-id="${item.id}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-eye"></i></a></li>
                             <li><a href="shop-details.html?id=${item.id}" style="background:#DAA520; color:#1D1912;"><i class="fa fa-external-link"></i></a></li>
                         </ul>
@@ -227,7 +227,7 @@ function buildHomeListingCard(item) {
                         ${item.category || 'Product'} ${item.subcategory ? '▸ ' + item.subcategory : ''}
                     </span>
                     <ul class="featured__item__pic__hover">
-                        <li><a href="#" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-heart"></i></a></li>
+                        <li><a href="#" data-qv-id="${item.id}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-heart"></i></a></li>
                         <li><a href="#" class="quick-view-btn" data-qv-id="${item.id}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-eye"></i></a></li>
                         <li><a href="shop-details.html?id=${item.id}" style="background:#DAA520; color:#1D1912;"><i class="fa fa-external-link"></i></a></li>
                     </ul>
@@ -312,6 +312,12 @@ async function renderShopDetailsPage() {
             loadingOverlay.innerHTML = '<p style="color:#7a7a7a;">Sorry, this listing could not be found.</p>';
         }
         return;
+    }
+
+    window.__sokoCurrentDetailItem = item;
+    if (window.SokoWishlist && window.SokoWishlist.isInWishlist(item.id)) {
+        const heartBtn = document.querySelector('.heart-icon');
+        if (heartBtn) heartBtn.style.color = '#e74c3c';
     }
 
     const titleEl = document.querySelector('.product__details__text h3');

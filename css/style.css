@@ -4503,3 +4503,8 @@ textarea,
 .humberger__menu__overlay {
 	box-shadow: none;
 }
+
+/* Wishlist heart icon feedback */
+.fa-heart, .heart-icon, .heart-icon span {
+    transition: transform 0.15s ease, color 0.15s ease;
+}
