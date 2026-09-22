@@ -375,6 +375,7 @@ async function renderShopDetailsPage() {
             contactBtn.innerHTML = '<i class="fa fa-shopping-cart"></i> ADD TO CART';
             contactBtn.onclick = function (e) {
                 e.preventDefault();
+                e.stopPropagation();
                 if (!window.SokoCart) return;
                 const qtyInput = document.querySelector('.product__details__quantity input');
                 const qty = Math.max(parseInt(qtyInput && qtyInput.value, 10) || 1, 1);

@@ -346,6 +346,7 @@ document.addEventListener('DOMContentLoaded', function () {
             primaryBtn.innerHTML = '<i class="fa fa-shopping-cart"></i> Add to Cart';
             primaryBtn.onclick = function (e) {
                 e.preventDefault();
+                e.stopPropagation(); // don't also trigger sokohub-cart.js's generic .qv-btn--primary listener
                 if (!window.SokoCart) return;
                 const mainImage = (item.images && item.images[0]) || item.imageUrl || 'img/featured/feature-1.jpg';
                 window.SokoCart.addToCart({
