@@ -76,6 +76,14 @@
             el.textContent = count;
         });
 
+        // Header + hamburger-menu heart icon count (identified by its icon,
+        // since its link is just href="#" with nothing else to target it by).
+        document.querySelectorAll('.header__cart ul li a, .humberger__menu__cart ul li a').forEach(function (link) {
+            if (!link.querySelector('.fa-heart')) return;
+            var span = link.querySelector('span');
+            if (span) span.textContent = count;
+        });
+
         document.querySelectorAll('[data-qv-id]').forEach(function (el) {
             var icon = el.classList && el.classList.contains('fa-heart') ? el : el.querySelector('.fa-heart');
             if (!icon) return;
