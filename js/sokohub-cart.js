@@ -145,10 +145,14 @@
             priceEls[i].textContent = formatKsh(total);
         }
 
-        // Bag count: shopping-bag icon spans. Find cart/bag links.
-        document.querySelectorAll('.header__cart ul li a[href*="shoping-cart"], .humberger__menu__cart ul li a[href*="shoping-cart"], .header__cart ul li a[href*="cart"], .humberger__menu__cart ul li a[href*="cart"]').forEach(function (link) {
+        // Bag count: identified by icon, since the link is just href="#"
+        // (an href*="cart" selector never actually matched anything here).
+        var bagLinks = [];
+        document.querySelectorAll('.header__cart ul li a, .humberger__menu__cart ul li a').forEach(function (link) {
+            if (!link.querySelector('.fa-shopping-bag')) return;
             var span = link.querySelector('span');
             if (span) span.textContent = count;
+            bagLinks.push(link);
         });
 
         // Also update any element with [data-cart-total] or [data-cart-count]
@@ -163,6 +167,108 @@
         document.dispatchEvent(new CustomEvent('sokohub:cart-updated', {
             detail: { total: total, count: count }
         }));
+
+        // If a cart preview dropdown is currently open, refresh its contents
+        // so removing an item updates it live instead of going stale.
+        var openPanel = document.querySelector('.soko-header-dropdown.soko-cart-dropdown.open');
+        if (openPanel) renderCartDropdown(openPanel);
+    }
+
+    // ---- Cart preview dropdown ----------------------------------------
+
+    function buildDropdownItemRow(opts) {
+        var row = document.createElement('div');
+        row.className = 'soko-header-dropdown__item';
+        row.innerHTML =
+            '<img src="' + (opts.image || 'img/featured/feature-1.jpg') + '" alt="">' +
+            '<div class="soko-header-dropdown__item__info">' +
+                '<a href="' + opts.href + '">' + opts.title + '</a>' +
+                '<span>' + opts.priceLabel + '</span>' +
+            '</div>' +
+            '<button type="button" class="soko-header-dropdown__item__remove" title="Remove"><i class="fa fa-times"></i></button>';
+        row.querySelector('button').addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            opts.onRemove();
+        });
+        return row;
+    }
+
+    function renderCartDropdown(panel) {
+        var cart = getCart();
+        var listEl = panel.querySelector('.soko-header-dropdown__list');
+        listEl.innerHTML = '';
+
+        if (cart.length === 0) {
+            listEl.innerHTML = '<div class="soko-header-dropdown__empty">Your cart is empty.</div>';
+        } else {
+            cart.forEach(function (item) {
+                var qty = parseInt(item.quantity, 10) || 1;
+                var lineTotal = (parseFloat(item.price) || 0) * qty;
+                listEl.appendChild(buildDropdownItemRow({
+                    image: item.image,
+                    title: item.title + (qty > 1 ? ' × ' + qty : ''),
+                    priceLabel: formatKsh(lineTotal),
+                    href: 'shoping-cart.html',
+                    onRemove: function () {
+                        removeFromCart(item.id);
+                        renderCartDropdown(panel);
+                    }
+                }));
+            });
+        }
+    }
+
+    function buildCartDropdownPanel() {
+        var panel = document.createElement('div');
+        panel.className = 'soko-header-dropdown soko-cart-dropdown';
+        panel.innerHTML =
+            '<div class="soko-header-dropdown__title">Your Cart</div>' +
+            '<div class="soko-header-dropdown__list"></div>' +
+            '<div class="soko-header-dropdown__footer">' +
+                '<a href="shoping-cart.html" class="outline">View Cart</a>' +
+                '<a href="checkout.html" class="primary">Checkout</a>' +
+            '</div>';
+        renderCartDropdown(panel);
+        return panel;
+    }
+
+    function closeAllHeaderDropdowns(except) {
+        document.querySelectorAll('.soko-header-dropdown.open').forEach(function (p) {
+            if (p !== except) p.classList.remove('open');
+        });
+    }
+
+    function wireCartDropdownTriggers() {
+        document.querySelectorAll('.header__cart ul li a, .humberger__menu__cart ul li a').forEach(function (link) {
+            if (!link.querySelector('.fa-shopping-bag') || link.dataset.sokoCartWired) return;
+            link.dataset.sokoCartWired = '1';
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                var li = link.closest('li');
+                var existing = li.querySelector('.soko-cart-dropdown');
+                if (existing) {
+                    var isOpen = existing.classList.contains('open');
+                    closeAllHeaderDropdowns();
+                    if (!isOpen) { renderCartDropdown(existing); existing.classList.add('open'); }
+                    return;
+                }
+                closeAllHeaderDropdowns();
+                var panel = buildCartDropdownPanel();
+                li.style.position = 'relative';
+                li.appendChild(panel);
+                panel.classList.add('open');
+            });
+        });
+
+        if (!document.body.dataset.sokoCartOutsideClickWired) {
+            document.body.dataset.sokoCartOutsideClickWired = '1';
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('.soko-cart-dropdown') && !e.target.closest('.header__cart, .humberger__menu__cart')) {
+                    closeAllHeaderDropdowns();
+                }
+            });
+        }
     }
 
     // ---- Click handling: "Add to cart" icons -------------------------
@@ -273,11 +379,15 @@
     // Auto-sync header/cart indicators on DOM ready
     document.addEventListener('DOMContentLoaded', function () {
         updateCartUI();
+        wireCartDropdownTriggers();
     });
 
     // Also sync immediately in case DOM is already parsed
     if (document.readyState === 'interactive' || document.readyState === 'complete') {
-        setTimeout(updateCartUI, 0);
+        setTimeout(function () {
+            updateCartUI();
+            wireCartDropdownTriggers();
+        }, 0);
     }
 
 })(window, document);

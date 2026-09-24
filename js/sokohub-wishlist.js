@@ -84,6 +84,9 @@
             if (span) span.textContent = count;
         });
 
+        var openPanel = document.querySelector('.soko-header-dropdown.soko-wishlist-dropdown.open');
+        if (openPanel) renderWishlistDropdown(openPanel);
+
         document.querySelectorAll('[data-qv-id]').forEach(function (el) {
             var icon = el.classList && el.classList.contains('fa-heart') ? el : el.querySelector('.fa-heart');
             if (!icon) return;
@@ -102,6 +105,102 @@
         if (!el) return;
         el.style.transform = 'scale(1.25)';
         setTimeout(function () { el.style.transform = 'scale(1)'; }, 150);
+    }
+
+    // ---- Wishlist preview dropdown --------------------------------------
+
+    function buildDropdownItemRow(opts) {
+        var row = document.createElement('div');
+        row.className = 'soko-header-dropdown__item';
+        row.innerHTML =
+            '<img src="' + (opts.image || 'img/featured/feature-1.jpg') + '" alt="">' +
+            '<div class="soko-header-dropdown__item__info">' +
+                '<a href="' + opts.href + '">' + opts.title + '</a>' +
+                '<span>' + opts.priceLabel + '</span>' +
+            '</div>' +
+            '<button type="button" class="soko-header-dropdown__item__remove" title="Remove"><i class="fa fa-times"></i></button>';
+        row.querySelector('button').addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            opts.onRemove();
+        });
+        return row;
+    }
+
+    function renderWishlistDropdown(panel) {
+        var list = getWishlist();
+        var listEl = panel.querySelector('.soko-header-dropdown__list');
+        listEl.innerHTML = '';
+
+        if (list.length === 0) {
+            listEl.innerHTML = '<div class="soko-header-dropdown__empty">No liked items yet.<br>Tap the heart on any listing to save it here.</div>';
+        } else {
+            list.forEach(function (item) {
+                var priceLabel = typeof item.price === 'number' ? 'KSH ' + item.price.toLocaleString() : (item.price || '');
+                listEl.appendChild(buildDropdownItemRow({
+                    image: item.image,
+                    title: item.title,
+                    priceLabel: priceLabel,
+                    href: String(item.id).indexOf('qv-') === 0 || String(item.id).indexOf('demo-') === 0 ? '#' : 'shop-details.html?id=' + item.id,
+                    onRemove: function () {
+                        removeFromWishlist(item.id);
+                        renderWishlistDropdown(panel);
+                    }
+                }));
+            });
+        }
+    }
+
+    function buildWishlistDropdownPanel() {
+        var panel = document.createElement('div');
+        panel.className = 'soko-header-dropdown soko-wishlist-dropdown';
+        panel.innerHTML =
+            '<div class="soko-header-dropdown__title">Liked Items</div>' +
+            '<div class="soko-header-dropdown__list"></div>' +
+            '<div class="soko-header-dropdown__footer">' +
+                '<a href="shop-grid.html" class="primary" style="flex:1 1 100%;">Browse Listings</a>' +
+            '</div>';
+        renderWishlistDropdown(panel);
+        return panel;
+    }
+
+    function closeAllHeaderDropdowns(except) {
+        document.querySelectorAll('.soko-header-dropdown.open').forEach(function (p) {
+            if (p !== except) p.classList.remove('open');
+        });
+    }
+
+    function wireWishlistDropdownTriggers() {
+        document.querySelectorAll('.header__cart ul li a, .humberger__menu__cart ul li a').forEach(function (link) {
+            if (!link.querySelector('.fa-heart') || link.dataset.sokoWishlistWired) return;
+            link.dataset.sokoWishlistWired = '1';
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var li = link.closest('li');
+                var existing = li.querySelector('.soko-wishlist-dropdown');
+                if (existing) {
+                    var isOpen = existing.classList.contains('open');
+                    closeAllHeaderDropdowns();
+                    if (!isOpen) { renderWishlistDropdown(existing); existing.classList.add('open'); }
+                    return;
+                }
+                closeAllHeaderDropdowns();
+                var panel = buildWishlistDropdownPanel();
+                li.style.position = 'relative';
+                li.appendChild(panel);
+                panel.classList.add('open');
+            });
+        });
+
+        if (!document.body.dataset.sokoWishlistOutsideClickWired) {
+            document.body.dataset.sokoWishlistOutsideClickWired = '1';
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('.soko-wishlist-dropdown') && !e.target.closest('.header__cart, .humberger__menu__cart')) {
+                    closeAllHeaderDropdowns();
+                }
+            });
+        }
     }
 
     // Delegated click handling for every heart icon on the site: product
@@ -173,9 +272,13 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         updateWishlistUI();
+        wireWishlistDropdownTriggers();
     });
     if (document.readyState === 'interactive' || document.readyState === 'complete') {
-        setTimeout(updateWishlistUI, 0);
+        setTimeout(function () {
+            updateWishlistUI();
+            wireWishlistDropdownTriggers();
+        }, 0);
     }
 
 })(window, document);
