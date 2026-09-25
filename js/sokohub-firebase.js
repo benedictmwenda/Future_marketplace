@@ -22,6 +22,44 @@ function getSokoCatSlug(categoryText) {
 }
 window.getSokoCatSlug = getSokoCatSlug;
 
+// Premium tier badge (Top / Urgent / Featured) shown on every card, and the
+// sort priority used to rank listings — Top first, then Urgent, then
+// Featured, then Normal, matching the site's 5-color palette (no red).
+function getPremiumBadgeHtml(item, position) {
+    const pos = position === 'bottom-left' ? 'bottom:10px; left:10px;' : 'top:10px; right:10px;';
+    const tier = (item && item.premium || '').toLowerCase();
+    if (tier === 'top') {
+        return `<span style="position:absolute; ${pos} background:#DAA520; color:#1D1912; padding:5px 10px; font-size:11px; text-transform:uppercase; font-weight:800; border-radius:4px; z-index:2;">🔝 Top Ad</span>`;
+    }
+    if (tier === 'urgent') {
+        return `<span style="position:absolute; ${pos} background:#1D1912; color:#DAA520; padding:5px 10px; font-size:11px; text-transform:uppercase; font-weight:800; border-radius:4px; z-index:2;">⚡ Urgent</span>`;
+    }
+    if (tier === 'featured') {
+        return `<span style="position:absolute; ${pos} background:#28a745; color:#F3F3E6; padding:5px 10px; font-size:11px; text-transform:uppercase; font-weight:800; border-radius:4px; z-index:2;">★ Featured</span>`;
+    }
+    return '';
+}
+window.getPremiumBadgeHtml = getPremiumBadgeHtml;
+
+function getPremiumSortRank(item) {
+    const tier = (item && item.premium || '').toLowerCase();
+    if (tier === 'top') return 0;
+    if (tier === 'urgent') return 1;
+    if (tier === 'featured') return 2;
+    return 3;
+}
+window.getPremiumSortRank = getPremiumSortRank;
+
+function sortByPremiumThenDate(listings) {
+    return listings.slice().sort(function (a, b) {
+        const rankDiff = getPremiumSortRank(a) - getPremiumSortRank(b);
+        if (rankDiff !== 0) return rankDiff;
+        return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+    });
+}
+window.sortByPremiumThenDate = sortByPremiumThenDate;
+
+
 // True if this item should show "Add to Cart"; false if it should be
 // contact-only (call/WhatsApp), e.g. vehicles, property, services, jobs.
 function isSokoShopType(item) {
@@ -132,9 +170,14 @@ async function renderShopGridListings() {
         return { item: item, catSlug: catSlug, subcatSlug: subcatSlug };
     });
 
-    const filtered = filterCat
+    const filtered = (filterCat
         ? withSlugs.filter(function (x) { return x.catSlug === filterCat || x.subcatSlug === filterCat; })
-        : withSlugs;
+        : withSlugs
+    ).sort(function (a, b) {
+        const rankDiff = getPremiumSortRank(a.item) - getPremiumSortRank(b.item);
+        if (rankDiff !== 0) return rankDiff;
+        return new Date(b.item.createdAt || 0) - new Date(a.item.createdAt || 0);
+    });
 
     // Let the page know which category is active, for a heading + "clear filter" link.
     const headingEl = document.querySelector('.shop-grid-category-heading');
@@ -173,6 +216,7 @@ async function renderShopGridListings() {
                         <span class="badge" style="position: absolute; top: 10px; right: 10px; background: ${item.status === 'Sold' ? '#dc3545' : (item.status === 'Reserved' ? '#DAA520' : (item.status === 'Out of Stock' ? '#6c757d' : '#28a745'))}; padding: 5px 10px; font-size: 11px; text-transform: uppercase; color: #F3F3E6; border-radius: 4px;">
                             ${item.status || 'Available'}
                         </span>
+                        ${getPremiumBadgeHtml(item, 'bottom-left')}
                         <ul class="product__item__pic__hover">
                             <li><a href="#" data-qv-id="${item.id}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-heart"></i></a></li>
                             <li><a href="#" class="quick-view-btn" data-qv-id="${item.id}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-eye"></i></a></li>
@@ -226,6 +270,7 @@ function buildHomeListingCard(item) {
                     <span class="badge" style="position: absolute; top: 10px; left: 10px; background: #1000B8; color: #F3F3E6; padding: 5px 10px; font-size: 11px; text-transform: uppercase; font-weight:700; border-radius:4px; z-index: 2;">
                         ${item.category || 'Product'} ${item.subcategory ? '▸ ' + item.subcategory : ''}
                     </span>
+                    ${getPremiumBadgeHtml(item)}
                     <ul class="featured__item__pic__hover">
                         <li><a href="#" data-qv-id="${item.id}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-heart"></i></a></li>
                         <li><a href="#" class="quick-view-btn" data-qv-id="${item.id}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-eye"></i></a></li>
