@@ -284,7 +284,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('qv-img').alt               = item.title || 'Item';
         document.getElementById('qv-name').textContent      = item.title || 'No Title';
         document.getElementById('qv-price').textContent     = (typeof item.price === 'number' ? 'KSH ' + item.price.toLocaleString() : (item.price || ''));
-        document.getElementById('qv-category').textContent  = item.category || item.listingType || '';
+        const qvCategoryEl = document.getElementById('qv-category');
+        qvCategoryEl.textContent = item.category || item.listingType || '';
+        qvCategoryEl.href = window.getSokoCatSlug ? 'shop-grid.html?category=' + window.getSokoCatSlug(item.category) : 'shop-grid.html';
         document.getElementById('qv-desc').textContent      = item.description || '';
         document.getElementById('qv-location').textContent  = item.location || '—';
         document.getElementById('qv-condition').textContent = item.condition || '—';
@@ -450,7 +452,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('qv-img').alt               = btn.dataset.name      || 'Item';
         document.getElementById('qv-name').textContent      = btn.dataset.name      || 'No Title';
         document.getElementById('qv-price').textContent     = btn.dataset.price     || '';
-        document.getElementById('qv-category').textContent  = btn.dataset.category  || '';
+        const qvCategoryElData = document.getElementById('qv-category');
+        qvCategoryElData.textContent = btn.dataset.category || '';
+        qvCategoryElData.href = window.getSokoCatSlug ? 'shop-grid.html?category=' + window.getSokoCatSlug(btn.dataset.category) : 'shop-grid.html';
         document.getElementById('qv-desc').textContent      = btn.dataset.desc      || '';
         document.getElementById('qv-location').textContent  = btn.dataset.location  || '—';
         document.getElementById('qv-condition').textContent = btn.dataset.condition || '—';
