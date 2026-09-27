@@ -1128,18 +1128,21 @@
                                     <label for="sellerName">Business Name <span class="req">*</span></label>
                                     <input type="text" id="sellerName" class="form-control" placeholder="e.g. SokoHub Wholesale Ltd." required>
                                 </div>
-                                <div class="col-md-6 form-group">
+                                <div class="col-md-6 form-group" id="sellerPhoneGroup">
                                     <label for="sellerPhone">Phone Number (M-Pesa / WhatsApp) <span class="req">*</span></label>
                                     <input type="text" id="sellerPhone" class="form-control" placeholder="e.g. +254 794 536597" required>
                                 </div>
-                                <div class="col-md-6 form-group">
+                                <div class="col-md-6 form-group" id="sellerEmailGroup">
                                     <label for="sellerEmail">Email <span class="req">*</span></label>
                                     <input type="email" id="sellerEmail" class="form-control" placeholder="e.g. seller@domain.com" required>
                                 </div>
-                                <div class="col-md-6 form-group">
+                                <div class="col-md-6 form-group" id="sellerWhatsappGroup">
                                     <label for="sellerWhatsapp">WhatsApp Number</label>
                                     <input type="text" id="sellerWhatsapp" class="form-control" placeholder="e.g. +254 794 536597">
                                 </div>
+                            </div>
+                            <div class="col-md-12" id="sellerContactHiddenNote" style="display:none; margin:-10px 0 15px; color:#7a7a7a; font-size:13px;">
+                                <i class="fa fa-info-circle"></i> Phone, email, and WhatsApp aren't needed for this category — buyers purchase directly through the cart, so there's no need to share your direct contact details.
                             </div>
 
                             <!-- ============ 6. STATUS ============ -->
@@ -1327,7 +1330,33 @@
             const category = this.value;
             populateSubcategories(category);
             showPanel(category);
+            updateContactFieldsVisibility(category);
         });
+
+        // Vehicles, Property, Services, and Jobs are contact-based listings
+        // (buyer calls/WhatsApps the seller directly) — everything else goes
+        // through the cart, so direct contact details aren't needed at all.
+        function updateContactFieldsVisibility(category) {
+            const isShopType = window.isSokoShopType ? window.isSokoShopType({ category: category }) : true;
+
+            const phoneGroup = document.getElementById('sellerPhoneGroup');
+            const emailGroup = document.getElementById('sellerEmailGroup');
+            const whatsappGroup = document.getElementById('sellerWhatsappGroup');
+            const hiddenNote = document.getElementById('sellerContactHiddenNote');
+            const phoneInput = document.getElementById('sellerPhone');
+            const emailInput = document.getElementById('sellerEmail');
+
+            const display = isShopType ? 'none' : '';
+            if (phoneGroup) phoneGroup.style.display = display;
+            if (emailGroup) emailGroup.style.display = display;
+            if (whatsappGroup) whatsappGroup.style.display = display;
+            if (hiddenNote) hiddenNote.style.display = isShopType ? '' : 'none';
+
+            // Hidden-but-required fields block form submission in most browsers,
+            // so drop the requirement while they're hidden.
+            if (phoneInput) phoneInput.required = !isShopType;
+            if (emailInput) emailInput.required = !isShopType;
+        }
 
         // ============================================================
         //  FEATURES BUILDER
@@ -1648,6 +1677,7 @@
             populateSubcategories(item.category || '');
             document.getElementById('itemSubcategory').value = item.subcategory || '';
             showPanel(item.category || '');
+            updateContactFieldsVisibility(item.category || '');
             document.getElementById('itemPrice').value = item.price || '';
             document.getElementById('itemLocation').value = item.location || '';
             document.getElementById('itemCondition').value = item.condition || 'Used';
@@ -1724,6 +1754,7 @@
             document.getElementById('sellerPostForm').reset();
             document.getElementById('itemCategory').value = '';
             document.getElementById('itemSubcategory').innerHTML = '<option value="">Select a category first...</option>';
+            updateContactFieldsVisibility('');
             document.querySelectorAll('.attr-panel').forEach(function (p) { p.classList.remove('show'); });
             for (var i = 0; i < 6; i++) updateSlotUI(i);
             renderFeatures();
