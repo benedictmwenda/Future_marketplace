@@ -14,6 +14,10 @@
     // the header total is always identical to the amount shown at checkout.
     var DELIVERY_FEE = 500;
     var DISCOUNT = 1500;
+    // Platform commission: added on top of the buyer's subtotal at checkout.
+    // The seller still receives the full listed price — this is SokoHub's
+    // cut, charged to the buyer as a separate service fee line item.
+    var COMMISSION_RATE = 0.10;
 
 
     // ---- Read helpers -------------------------------------------------
@@ -123,11 +127,16 @@
     }
 
     // ---- Checkout total ------------------------------------------------
-    // The amount the buyer actually pays at checkout = subtotal + delivery - discount.
+
+    function getCommission() {
+        return Math.round(getCartTotal() * COMMISSION_RATE);
+    }
+
+    // The amount the buyer actually pays at checkout = subtotal + commission + delivery - discount.
     // Header price MUST equal this same value on every page.
     function getCheckoutTotal() {
         var subtotal = getCartTotal();
-        var total = subtotal + DELIVERY_FEE - DISCOUNT;
+        var total = subtotal + getCommission() + DELIVERY_FEE - DISCOUNT;
         // Never show a negative total.
         return total > 0 ? total : 0;
     }
@@ -371,6 +380,8 @@
         clearCart: clearCart,
         getCartTotal: getCartTotal,
         getCheckoutTotal: getCheckoutTotal,
+        getCommission: getCommission,
+        commissionRate: COMMISSION_RATE,
         getCartCount: getCartCount,
         formatKsh: formatKsh,
         updateCartUI: updateCartUI

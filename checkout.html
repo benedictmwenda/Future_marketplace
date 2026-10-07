@@ -298,6 +298,7 @@
                                     <li>Prado Rental (3 days) <span>KSH 28,500</span></li>
                                 </ul>
                                 <div class="checkout__order__subtotal">Subtotal <span id="checkoutSubtotal">KSH 178,000</span></div>
+                                <div class="checkout__order__subtotal">Service Fee (10%) <span id="checkoutCommission">KSH 17,800</span></div>
                                 <div class="checkout__order__subtotal">Delivery <span id="checkoutDelivery">KSH 500</span></div>
                                 <div class="checkout__order__subtotal">Discount <span id="checkoutDiscount" style="color:#e74c3c;">- KSH 1,500</span></div>
                                 <div class="checkout__order__total">Total <span id="checkoutTotal">KSH 177,000</span></div>
@@ -466,22 +467,23 @@
             }
 
             const subtotalEl = document.getElementById('checkoutSubtotal');
+            const commissionEl = document.getElementById('checkoutCommission');
             const deliveryEl = document.getElementById('checkoutDelivery');
             const discountEl = document.getElementById('checkoutDiscount');
             const totalEl = document.getElementById('checkoutTotal');
 
             const subtotal = window.SokoCart.getCartTotal();
+            const commission = window.SokoCart.getCommission();
             const total = window.SokoCart.getCheckoutTotal();
-            // Reverse-derive the delivery/discount constants actually used, so this
-            // page never drifts out of sync with the cart module's own math.
-            const deliveryAndDiscountDelta = total - subtotal;
 
             if (subtotalEl) subtotalEl.textContent = window.SokoCart.formatKsh(subtotal);
+            if (commissionEl) commissionEl.textContent = window.SokoCart.formatKsh(commission);
             if (totalEl) totalEl.textContent = window.SokoCart.formatKsh(total);
-            // Delivery/discount lines are informational; keep their labels but
-            // avoid implying a fee structure that isn't actually being charged
+            // Delivery/discount/commission lines are informational; keep their
+            // labels but avoid implying fees that aren't actually being charged
             // when the cart is empty.
             if (cart.length === 0) {
+                if (commissionEl) commissionEl.textContent = window.SokoCart.formatKsh(0);
                 if (deliveryEl) deliveryEl.textContent = window.SokoCart.formatKsh(0);
                 if (discountEl) discountEl.textContent = window.SokoCart.formatKsh(0);
             }
