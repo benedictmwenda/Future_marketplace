@@ -84,8 +84,19 @@ document.addEventListener('DOMContentLoaded', function () {
     const headerAuth = document.querySelectorAll('.header__top__right__auth');
     headerAuth.forEach(el => {
         if (user && user.isLoggedIn) {
+            const avatar = user.photo
+                ? `<img src="${user.photo}" alt="" style="width:20px;height:20px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:5px;">`
+                : '<i class="fa fa-user-circle"></i> ';
+            const safeName = String(user.name || user.email || '')
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            // Only a convenience link — admin.html itself re-verifies the role
+            // on the server, so editing localStorage can't unlock anything.
+            const adminLink = user.role === 'admin'
+                ? '<a href="./admin.html" style="margin-left:10px; color:#1000B8; font-weight:700;"><i class="fa fa-dashboard"></i> Admin</a>'
+                : '';
             el.innerHTML = `
-                <a href="#" style="color:#28a745; font-weight:600;"><i class="fa fa-user-circle"></i> ${user.name || user.email}</a>
+                <a href="./profile.html" style="color:#28a745; font-weight:600;">${avatar}${safeName}</a>
+                ${adminLink}
                 <a href="#" class="logout-btn" style="margin-left:10px; color:#1D1912;"><i class="fa fa-sign-out"></i> Logout</a>
             `;
         } else {
@@ -105,4 +116,3 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-

@@ -1252,6 +1252,7 @@
     <script src="js/sokohub-db.js"></script>
     <script src="js/sokohub-mysql.js"></script>
     <script src="js/sokohub-firebase.js"></script>
+    <script src="js/sokohub-auth.js"></script>
 
     <!-- Firebase SDKs — loaded AFTER core scripts with defer so a slow or blocked CDN
          can never block the form's submit handler or the preloader hide. -->
@@ -1868,7 +1869,7 @@
             }
 
             // Ensure seller role for this session
-            if (user.role !== 'seller') {
+            if (user.role !== 'seller' && user.role !== 'admin') {
                 user.role = 'seller';
                 try { localStorage.setItem('sokohub_user', JSON.stringify(user)); } catch (e) { }
             }
@@ -1880,7 +1881,7 @@
             const headerRight = document.querySelector('.header__top__right__auth');
             if (headerRight) {
                 headerRight.innerHTML = `
-                    <span style="color:#28a745; font-weight:600;"><i class="fa fa-check-circle"></i> ${user.name || user.email}</span>
+                    <a href="./profile.html" style="color:#28a745; font-weight:600;"><i class="fa fa-check-circle"></i> ${user.name || user.email}</a>
                     <a href="#" id="logoutBtn" style="margin-left:12px; color:#1D1912;"><i class="fa fa-sign-out"></i> Logout</a>
                 `;
                 const logoutBtn = document.getElementById('logoutBtn');

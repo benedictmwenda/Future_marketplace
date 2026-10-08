@@ -237,8 +237,188 @@ app.post('/api/auth/login', async (req, res) => {
 
         res.json({
             success: true,
-            user: { name: user.name, email: user.email, role: user.role || role || 'buyer', phone: user.phone || '' }
+            user: { name: user.name, email: user.email, role: user.role || role || 'buyer', phone: user.phone || '', photo: user.photo_url || '' }
         });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// ==========================================
+// 6b. AUTH: UPDATE PROFILE (name, phone, photo)
+// ==========================================
+app.post('/api/auth/update-profile', async (req, res) => {
+    try {
+        const { email, name, phone, photo } = req.body;
+        if (!email) {
+            return res.status(400).json({ success: false, message: 'Missing account email.' });
+        }
+
+        const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+        if (rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Account not found.' });
+        }
+
+        await pool.query(
+            'UPDATE users SET name = ?, phone = ?, photo_url = ? WHERE email = ?',
+            [name || rows[0].name, phone || '', photo || rows[0].photo_url || '', email]
+        );
+
+        res.json({
+            success: true,
+            user: { name: name || rows[0].name, email, role: rows[0].role, phone: phone || '', photo: photo || rows[0].photo_url || '' }
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// ==========================================
+// 6c. AUTH: CHANGE PASSWORD (verifies current password first)
+// ==========================================
+app.post('/api/auth/change-password', async (req, res) => {
+    try {
+        const { email, currentPassword, newPassword } = req.body;
+        if (!email || !currentPassword || !newPassword) {
+            return res.status(400).json({ success: false, message: 'Missing required fields.' });
+        }
+        if (newPassword.length < 6) {
+            return res.status(400).json({ success: false, message: 'New password must be at least 6 characters.' });
+        }
+
+        const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+        if (rows.length === 0) {
+            return res.status(404).json({ success: false, message: 'Account not found.' });
+        }
+
+        const user = rows[0];
+        const matches = await bcrypt.compare(currentPassword, user.password);
+        if (!matches) {
+            return res.status(401).json({ success: false, message: '🔒 Current password is incorrect.' });
+        }
+
+        const hashedNew = await bcrypt.hash(newPassword, 10);
+        await pool.query('UPDATE users SET password = ? WHERE email = ?', [hashedNew, email]);
+
+        res.json({ success: true, message: 'Password updated successfully.' });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// ==========================================
+// ADMIN ROUTES — every one re-verifies the requester's role from the
+// database by email. The client's claimed role is never trusted.
+// ==========================================
+async function requireAdmin(req, res) {
+    const adminEmail = req.body.adminEmail || req.query.adminEmail;
+    if (!adminEmail) {
+        res.status(400).json({ success: false, message: 'Missing adminEmail.' });
+        return null;
+    }
+    const [rows] = await pool.query('SELECT role FROM users WHERE email = ?', [adminEmail]);
+    if (rows.length === 0 || rows[0].role !== 'admin') {
+        res.status(403).json({ success: false, message: 'Admin access required.' });
+        return null;
+    }
+    return adminEmail;
+}
+
+app.get('/api/admin/stats', async (req, res) => {
+    try {
+        if (!(await requireAdmin(req, res))) return;
+        const [[{ totalUsers }]] = await pool.query('SELECT COUNT(*) AS totalUsers FROM users');
+        const [[{ totalBuyers }]] = await pool.query("SELECT COUNT(*) AS totalBuyers FROM users WHERE role = 'buyer'");
+        const [[{ totalSellers }]] = await pool.query("SELECT COUNT(*) AS totalSellers FROM users WHERE role = 'seller'");
+        const [[{ totalAdmins }]] = await pool.query("SELECT COUNT(*) AS totalAdmins FROM users WHERE role = 'admin'");
+        const [[{ totalListings }]] = await pool.query('SELECT COUNT(*) AS totalListings FROM listings');
+        const [[{ newUsers7d }]] = await pool.query('SELECT COUNT(*) AS newUsers7d FROM users WHERE created_at >= (NOW() - INTERVAL 7 DAY)');
+        const [[{ newListings7d }]] = await pool.query('SELECT COUNT(*) AS newListings7d FROM listings WHERE created_at >= (NOW() - INTERVAL 7 DAY)');
+        const [byCategory] = await pool.query('SELECT category, COUNT(*) AS count FROM listings GROUP BY category ORDER BY count DESC');
+        const [byStatus] = await pool.query('SELECT status, COUNT(*) AS count FROM listings GROUP BY status');
+        const [byPremium] = await pool.query('SELECT premium, COUNT(*) AS count FROM listings GROUP BY premium');
+        const [byFeatured] = await pool.query("SELECT COUNT(*) AS count FROM listings WHERE featured = 'Yes'");
+        const [topSellers] = await pool.query('SELECT seller_name, seller_email, COUNT(*) AS listingCount FROM listings GROUP BY seller_email, seller_name ORDER BY listingCount DESC LIMIT 5');
+
+        res.json({
+            success: true,
+            stats: {
+                totalUsers, totalBuyers, totalSellers, totalAdmins, totalListings,
+                newUsers7d, newListings7d,
+                featuredCount: byFeatured[0].count,
+                byCategory, byStatus, byPremium, topSellers
+            }
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+app.post('/api/admin/users', async (req, res) => {
+    try {
+        if (!(await requireAdmin(req, res))) return;
+        const [users] = await pool.query('SELECT id, name, email, phone, role, created_at FROM users ORDER BY created_at DESC');
+        res.json({ success: true, users });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+app.post('/api/admin/update-user-role', async (req, res) => {
+    try {
+        if (!(await requireAdmin(req, res))) return;
+        const { targetEmail, newRole } = req.body;
+        if (!targetEmail || !['buyer', 'seller', 'admin'].includes(newRole)) {
+            return res.status(400).json({ success: false, message: 'Invalid target email or role.' });
+        }
+        await pool.query('UPDATE users SET role = ? WHERE email = ?', [newRole, targetEmail]);
+        res.json({ success: true, message: 'Role updated.' });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+app.post('/api/admin/delete-user', async (req, res) => {
+    try {
+        const adminEmail = await requireAdmin(req, res);
+        if (!adminEmail) return;
+        const { targetEmail } = req.body;
+        if (!targetEmail) return res.status(400).json({ success: false, message: 'Missing targetEmail.' });
+        if (targetEmail === adminEmail) {
+            return res.status(400).json({ success: false, message: "You can't delete your own admin account from here." });
+        }
+        await pool.query('DELETE FROM users WHERE email = ?', [targetEmail]);
+        res.json({ success: true, message: 'User deleted.' });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+app.post('/api/admin/delete-listing', async (req, res) => {
+    try {
+        if (!(await requireAdmin(req, res))) return;
+        const { listingId } = req.body;
+        if (!listingId) return res.status(400).json({ success: false, message: 'Missing listingId.' });
+        await pool.query('DELETE FROM listings WHERE id = ?', [listingId]);
+        res.json({ success: true, message: 'Listing deleted.' });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+app.post('/api/admin/update-listing', async (req, res) => {
+    try {
+        if (!(await requireAdmin(req, res))) return;
+        const { listingId, premium, status } = req.body;
+        if (!listingId) return res.status(400).json({ success: false, message: 'Missing listingId.' });
+        const fields = [];
+        const values = [];
+        if (premium) { fields.push('premium = ?'); values.push(premium); }
+        if (status) { fields.push('status = ?'); values.push(status); }
+        if (fields.length === 0) return res.status(400).json({ success: false, message: 'Nothing to update.' });
+        values.push(listingId);
+        await pool.query(`UPDATE listings SET ${fields.join(', ')} WHERE id = ?`, values);
+        res.json({ success: true, message: 'Listing updated.' });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }

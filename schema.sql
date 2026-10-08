@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     phone VARCHAR(50),
-    role ENUM('buyer', 'seller') DEFAULT 'buyer',
+    photo_url LONGTEXT NULL,
+    role ENUM('buyer', 'seller', 'admin') DEFAULT 'buyer',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

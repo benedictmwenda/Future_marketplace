@@ -836,6 +836,9 @@
             }
 
             let displayName;
+            let loggedInPhone = '';
+            let loggedInPhoto = '';
+            let serverRole = '';
             if (type === 'signin') {
                 displayName = email.split('@')[0];
             } else {
@@ -873,6 +876,11 @@
                 if (data.user && data.user.name) {
                     displayName = data.user.name;
                 }
+                if (data.user) {
+                    loggedInPhone = data.user.phone || '';
+                    loggedInPhoto = data.user.photo || '';
+                    serverRole = data.user.role || '';
+                }
 
             } catch (err) {
                 console.error('Auth request failed:', err);
@@ -887,12 +895,15 @@
             const urlParams = new URLSearchParams(window.location.search);
             const redirectParam = urlParams.get('redirect');
             const isSellerIntent = currentRole === 'seller' || (redirectParam && redirectParam.includes('post-item'));
-            const sessionRole = isSellerIntent ? 'seller' : 'buyer';
+            // Admin is only ever honored when the SERVER reports it; admin.html re-verifies anyway.
+            const sessionRole = serverRole === 'admin' ? 'admin' : (isSellerIntent ? 'seller' : 'buyer');
 
             const userSession = {
                 email: email,
                 role: sessionRole,
                 name: displayName,
+                phone: loggedInPhone || '',
+                photo: loggedInPhoto || '',
                 isLoggedIn: true,
                 loggedInAt: new Date().toISOString()
             };

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="SokoHub Admin Dashboard">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SokoHub | Admin Dashboard</title>
+    <link href="img/logoR.png" rel="icon">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Hamburger Begin -->
+    <div class="humberger__menu__overlay"></div>
+    <div class="humberger__menu__wrapper">
+        <div class="humberger__menu__logo">
+            <a href="./index.html"><img src="img/logoR.png" alt="SokoHub" style="height:40px;"></a>
+        </div>
+        <div class="humberger__menu__cart">
+            <ul>
+                <li><a href="./shoping-cart.html"><i class="fa fa-heart"></i> <span class="wishlist-count">0</span></a></li>
+                <li><a href="./shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span class="cart-count">0</span></a></li>
+            </ul>
+            <div class="header__cart__price">item: <span class="header-cart-total">KSH 0.00</span></div>
+        </div>
+        <div class="humberger__menu__widget">
+            <div class="header__top__right__language">
+                <img src="img/language.png" alt="">
+                <div>English</div>
+                <span class="arrow_carrot-down"></span>
+                <ul>
+                    <li><a href="#">English</a></li>
+                    <li><a href="#">Swahili</a></li>
+                </ul>
+            </div>
+            <div class="header__top__right__auth">
+                <a href="#"><i class="fa fa-user"></i> Login</a>
+            </div>
+        </div>
+        <nav class="humberger__menu__nav mobile-menu">
+            <ul>
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./shop-grid.html">Shop</a></li>
+                <li><a href="#">Pages</a>
+                    <ul class="header__menu__dropdown">
+                        <li><a href="./shop-details.html">Listing Details</a></li>
+                        <li><a href="./shoping-cart.html">Cart</a></li>
+                        <li><a href="./checkout.html">Check Out</a></li>
+                        <li><a href="./blog-details.html">Blog Details</a></li>
+                    </ul>
+                </li>
+                <li><a href="./blog.html">Blog</a></li>
+                <li class="active"><a href="./contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div id="mobile-menu-wrap"></div>
+        <div class="header__top__right__social">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+            <a href="#"><i class="fa fa-whatsapp"></i></a>
+        </div>
+        <div class="humberger__menu__contact">
+            <ul>
+                <li><i class="fa fa-envelope"></i> beneditc64@gmail.com</li>
+                <li><i class="fa fa-phone"></i> +254 794 536597</li>
+            </ul>
+        </div>
+    </div>
+    <!-- Hamburger End -->
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="header__top__left">
+                            <ul>
+                                <li><i class="fa fa-envelope"></i> beneditc64@gmail.com</li>
+                                <li><i class="fa fa-phone"></i> +254 794 536597</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="header__top__right">
+                            <div class="header__top__right__social">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-whatsapp"></i></a>
+                            </div>
+                            <div class="header__top__right__language">
+                                <img src="img/language.png" alt="">
+                                <div>English</div>
+                                <span class="arrow_carrot-down"></span>
+                                <ul>
+                                    <li><a href="#">English</a></li>
+                                    <li><a href="#">Swahili</a></li>
+                                </ul>
+                            </div>
+                            <div class="header__top__right__auth">
+                                <a href="#"><i class="fa fa-user"></i> Login</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="header__logo">
+                        <a href="./index.html">
+                            <img src="img/logoR.png"
+                                alt="SokoHub" style="height: 50px; object-fit: contain;">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <nav class="header__menu">
+                        <ul>
+                            <li><a href="./index.html">Home</a></li>
+                            <li><a href="./shop-grid.html">Shop</a></li>
+                            <li><a href="#">Pages</a>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="./shop-details.html">Listing Details</a></li>
+                                    <li><a href="./shoping-cart.html">Cart</a></li>
+                                    <li><a href="./checkout.html">Check Out</a></li>
+                                    <li><a href="./blog-details.html">Blog Details</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="./blog.html">Blog</a></li>
+                            <li class="active"><a href="./contact.html">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3">
+                    <div class="header__cart">
+                        <ul>
+                            <li><a href="./shoping-cart.html"><i class="fa fa-heart"></i> <span class="wishlist-count">0</span></a></li>
+                            <li><a href="./shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span class="cart-count">0</span></a></li>
+                        </ul>
+                        <div class="header__cart__price">item: <span class="header-cart-total">KSH 0.00</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="humberger__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <style>
+        .adm-wrap { padding: 40px 0 70px; }
+        .adm-gate { text-align: center; padding: 90px 20px; color: #7a7a7a; }
+        .adm-gate h3 { color: #1D1912; margin-bottom: 10px; }
+        .adm-tabs { display: flex; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; border-bottom: 2px solid #e5e5d8; }
+        .adm-tab { background: none; border: none; padding: 12px 22px; font-weight: 700; color: #7a7a7a; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; font-size: 15px; }
+        .adm-tab.active { color: #1000B8; border-bottom-color: #1000B8; }
+        .adm-panel { display: none; }
+        .adm-panel.active { display: block; }
+        .adm-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; margin-bottom: 28px; }
+        .adm-card { background: #fff; border-radius: 10px; padding: 18px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); border-left: 4px solid #1000B8; }
+        .adm-card.gold { border-left-color: #DAA520; }
+        .adm-card.green { border-left-color: #28a745; }
+        .adm-card.black { border-left-color: #1D1912; }
+        .adm-card__label { font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: #7a7a7a; font-weight: 700; }
+        .adm-card__value { font-size: 30px; font-weight: 900; color: #1D1912; line-height: 1.2; margin-top: 4px; }
+        .adm-card__sub { font-size: 12px; color: #999; margin-top: 2px; }
+        .adm-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; margin-bottom: 18px; }
+        .adm-box { background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+        .adm-box h5 { font-size: 15px; font-weight: 800; margin-bottom: 14px; color: #1D1912; }
+        .adm-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; font-size: 13px; }
+        .adm-bar-label { width: 120px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #1D1912; }
+        .adm-bar-track { flex: 1; background: #eee; border-radius: 4px; height: 12px; overflow: hidden; }
+        .adm-bar-fill { height: 100%; background: #1000B8; border-radius: 4px; }
+        .adm-bar-fill.gold { background: #DAA520; }
+        .adm-bar-fill.green { background: #28a745; }
+        .adm-bar-count { width: 34px; text-align: right; font-weight: 700; color: #1D1912; }
+        .adm-note { background: #fffbea; border: 1px solid #f0e2a3; border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #6b5b13; margin-top: 6px; }
+        .adm-toolbar { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+        .adm-toolbar input, .adm-toolbar select { padding: 9px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+        .adm-toolbar input { flex: 1; min-width: 220px; }
+        .adm-count { font-size: 13px; color: #7a7a7a; margin-left: auto; }
+        .adm-table-wrap { background: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); overflow-x: auto; }
+        .adm-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+        .adm-table th { text-align: left; padding: 12px 14px; background: #1D1912; color: #F3F3E6; font-size: 12px; text-transform: uppercase; letter-spacing: .4px; white-space: nowrap; }
+        .adm-table td { padding: 11px 14px; border-bottom: 1px solid #f0f0e6; vertical-align: middle; }
+        .adm-table tr:hover td { background: #fafaf3; }
+        .adm-table select { padding: 5px 8px; border: 1px solid #ddd; border-radius: 5px; font-size: 13px; }
+        .adm-thumb { width: 42px; height: 42px; object-fit: cover; border-radius: 6px; vertical-align: middle; margin-right: 10px; }
+        .adm-title-cell { display: flex; align-items: center; min-width: 220px; }
+        .adm-title-cell a { color: #1D1912; font-weight: 700; }
+        .adm-del { background: none; border: 1px solid #e0b4b4; color: #c0392b; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: 700; }
+        .adm-del:hover { background: #c0392b; color: #fff; }
+        .adm-pill { display: inline-block; padding: 3px 9px; border-radius: 12px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+        .adm-pill.admin { background: #1D1912; color: #DAA520; }
+        .adm-pill.seller { background: #1000B8; color: #fff; }
+        .adm-pill.buyer { background: #e8e8dc; color: #1D1912; }
+        .adm-empty { text-align: center; padding: 40px; color: #999; }
+        .adm-toast { position: fixed; bottom: 25px; right: 25px; background: #1D1912; color: #F3F3E6; padding: 12px 18px; border-radius: 8px; font-size: 14px; z-index: 9999; display: none; box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
+        .adm-toast.err { background: #c0392b; }
+    </style>
+
+    <section class="adm-wrap">
+        <div class="container">
+
+            <!-- Access gate: nothing below is shown until the SERVER confirms this account is an admin -->
+            <div id="adminGate" class="adm-gate">
+                <i class="fa fa-spinner fa-spin" style="font-size:28px;color:#c1a175;"></i>
+                <p style="margin-top:14px;">Verifying admin access...</p>
+            </div>
+
+            <div id="adminApp" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:20px;">
+                    <div>
+                        <h3 style="margin:0; font-weight:900;">Admin Dashboard</h3>
+                        <small style="color:#7a7a7a;">Signed in as <b id="adminWho"></b></small>
+                    </div>
+                    <button type="button" class="site-btn" id="adminRefreshBtn" style="padding:9px 18px;"><i class="fa fa-refresh"></i> Refresh data</button>
+                </div>
+
+                <div class="adm-tabs">
+                    <button type="button" class="adm-tab active" data-tab="overview"><i class="fa fa-bar-chart"></i> Overview</button>
+                    <button type="button" class="adm-tab" data-tab="users"><i class="fa fa-users"></i> Users</button>
+                    <button type="button" class="adm-tab" data-tab="listings"><i class="fa fa-list"></i> Listings</button>
+                </div>
+
+                <!-- ============ OVERVIEW ============ -->
+                <div class="adm-panel active" id="panel-overview">
+                    <div class="adm-cards" id="statCards"></div>
+
+                    <div class="adm-grid2">
+                        <div class="adm-box"><h5>Listings by Category</h5><div id="chartCategory"></div></div>
+                        <div class="adm-box"><h5>Listings by Status</h5><div id="chartStatus"></div></div>
+                    </div>
+                    <div class="adm-grid2">
+                        <div class="adm-box"><h5>Listings by Premium Tier</h5><div id="chartPremium"></div></div>
+                        <div class="adm-box"><h5>Users by Role</h5><div id="chartRoles"></div></div>
+                    </div>
+                    <div class="adm-grid2">
+                        <div class="adm-box"><h5>Top Sellers (by listings posted)</h5><div id="topSellers"></div></div>
+                        <div class="adm-box">
+                            <h5>Marketplace Mix</h5>
+                            <div id="chartMix"></div>
+                            <div class="adm-note">
+                                <b>Revenue &amp; order analytics aren't available yet.</b> Carts live in each visitor's browser and no payment gateway records orders, so there's no server-side sales data to report on. Once checkout saves orders to the database, the 10% service-fee revenue can be reported here.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============ USERS ============ -->
+                <div class="adm-panel" id="panel-users">
+                    <div class="adm-toolbar">
+                        <input type="text" id="userSearch" placeholder="Search users by name, email or phone...">
+                        <select id="userRoleFilter">
+                            <option value="">All roles</option>
+                            <option value="buyer">Buyers</option>
+                            <option value="seller">Sellers</option>
+                            <option value="admin">Admins</option>
+                        </select>
+                        <span class="adm-count" id="userCount"></span>
+                    </div>
+                    <div class="adm-table-wrap">
+                        <table class="adm-table">
+                            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Joined</th><th>Actions</th></tr></thead>
+                            <tbody id="usersBody"><tr><td colspan="6" class="adm-empty">Loading...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ============ LISTINGS ============ -->
+                <div class="adm-panel" id="panel-listings">
+                    <div class="adm-toolbar">
+                        <input type="text" id="listingSearch" placeholder="Search listings by title, seller or location...">
+                        <select id="listingCategoryFilter"><option value="">All categories</option></select>
+                        <select id="listingPremiumFilter">
+                            <option value="">All tiers</option>
+                            <option value="normal">Normal</option>
+                            <option value="featured">Featured</option>
+                            <option value="urgent">Urgent</option>
+                            <option value="top">Top</option>
+                        </select>
+                        <span class="adm-count" id="listingCount"></span>
+                    </div>
+                    <div class="adm-table-wrap">
+                        <table class="adm-table">
+                            <thead><tr><th>Listing</th><th>Category</th><th>Seller</th><th>Price</th><th>Status</th><th>Tier</th><th>Posted</th><th>Actions</th></tr></thead>
+                            <tbody id="listingsBody"><tr><td colspan="8" class="adm-empty">Loading...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="adm-toast" id="admToast"></div>
+
+    <footer class="footer spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__about__logo">
+                            <a href="./index.html">
+                                <img src="img/logoR.png"
+                                    alt="SokoHub" style="height:45px; object-fit:contain;">
+                            </a>
+                        </div>
+                        <ul>
+                            <li>Nairobi, Kenya</li>
+                            <li>Phone: +254 794 536597</li>
+                            <li>Email: beneditc64@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+                    <div class="footer__widget">
+                        <h6>Quick Links</h6>
+                        <ul>
+                            <li><a href="./index.html">Home</a></li>
+                            <li><a href="./shop-grid.html">Browse Listings</a></li>
+                            <li><a href="./blog.html">Blog</a></li>
+                            <li><a href="./contact.html">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="footer__widget">
+                        <h6>Join Our Newsletter</h6>
+                        <p>Get updates on the latest deals, new listings, and market tips.</p>
+                        <form action="#">
+                            <input type="text" placeholder="Enter your email">
+                            <button type="submit" class="site-btn">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Js Plugins -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/mixitup.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/sokohub-auth.js"></script>
+    <script src="js/sokohub-cart.js"></script>
+    <script src="js/sokohub-wishlist.js"></script>
+
+    <script>
+    (function () {
+        'use strict';
+
+        // ---------- helpers ----------
+        function esc(v) {
+            return String(v == null ? '' : v)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+        function ksh(n) { return 'KSH ' + (Number(n) || 0).toLocaleString(); }
+        function fmtDate(d) {
+            if (!d) return '—';
+            var dt = new Date(d);
+            return isNaN(dt) ? '—' : dt.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+        function toast(msg, isErr) {
+            var t = document.getElementById('admToast');
+            t.textContent = msg;
+            t.className = 'adm-toast' + (isErr ? ' err' : '');
+            t.style.display = 'block';
+            clearTimeout(toast._t);
+            toast._t = setTimeout(function () { t.style.display = 'none'; }, 2600);
+        }
+
+        var isLocal = !(location.hostname.indexOf('netlify.app') > -1 || location.hostname.indexOf('vercel.app') > -1 || location.protocol === 'https:');
+        var BASE = isLocal ? 'http://localhost:5000/api' : location.origin + '/api';
+
+        var sessionUser = null;
+        try { sessionUser = JSON.parse(localStorage.getItem('sokohub_user') || 'null'); } catch (e) { }
+        var adminEmail = sessionUser && sessionUser.email;
+
+        // The server re-checks the role in the database on EVERY call below.
+        // Nothing stored in the browser can grant access to any of this data.
+        var LOCAL_ROUTES = {
+            'admin-stats': { method: 'GET', path: '/admin/stats' },
+            'admin-get-users': { method: 'POST', path: '/admin/users' },
+            'admin-update-user-role': { method: 'POST', path: '/admin/update-user-role' },
+            'admin-delete-user': { method: 'POST', path: '/admin/delete-user' },
+            'admin-delete-listing': { method: 'POST', path: '/admin/delete-listing' },
+            'admin-update-listing': { method: 'POST', path: '/admin/update-listing' }
+        };
+
+        function adminCall(action, payload) {
+            payload = Object.assign({ adminEmail: adminEmail }, payload || {});
+            var req;
+            if (isLocal) {
+                var r = LOCAL_ROUTES[action];
+                if (r.method === 'GET') {
+                    req = fetch(BASE + r.path + '?adminEmail=' + encodeURIComponent(adminEmail));
+                } else {
+                    req = fetch(BASE + r.path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                }
+            } else {
+                payload.action = action;
+                req = fetch(BASE + '/listings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            }
+            return req.then(function (res) {
+                return res.json().then(function (data) { data._status = res.status; return data; });
+            });
+        }
+
+        function showGate(html) {
+            var g = document.getElementById('adminGate');
+            g.style.display = 'block';
+            g.innerHTML = html;
+            document.getElementById('adminApp').style.display = 'none';
+        }
+
+        // ---------- state ----------
+        var allUsers = [];
+        var allListings = [];
+
+        // ---------- overview ----------
+        function bars(containerId, rows, labelKey, colorClass) {
+            var el = document.getElementById(containerId);
+            if (!rows || rows.length === 0) { el.innerHTML = '<div class="adm-empty" style="padding:14px;">No data yet</div>'; return; }
+            var max = Math.max.apply(null, rows.map(function (r) { return r.count; })) || 1;
+            el.innerHTML = rows.map(function (r) {
+                var pct = Math.round((r.count / max) * 100);
+                return '<div class="adm-bar-row"><div class="adm-bar-label" title="' + esc(r[labelKey]) + '">' + esc(r[labelKey] || '—') + '</div>' +
+                    '<div class="adm-bar-track"><div class="adm-bar-fill ' + (colorClass || '') + '" style="width:' + pct + '%"></div></div>' +
+                    '<div class="adm-bar-count">' + r.count + '</div></div>';
+            }).join('');
+        }
+
+        function renderStats(s) {
+            var listedValue = allListings.filter(function (l) { return (l.status || 'Available') === 'Available'; })
+                .reduce(function (sum, l) { return sum + (Number(l.price) || 0); }, 0);
+
+            var cards = [
+                { l: 'Total Users', v: s.totalUsers, sub: '+' + s.newUsers7d + ' in last 7 days', c: '' },
+                { l: 'Sellers', v: s.totalSellers, sub: s.totalBuyers + ' buyers · ' + s.totalAdmins + ' admin', c: 'gold' },
+                { l: 'Total Listings', v: s.totalListings, sub: '+' + s.newListings7d + ' in last 7 days', c: 'green' },
+                { l: 'Featured Listings', v: s.featuredCount, sub: 'Seller-highlighted', c: 'gold' },
+                { l: 'Available Stock Value', v: ksh(listedValue), sub: 'Sum of available listing prices', c: 'black' },
+                { l: 'Potential Fee Base', v: ksh(Math.round(listedValue * 0.10)), sub: '10% of available value (not revenue)', c: 'black' }
+            ];
+            document.getElementById('statCards').innerHTML = cards.map(function (c) {
+                return '<div class="adm-card ' + c.c + '"><div class="adm-card__label">' + c.l + '</div><div class="adm-card__value">' + c.v + '</div><div class="adm-card__sub">' + c.sub + '</div></div>';
+            }).join('');
+
+            bars('chartCategory', s.byCategory.map(function (r) { return { category: r.category, count: r.count }; }), 'category');
+            bars('chartStatus', s.byStatus.map(function (r) { return { status: r.status, count: r.count }; }), 'status', 'green');
+
+            // Normalize tier names (older rows may be "Normal" capitalised)
+            var tiers = {};
+            s.byPremium.forEach(function (r) {
+                var k = String(r.premium || 'normal').toLowerCase();
+                tiers[k] = (tiers[k] || 0) + r.count;
+            });
+            bars('chartPremium', ['top', 'urgent', 'featured', 'normal'].map(function (k) { return { tier: k.charAt(0).toUpperCase() + k.slice(1), count: tiers[k] || 0 }; }), 'tier', 'gold');
+
+            bars('chartRoles', [
+                { role: 'Buyers', count: s.totalBuyers },
+                { role: 'Sellers', count: s.totalSellers },
+                { role: 'Admins', count: s.totalAdmins }
+            ], 'role');
+
+            var ts = document.getElementById('topSellers');
+            ts.innerHTML = (s.topSellers && s.topSellers.length)
+                ? s.topSellers.map(function (r, i) {
+                    return '<div class="adm-bar-row"><div class="adm-bar-label" style="width:auto;flex:1;"><b>' + (i + 1) + '.</b> ' + esc(r.seller_name || r.seller_email) +
+                        '<br><small style="color:#999;">' + esc(r.seller_email) + '</small></div><div class="adm-bar-count" style="width:auto;">' + r.listingCount + ' listings</div></div>';
+                }).join('')
+                : '<div class="adm-empty" style="padding:14px;">No sellers yet</div>';
+
+            // Shop-type vs contact-type mix, derived from the real listings
+            var contactCats = ['vehic', 'prop', 'serv', 'job'];
+            var contact = 0, shop = 0;
+            allListings.forEach(function (l) {
+                var c = String(l.category || '').toLowerCase();
+                if (contactCats.some(function (k) { return c.indexOf(k) > -1; })) contact++; else shop++;
+            });
+            bars('chartMix', [
+                { type: 'Shop-type (cart & checkout)', count: shop },
+                { type: 'Contact-type (call/WhatsApp)', count: contact }
+            ], 'type', 'green');
+        }
+
+        function loadStats() {
+            return adminCall('admin-stats').then(function (data) {
+                if (!data.success) throw new Error(data.message || 'Could not load stats');
+                renderStats(data.stats);
+            });
+        }
+
+        // ---------- users ----------
+        function renderUsers() {
+            var q = document.getElementById('userSearch').value.trim().toLowerCase();
+            var role = document.getElementById('userRoleFilter').value;
+            var rows = allUsers.filter(function (u) {
+                if (role && u.role !== role) return false;
+                if (!q) return true;
+                return [u.name, u.email, u.phone].join(' ').toLowerCase().indexOf(q) > -1;
+            });
+            document.getElementById('userCount').textContent = rows.length + ' of ' + allUsers.length + ' users';
+            var body = document.getElementById('usersBody');
+            if (rows.length === 0) { body.innerHTML = '<tr><td colspan="6" class="adm-empty">No users match.</td></tr>'; return; }
+            body.innerHTML = rows.map(function (u) {
+                var isSelf = u.email === adminEmail;
+                return '<tr>' +
+                    '<td><b>' + esc(u.name) + '</b></td>' +
+                    '<td>' + esc(u.email) + '</td>' +
+                    '<td>' + esc(u.phone || '—') + '</td>' +
+                    '<td><span class="adm-pill ' + esc(u.role) + '">' + esc(u.role) + '</span> ' +
+                    (isSelf ? '<small style="color:#999;">(you)</small>' :
+                        '<select data-user-role="' + esc(u.email) + '"><option value="buyer"' + (u.role === 'buyer' ? ' selected' : '') + '>buyer</option><option value="seller"' + (u.role === 'seller' ? ' selected' : '') + '>seller</option><option value="admin"' + (u.role === 'admin' ? ' selected' : '') + '>admin</option></select>') + '</td>' +
+                    '<td>' + fmtDate(u.created_at) + '</td>' +
+                    '<td>' + (isSelf ? '—' : '<button class="adm-del" data-del-user="' + esc(u.email) + '"><i class="fa fa-trash"></i> Delete</button>') + '</td>' +
+                    '</tr>';
+            }).join('');
+        }
+
+        function loadUsers() {
+            return adminCall('admin-get-users').then(function (data) {
+                if (!data.success) throw new Error(data.message || 'Could not load users');
+                allUsers = data.users || [];
+                renderUsers();
+            });
+        }
+
+        // ---------- listings ----------
+        function renderListings() {
+            var q = document.getElementById('listingSearch').value.trim().toLowerCase();
+            var cat = document.getElementById('listingCategoryFilter').value;
+            var tier = document.getElementById('listingPremiumFilter').value;
+            var rows = allListings.filter(function (l) {
+                if (cat && l.category !== cat) return false;
+                if (tier && String(l.premium || 'normal').toLowerCase() !== tier) return false;
+                if (!q) return true;
+                return [l.title, l.sellerName, l.sellerEmail, l.location].join(' ').toLowerCase().indexOf(q) > -1;
+            });
+            document.getElementById('listingCount').textContent = rows.length + ' of ' + allListings.length + ' listings';
+            var body = document.getElementById('listingsBody');
+            if (rows.length === 0) { body.innerHTML = '<tr><td colspan="8" class="adm-empty">No listings match.</td></tr>'; return; }
+
+            var statuses = ['Available', 'Sold', 'Reserved', 'Out of Stock'];
+            var tiers = ['normal', 'featured', 'urgent', 'top'];
+            body.innerHTML = rows.map(function (l) {
+                var img = (l.images && l.images[0]) || l.imageUrl || 'img/featured/feature-1.jpg';
+                var curStatus = l.status || 'Available';
+                var curTier = String(l.premium || 'normal').toLowerCase();
+                return '<tr>' +
+                    '<td><div class="adm-title-cell"><img class="adm-thumb" src="' + esc(img) + '" alt=""><a href="shop-details.html?id=' + encodeURIComponent(l.id) + '" target="_blank">' + esc(l.title) + '</a></div></td>' +
+                    '<td>' + esc(l.category || '—') + '</td>' +
+                    '<td>' + esc(l.sellerName || '—') + '<br><small style="color:#999;">' + esc(l.sellerEmail || '') + '</small></td>' +
+                    '<td>' + ksh(l.price) + '</td>' +
+                    '<td><select data-listing-status="' + esc(l.id) + '">' + statuses.map(function (s) { return '<option' + (s === curStatus ? ' selected' : '') + '>' + s + '</option>'; }).join('') + '</select></td>' +
+                    '<td><select data-listing-tier="' + esc(l.id) + '">' + tiers.map(function (t) { return '<option value="' + t + '"' + (t === curTier ? ' selected' : '') + '>' + t + '</option>'; }).join('') + '</select></td>' +
+                    '<td>' + fmtDate(l.createdAt) + '</td>' +
+                    '<td><button class="adm-del" data-del-listing="' + esc(l.id) + '"><i class="fa fa-trash"></i> Delete</button></td>' +
+                    '</tr>';
+            }).join('');
+        }
+
+        function loadListings() {
+            return fetch(BASE + '/listings').then(function (r) { return r.json(); }).then(function (data) {
+                allListings = (data && data.listings) || [];
+                var cats = {};
+                allListings.forEach(function (l) { if (l.category) cats[l.category] = 1; });
+                var sel = document.getElementById('listingCategoryFilter');
+                var keep = sel.value;
+                sel.innerHTML = '<option value="">All categories</option>' + Object.keys(cats).sort().map(function (c) {
+                    return '<option value="' + esc(c) + '">' + esc(c) + '</option>';
+                }).join('');
+                sel.value = keep;
+                renderListings();
+            });
+        }
+
+        function refreshAll() {
+            // Listings first: the overview uses them for value + mix charts.
+            return loadListings().then(function () { return Promise.all([loadStats(), loadUsers()]); })
+                .catch(function (e) { toast(e.message || 'Refresh failed', true); });
+        }
+
+        // ---------- events ----------
+        document.querySelectorAll('.adm-tab').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.adm-tab').forEach(function (b) { b.classList.remove('active'); });
+                document.querySelectorAll('.adm-panel').forEach(function (p) { p.classList.remove('active'); });
+                btn.classList.add('active');
+                document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+            });
+        });
+        document.getElementById('adminRefreshBtn').addEventListener('click', function () {
+            refreshAll().then(function () { toast('Data refreshed'); });
+        });
+        document.getElementById('userSearch').addEventListener('input', renderUsers);
+        document.getElementById('userRoleFilter').addEventListener('change', renderUsers);
+        document.getElementById('listingSearch').addEventListener('input', renderListings);
+        document.getElementById('listingCategoryFilter').addEventListener('change', renderListings);
+        document.getElementById('listingPremiumFilter').addEventListener('change', renderListings);
+
+        document.addEventListener('change', function (e) {
+            var t = e.target;
+            if (t.dataset.userRole) {
+                var email = t.dataset.userRole, newRole = t.value;
+                if (!confirm('Change ' + email + ' to "' + newRole + '"?')) { renderUsers(); return; }
+                adminCall('admin-update-user-role', { targetEmail: email, newRole: newRole }).then(function (d) {
+                    if (!d.success) throw new Error(d.message);
+                    toast('Role updated'); return Promise.all([loadUsers(), loadStats()]);
+                }).catch(function (err) { toast(err.message || 'Failed', true); renderUsers(); });
+            } else if (t.dataset.listingStatus) {
+                adminCall('admin-update-listing', { listingId: t.dataset.listingStatus, status: t.value }).then(function (d) {
+                    if (!d.success) throw new Error(d.message);
+                    toast('Status updated'); return refreshAll();
+                }).catch(function (err) { toast(err.message || 'Failed', true); });
+            } else if (t.dataset.listingTier) {
+                adminCall('admin-update-listing', { listingId: t.dataset.listingTier, premium: t.value }).then(function (d) {
+                    if (!d.success) throw new Error(d.message);
+                    toast('Tier updated'); return refreshAll();
+                }).catch(function (err) { toast(err.message || 'Failed', true); });
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            var delUser = e.target.closest('[data-del-user]');
+            if (delUser) {
+                var email = delUser.dataset.delUser;
+                if (!confirm('Permanently delete the account ' + email + '?\nTheir listings will remain unless you delete them separately.')) return;
+                adminCall('admin-delete-user', { targetEmail: email }).then(function (d) {
+                    if (!d.success) throw new Error(d.message);
+                    toast('User deleted'); return Promise.all([loadUsers(), loadStats()]);
+                }).catch(function (err) { toast(err.message || 'Failed', true); });
+                return;
+            }
+            var delListing = e.target.closest('[data-del-listing]');
+            if (delListing) {
+                if (!confirm('Permanently delete this listing?')) return;
+                adminCall('admin-delete-listing', { listingId: delListing.dataset.delListing }).then(function (d) {
+                    if (!d.success) throw new Error(d.message);
+                    toast('Listing deleted'); return refreshAll();
+                }).catch(function (err) { toast(err.message || 'Failed', true); });
+            }
+        });
+
+        // ---------- boot: verify against the server before showing anything ----------
+        if (!adminEmail) {
+            showGate('<h3>Please sign in</h3><p>You need to be signed in with an admin account to view this page.</p><a href="login.html" class="primary-btn">Sign in</a>');
+            return;
+        }
+
+        adminCall('admin-stats').then(function (data) {
+            if (data._status === 403 || (!data.success && /admin access/i.test(data.message || ''))) {
+                showGate('<h3>Access denied</h3><p>This account doesn\'t have admin access.</p><a href="index.html" class="primary-btn">Back to SokoHub</a>');
+                return;
+            }
+            if (!data.success) {
+                showGate('<h3>Couldn\'t load the dashboard</h3><p>' + esc(data.message || data.error || 'Server error') + '</p>');
+                return;
+            }
+            document.getElementById('adminGate').style.display = 'none';
+            document.getElementById('adminApp').style.display = 'block';
+            document.getElementById('adminWho').textContent = sessionUser.email;
+            loadListings().then(function () { renderStats(data.stats); return loadUsers(); })
+                .catch(function (e) { toast(e.message || 'Load failed', true); });
+        }).catch(function () {
+            showGate('<h3>Couldn\'t reach the server</h3><p>Check your connection and try again.</p>');
+        });
+    })();
+    </script>
+
+</body>
+</html>
