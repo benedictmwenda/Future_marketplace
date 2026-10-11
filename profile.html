@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="SokoHub - My Account">
+    <meta name="keywords" content="SokoHub, my account, profile, wishlist, cart">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SokoHub | My Account</title>
+    <link href="img/logoR.png" rel="icon">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Hamburger Begin -->
+    <div class="humberger__menu__overlay"></div>
+    <div class="humberger__menu__wrapper">
+        <div class="humberger__menu__logo">
+            <a href="./index.html"><img src="img/logoR.png" alt="SokoHub" style="height:40px;"></a>
+        </div>
+        <div class="humberger__menu__cart">
+            <ul>
+                <li><a href="./shoping-cart.html"><i class="fa fa-heart"></i> <span class="wishlist-count">0</span></a></li>
+                <li><a href="./shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span class="cart-count">0</span></a></li>
+            </ul>
+            <div class="header__cart__price">item: <span class="header-cart-total">KSH 0.00</span></div>
+        </div>
+        <div class="humberger__menu__widget">
+            <div class="header__top__right__language">
+                <img src="img/language.png" alt="">
+                <div>English</div>
+                <span class="arrow_carrot-down"></span>
+                <ul>
+                    <li><a href="#">English</a></li>
+                    <li><a href="#">Swahili</a></li>
+                </ul>
+            </div>
+            <div class="header__top__right__auth">
+                <a href="#"><i class="fa fa-user"></i> Login</a>
+            </div>
+        </div>
+        <nav class="humberger__menu__nav mobile-menu">
+            <ul>
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./shop-grid.html">Shop</a></li>
+                <li><a href="#">Pages</a>
+                    <ul class="header__menu__dropdown">
+                        <li><a href="./shop-details.html">Listing Details</a></li>
+                        <li><a href="./shoping-cart.html">Cart</a></li>
+                        <li><a href="./checkout.html">Check Out</a></li>
+                        <li><a href="./blog-details.html">Blog Details</a></li>
+                    </ul>
+                </li>
+                <li><a href="./blog.html">Blog</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div id="mobile-menu-wrap"></div>
+        <div class="header__top__right__social">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-instagram"></i></a>
+            <a href="#"><i class="fa fa-whatsapp"></i></a>
+        </div>
+        <div class="humberger__menu__contact">
+            <ul>
+                <li><i class="fa fa-envelope"></i> beneditc64@gmail.com</li>
+                <li><i class="fa fa-phone"></i> +254 794 536597</li>
+            </ul>
+        </div>
+    </div>
+    <!-- Hamburger End -->
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="header__top__left">
+                            <ul>
+                                <li><i class="fa fa-envelope"></i> beneditc64@gmail.com</li>
+                                <li><i class="fa fa-phone"></i> +254 794 536597</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="header__top__right">
+                            <div class="header__top__right__social">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-whatsapp"></i></a>
+                            </div>
+                            <div class="header__top__right__language">
+                                <img src="img/language.png" alt="">
+                                <div>English</div>
+                                <span class="arrow_carrot-down"></span>
+                                <ul>
+                                    <li><a href="#">English</a></li>
+                                    <li><a href="#">Swahili</a></li>
+                                </ul>
+                            </div>
+                            <div class="header__top__right__auth">
+                                <a href="#"><i class="fa fa-user"></i> Login</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="header__logo">
+                        <a href="./index.html">
+                            <img src="img/logoR.png" class="brand-logo-img" alt="SokoHub">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <nav class="header__menu">
+                        <ul>
+                            <li><a href="./index.html">Home</a></li>
+                            <li><a href="./shop-grid.html">Shop</a></li>
+                            <li><a href="#">Pages</a>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="./shop-details.html">Listing Details</a></li>
+                                    <li><a href="./shoping-cart.html">Cart</a></li>
+                                    <li><a href="./checkout.html">Check Out</a></li>
+                                    <li><a href="./blog-details.html">Blog Details</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="./blog.html">Blog</a></li>
+                            <li><a href="./contact.html">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3">
+                    <div class="header__cart">
+                        <ul>
+                            <li><a href="./shoping-cart.html"><i class="fa fa-heart"></i> <span class="wishlist-count">0</span></a></li>
+                            <li><a href="./shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span class="cart-count">0</span></a></li>
+                        </ul>
+                        <div class="header__cart__price">item: <span class="header-cart-total">KSH 0.00</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="humberger__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg" style="background-image:url('img/breadcrumb.jpg'); background-size:cover; background-position:center;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>My Account</h2>
+                        <div class="breadcrumb__option">
+                            <a href="./index.html">Home</a>
+                            <span>My Account</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Not logged in state -->
+    <section id="profile-logged-out" class="spad" style="display:none; text-align:center; padding:80px 20px;">
+        <i class="fa fa-lock" style="font-size:36px; color:#DAA520; margin-bottom:15px;"></i>
+        <h4 style="margin-bottom:10px;">Sign in to view your account</h4>
+        <p style="color:#7a7a7a; margin-bottom:20px;">Your profile, wishlist, and cart are only visible once you're signed in.</p>
+        <a href="./login.html?redirect=profile.html" class="site-btn">SIGN IN</a>
+    </section>
+
+    <!-- Profile Section Begin -->
+    <section id="profile-content" class="spad" style="display:none;">
+        <div class="container">
+            <div class="row">
+                <!-- Profile Info Card -->
+                <div class="col-lg-4">
+                    <div style="background:#fff; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.06); padding:30px 25px; text-align:center; margin-bottom:30px;">
+                        <div style="position:relative; width:110px; height:110px; margin:0 auto 18px;">
+                            <img id="profilePhotoPreview" src="img/categories/cat-1.jpg" alt="Profile photo"
+                                style="width:110px; height:110px; border-radius:50%; object-fit:cover; border:3px solid #F3F3E6; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                            <label for="profilePhotoInput" title="Change photo"
+                                style="position:absolute; bottom:0; right:0; background:#1000B8; color:#fff; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; border:2px solid #fff;">
+                                <i class="fa fa-camera" style="font-size:13px;"></i>
+                            </label>
+                            <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;">
+                        </div>
+                        <h5 id="profileDisplayName" style="margin-bottom:2px;">—</h5>
+                        <p id="profileDisplayRole" style="color:#999; font-size:13px; text-transform:uppercase; letter-spacing:0.5px;">—</p>
+
+                        <div style="text-align:left; margin-top:20px;">
+                            <div class="form-group">
+                                <label style="font-size:13px; font-weight:600;">Name</label>
+                                <input type="text" id="profileName" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size:13px; font-weight:600;">Email</label>
+                                <input type="email" id="profileEmail" class="form-control" disabled style="background:#f3f3f3; cursor:not-allowed;">
+                                <small style="color:#999;">Email can't be changed here.</small>
+                            </div>
+                            <div class="form-group">
+                                <label style="font-size:13px; font-weight:600;">Phone</label>
+                                <input type="text" id="profilePhone" class="form-control" placeholder="e.g. +254 794 536597">
+                            </div>
+                            <button type="button" id="saveProfileBtn" class="site-btn" style="width:100%; border:none; margin-top:10px;">SAVE CHANGES</button>
+                            <div id="profileSaveMsg" style="margin-top:10px; font-size:13px;"></div>
+                        </div>
+
+                        <hr style="margin:22px 0;">
+
+                        <div style="text-align:left;">
+                            <button type="button" id="togglePasswordSection" style="background:none; border:none; padding:0; color:#1D1912; font-weight:600; font-size:14px; cursor:pointer; display:flex; align-items:center; gap:8px; width:100%;">
+                                <i class="fa fa-lock" style="color:#1000B8;"></i> Change Password
+                                <i class="fa fa-angle-down" id="togglePasswordIcon" style="margin-left:auto;"></i>
+                            </button>
+                            <div id="passwordSection" style="display:none; margin-top:15px;">
+                                <div class="form-group">
+                                    <label style="font-size:13px; font-weight:600;">Current Password</label>
+                                    <input type="password" id="currentPassword" class="form-control" autocomplete="current-password">
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:13px; font-weight:600;">New Password</label>
+                                    <input type="password" id="newPassword" class="form-control" autocomplete="new-password">
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:13px; font-weight:600;">Confirm New Password</label>
+                                    <input type="password" id="confirmNewPassword" class="form-control" autocomplete="new-password">
+                                </div>
+                                <button type="button" id="changePasswordBtn" class="site-btn" style="width:100%; border:none; margin-top:5px;">UPDATE PASSWORD</button>
+                                <div id="passwordChangeMsg" style="margin-top:10px; font-size:13px;"></div>
+                            </div>
+                        </div>
+
+                        <hr style="margin:22px 0;">
+                        <a href="#" id="profileLogoutBtn" style="display:block; color:#999;"><i class="fa fa-sign-out"></i> Logout</a>
+                    </div>
+                </div>
+
+                <!-- Wishlist + Cart -->
+                <div class="col-lg-8">
+                    <div id="profileListingsCard" style="display:none; background:#fff; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.06); padding:25px; margin-bottom:30px;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
+                            <h5 style="margin:0;"><i class="fa fa-list" style="color:#1000B8;"></i> My Listings</h5>
+                            <a href="./post-item.html" style="font-size:13px; color:#1000B8; font-weight:600;">+ Post New</a>
+                        </div>
+                        <div id="profileListingsList"></div>
+                    </div>
+
+                    <div style="background:#fff; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.06); padding:25px; margin-bottom:30px;">
+                        <h5 style="margin-bottom:18px;"><i class="fa fa-heart" style="color:#e74c3c;"></i> My Wishlist</h5>
+                        <div id="profileWishlistList"></div>
+                    </div>
+
+                    <div style="background:#fff; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.06); padding:25px;">
+                        <h5 style="margin-bottom:4px;"><i class="fa fa-shopping-bag" style="color:#1000B8;"></i> Current Cart</h5>
+                        <p style="color:#999; font-size:13px; margin-bottom:18px;">SokoHub doesn't keep a full order history yet — this shows what's currently in your cart.</p>
+                        <div id="profileCartList"></div>
+                        <div id="profileCartFooter" style="display:none; text-align:right; margin-top:15px; padding-top:15px; border-top:1px solid #eee;">
+                            <strong>Total: <span id="profileCartTotal">KSH 0</span></strong>
+                            <a href="./checkout.html" class="site-btn" style="margin-left:15px; padding:8px 20px; font-size:13px;">CHECKOUT</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Profile Section End -->
+
+    <!-- Footer Section Begin -->
+    <footer class="footer spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__about__logo">
+                            <a href="./index.html">
+                                <img src="img/logoR.png" class="brand-logo-img" alt="SokoHub">
+                            </a>
+                        </div>
+                        <ul>
+                            <li>Nairobi, Kenya</li>
+                            <li>Phone: +254 794 536597</li>
+                            <li>Email: beneditc64@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+                    <div class="footer__widget">
+                        <h6>Quick Links</h6>
+                        <ul>
+                            <li><a href="./index.html">Home</a></li>
+                            <li><a href="./shop-grid.html">Browse Listings</a></li>
+                            <li><a href="./blog.html">Blog</a></li>
+                            <li><a href="./contact.html">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="footer__widget">
+                        <h6>Join Our Newsletter</h6>
+                        <p>Get updates on the latest deals, new listings, and market tips.</p>
+                        <form action="#">
+                            <input type="text" placeholder="Enter your email">
+                            <button type="submit" class="site-btn">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Js Plugins -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/mixitup.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/sokohub-db.js"></script>
+    <script src="js/sokohub-auth.js"></script>
+    <script src="js/sokohub-cart.js"></script>
+    <script src="js/sokohub-wishlist.js"></script>
+
+    <script>
+        (function () {
+            const rawUser = localStorage.getItem('sokohub_user');
+            let user = null;
+            try { if (rawUser) user = JSON.parse(rawUser); } catch (e) { }
+
+            if (!user || !user.isLoggedIn) {
+                document.getElementById('profile-logged-out').style.display = 'block';
+                return;
+            }
+            document.getElementById('profile-content').style.display = 'block';
+
+            // --- Populate profile fields ---
+            document.getElementById('profileDisplayName').textContent = user.name || user.email;
+            document.getElementById('profileDisplayRole').textContent = user.role || 'buyer';
+            document.getElementById('profileName').value = user.name || '';
+            document.getElementById('profileEmail').value = user.email || '';
+            document.getElementById('profilePhone').value = user.phone || '';
+            if (user.photo) {
+                document.getElementById('profilePhotoPreview').src = user.photo;
+            }
+
+            // --- Photo upload (base64, same pattern as listing photos) ---
+            let pendingPhoto = user.photo || '';
+            document.getElementById('profilePhotoInput').addEventListener('change', function (e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                if (!file.type.startsWith('image/')) {
+                    alert('Please choose an image file.');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function (ev) {
+                    pendingPhoto = ev.target.result;
+                    document.getElementById('profilePhotoPreview').src = pendingPhoto;
+                };
+                reader.readAsDataURL(file);
+            });
+
+            // --- Save profile ---
+            function getActiveBaseUrl() {
+                const isProd = window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app') || window.location.protocol === 'https:';
+                return isProd ? (window.location.origin + '/api') : 'http://localhost:5000/api';
+            }
+
+            document.getElementById('saveProfileBtn').addEventListener('click', async function () {
+                const btn = this;
+                const msgEl = document.getElementById('profileSaveMsg');
+                const name = document.getElementById('profileName').value.trim();
+                const phone = document.getElementById('profilePhone').value.trim();
+
+                btn.disabled = true;
+                btn.textContent = 'SAVING...';
+                msgEl.textContent = '';
+
+                try {
+                    const resp = await fetch(getActiveBaseUrl() + '/auth/update-profile', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'update-profile', email: user.email, name: name, phone: phone, photo: pendingPhoto })
+                    });
+                    const data = await resp.json();
+
+                    if (!data.success) {
+                        msgEl.style.color = '#e74c3c';
+                        msgEl.textContent = data.message || 'Could not save changes.';
+                    } else {
+                        user.name = data.user.name;
+                        user.phone = data.user.phone;
+                        user.photo = data.user.photo;
+                        localStorage.setItem('sokohub_user', JSON.stringify(user));
+                        document.getElementById('profileDisplayName').textContent = user.name;
+                        msgEl.style.color = '#28a745';
+                        msgEl.textContent = '✓ Saved successfully.';
+                    }
+                } catch (err) {
+                    msgEl.style.color = '#e74c3c';
+                    msgEl.textContent = 'Could not reach the server. Please try again.';
+                }
+
+                btn.disabled = false;
+                btn.textContent = 'SAVE CHANGES';
+            });
+
+            document.getElementById('profileLogoutBtn').addEventListener('click', function (e) {
+                e.preventDefault();
+                localStorage.removeItem('sokohub_user');
+                window.location.href = './index.html';
+            });
+
+            // --- Wishlist ---
+            function renderWishlist() {
+                const listEl = document.getElementById('profileWishlistList');
+                if (!window.SokoWishlist) return;
+                const items = window.SokoWishlist.getWishlist();
+                if (items.length === 0) {
+                    listEl.innerHTML = '<p style="color:#999; text-align:center; padding:20px 0;">No liked items yet. Tap the heart on any listing to save it here.</p>';
+                    return;
+                }
+                listEl.innerHTML = items.map(function (item) {
+                    const priceLabel = typeof item.price === 'number' ? 'KSH ' + item.price.toLocaleString() : (item.price || '');
+                    const href = String(item.id).indexOf('qv-') === 0 || String(item.id).indexOf('demo-') === 0 ? '#' : 'shop-details.html?id=' + item.id;
+                    return '<div style="display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid #f2f2f2;">' +
+                        '<img src="' + (item.image || 'img/featured/feature-1.jpg') + '" style="width:55px; height:55px; object-fit:cover; border-radius:6px;">' +
+                        '<div style="flex:1; min-width:0;">' +
+                        '<a href="' + href + '" style="display:block; font-weight:600; color:#1D1912; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">' + esc(item.title) + '</a>' +
+                        '<span style="color:#1000B8; font-size:13px; font-weight:700;">' + priceLabel + '</span>' +
+                        '</div>' +
+                        '<button type="button" data-id="' + item.id + '" class="profile-unlike-btn" style="background:none; border:none; color:#e74c3c; cursor:pointer;"><i class="fa fa-heart"></i></button>' +
+                        '</div>';
+                }).join('');
+
+                listEl.querySelectorAll('.profile-unlike-btn').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        window.SokoWishlist.removeFromWishlist(btn.dataset.id);
+                        renderWishlist();
+                    });
+                });
+            }
+
+            // --- Cart ---
+            function renderCart() {
+                const listEl = document.getElementById('profileCartList');
+                const footerEl = document.getElementById('profileCartFooter');
+                if (!window.SokoCart) return;
+                const cart = window.SokoCart.getCart();
+                if (cart.length === 0) {
+                    listEl.innerHTML = '<p style="color:#999; text-align:center; padding:20px 0;">Your cart is empty.</p>';
+                    footerEl.style.display = 'none';
+                    return;
+                }
+                listEl.innerHTML = cart.map(function (item) {
+                    const qty = parseInt(item.quantity, 10) || 1;
+                    const lineTotal = (parseFloat(item.price) || 0) * qty;
+                    return '<div style="display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid #f2f2f2;">' +
+                        '<img src="' + (item.image || 'img/featured/feature-1.jpg') + '" style="width:55px; height:55px; object-fit:cover; border-radius:6px;">' +
+                        '<div style="flex:1; min-width:0;">' +
+                        '<span style="display:block; font-weight:600; color:#1D1912;">' + esc(item.title) + (qty > 1 ? ' × ' + qty : '') + '</span>' +
+                        '</div>' +
+                        '<span style="color:#1000B8; font-weight:700;">' + window.SokoCart.formatKsh(lineTotal) + '</span>' +
+                        '</div>';
+                }).join('');
+                document.getElementById('profileCartTotal').textContent = window.SokoCart.formatKsh(window.SokoCart.getCheckoutTotal());
+                footerEl.style.display = 'block';
+            }
+
+            // --- Change password ---
+            document.getElementById('togglePasswordSection').addEventListener('click', function () {
+                const sec = document.getElementById('passwordSection');
+                const opening = sec.style.display === 'none';
+                sec.style.display = opening ? 'block' : 'none';
+                document.getElementById('togglePasswordIcon').className = 'fa ' + (opening ? 'fa-angle-up' : 'fa-angle-down');
+            });
+
+            document.getElementById('changePasswordBtn').addEventListener('click', async function () {
+                const btn = this;
+                const msgEl = document.getElementById('passwordChangeMsg');
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmNewPassword').value;
+
+                function fail(text) { msgEl.style.color = '#e74c3c'; msgEl.textContent = text; }
+
+                if (!currentPassword || !newPassword || !confirmPassword) return fail('Please fill in all three fields.');
+                if (newPassword.length < 6) return fail('New password must be at least 6 characters.');
+                if (newPassword !== confirmPassword) return fail('New passwords don\'t match.');
+                if (newPassword === currentPassword) return fail('New password must be different from the current one.');
+
+                btn.disabled = true;
+                btn.textContent = 'UPDATING...';
+                msgEl.textContent = '';
+                try {
+                    const resp = await fetch(getActiveBaseUrl() + '/auth/change-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'change-password', email: user.email, currentPassword: currentPassword, newPassword: newPassword })
+                    });
+                    const data = await resp.json();
+                    if (!data.success) {
+                        fail(data.message || 'Could not update password.');
+                    } else {
+                        msgEl.style.color = '#28a745';
+                        msgEl.textContent = '✓ Password updated.';
+                        document.getElementById('currentPassword').value = '';
+                        document.getElementById('newPassword').value = '';
+                        document.getElementById('confirmNewPassword').value = '';
+                    }
+                } catch (err) {
+                    fail('Could not reach the server. Please try again.');
+                }
+                btn.disabled = false;
+                btn.textContent = 'UPDATE PASSWORD';
+            });
+
+            // --- My Listings (sellers and admins) ---
+            function esc(v) {
+                return String(v == null ? '' : v)
+                    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            }
+
+            async function renderMyListings() {
+                if (user.role !== 'seller' && user.role !== 'admin') return;
+                const card = document.getElementById('profileListingsCard');
+                const listEl = document.getElementById('profileListingsList');
+                card.style.display = 'block';
+                listEl.innerHTML = '<p style="color:#999; text-align:center; padding:20px 0;"><i class="fa fa-spinner fa-spin"></i> Loading your listings...</p>';
+
+                let all = [];
+                try {
+                    const resp = await fetch(getActiveBaseUrl() + '/listings');
+                    const data = await resp.json();
+                    all = (data && data.listings) || [];
+                } catch (err) {
+                    listEl.innerHTML = '<p style="color:#e74c3c; text-align:center; padding:20px 0;">Couldn\'t load your listings. Please refresh.</p>';
+                    return;
+                }
+
+                const email = String(user.email || '').toLowerCase();
+                const mine = all.filter(function (l) { return String(l.sellerEmail || '').toLowerCase() === email; });
+
+                if (mine.length === 0) {
+                    listEl.innerHTML = '<p style="color:#999; text-align:center; padding:20px 0;">You haven\'t posted anything yet. <a href="./post-item.html" style="color:#1000B8; font-weight:600;">Post your first listing</a></p>';
+                    return;
+                }
+
+                const available = mine.filter(function (l) { return (l.status || 'Available') === 'Available'; }).length;
+                const summary = '<p style="color:#7a7a7a; font-size:13px; margin-bottom:10px;">' + mine.length + ' listing' + (mine.length === 1 ? '' : 's') + ' · ' + available + ' available</p>';
+
+                listEl.innerHTML = summary + mine.map(function (l) {
+                    const img = (l.images && l.images[0]) || l.imageUrl || 'img/featured/feature-1.jpg';
+                    const price = typeof l.price === 'number' ? 'KSH ' + l.price.toLocaleString() : esc(l.price || '');
+                    const tier = String(l.premium || 'normal').toLowerCase();
+                    const tierBadge = tier !== 'normal' ? ' <span style="background:#DAA520; color:#1D1912; font-size:10px; font-weight:800; padding:2px 7px; border-radius:10px; text-transform:uppercase;">' + esc(tier) + '</span>' : '';
+                    const idEnc = encodeURIComponent(l.id);
+                    return '<div style="display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid #f2f2f2;">' +
+                        '<img src="' + esc(img) + '" style="width:60px; height:60px; object-fit:cover; border-radius:6px;" alt="">' +
+                        '<div style="flex:1; min-width:0;">' +
+                        '<a href="shop-details.html?id=' + idEnc + '" style="display:block; font-weight:600; color:#1D1912; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">' + esc(l.title) + '</a>' +
+                        '<span style="color:#1000B8; font-size:13px; font-weight:700;">' + price + '</span>' +
+                        '<small style="color:#999; margin-left:8px;">' + esc(l.status || 'Available') + '</small>' + tierBadge +
+                        '</div>' +
+                        '<a href="post-item.html?edit=' + idEnc + '" title="Edit" style="color:#1000B8; padding:6px 8px;"><i class="fa fa-edit"></i></a>' +
+                        '<button type="button" data-del-listing="' + esc(l.id) + '" title="Delete" style="background:none; border:none; color:#c0392b; cursor:pointer; padding:6px 8px;"><i class="fa fa-trash"></i></button>' +
+                        '</div>';
+                }).join('');
+            }
+
+            document.getElementById('profileListingsList').addEventListener('click', async function (e) {
+                const btn = e.target.closest('[data-del-listing]');
+                if (!btn) return;
+                if (!confirm('Delete this listing? This can\'t be undone.')) return;
+                const id = btn.dataset.delListing;
+                btn.disabled = true;
+                try {
+                    const resp = await fetch(getActiveBaseUrl() + '/listings/' + encodeURIComponent(id) + '?by=' + encodeURIComponent(user.email), { method: 'DELETE' });
+                    const data = await resp.json();
+                    if (!data.success) throw new Error(data.message || 'Delete failed');
+
+                    // Clear this browser's local copies too, so a stale cached copy can't reappear.
+                    try {
+                        const local = JSON.parse(localStorage.getItem('sokohub_listings') || '[]');
+                        localStorage.setItem('sokohub_listings', JSON.stringify(local.filter(function (l) { return String(l.id) !== String(id); })));
+                    } catch (e2) { }
+                    if (window.SokoDB && typeof window.SokoDB.deleteListing === 'function') {
+                        try { await window.SokoDB.deleteListing(id); } catch (e3) { }
+                    }
+                    renderMyListings();
+                } catch (err) {
+                    alert(err.message || 'Could not delete the listing.');
+                    btn.disabled = false;
+                }
+            });
+
+            renderWishlist();
+            renderCart();
+            renderMyListings();
+        })();
+    </script>
+
+</body>
+</html>

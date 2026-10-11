@@ -178,6 +178,15 @@ app.post('/api/listings', async (req, res) => {
 // ==========================================
 app.delete('/api/listings/:id', async (req, res) => {
     try {
+        const by = String(req.query.by || '').trim().toLowerCase();
+        if (!by) return res.status(401).json({ success: false, message: 'Sign in to delete a listing.' });
+        const [owned] = await pool.query('SELECT seller_email FROM listings WHERE id = ?', [req.params.id]);
+        if (owned.length === 0) return res.status(404).json({ success: false, message: 'Listing not found.' });
+        const [requester] = await pool.query('SELECT role FROM users WHERE email = ?', [by]);
+        const requesterIsAdmin = requester.length > 0 && requester[0].role === 'admin';
+        if (String(owned[0].seller_email || '').toLowerCase() !== by && !requesterIsAdmin) {
+            return res.status(403).json({ success: false, message: 'You can only delete your own listings.' });
+        }
         await pool.query('DELETE FROM listings WHERE id = ?', [req.params.id]);
         res.json({ success: true, message: 'Listing deleted from MySQL database' });
     } catch (err) {

@@ -351,6 +351,23 @@ exports.handler = async function (event, context) {
                 await connection.end();
                 return { statusCode: 400, headers, body: JSON.stringify({ success: false, message: 'Missing listing id in URL.' }) };
             }
+            // Only the listing's seller (or an admin) may delete it.
+            const by = String((event.queryStringParameters && event.queryStringParameters.by) || '').trim().toLowerCase();
+            if (!by) {
+                await connection.end();
+                return { statusCode: 401, headers, body: JSON.stringify({ success: false, message: 'Sign in to delete a listing.' }) };
+            }
+            const [owned] = await connection.query('SELECT seller_email FROM listings WHERE id = ?', [id]);
+            if (owned.length === 0) {
+                await connection.end();
+                return { statusCode: 404, headers, body: JSON.stringify({ success: false, message: 'Listing not found.' }) };
+            }
+            const [requester] = await connection.query('SELECT role FROM users WHERE email = ?', [by]);
+            const requesterIsAdmin = requester.length > 0 && requester[0].role === 'admin';
+            if (String(owned[0].seller_email || '').toLowerCase() !== by && !requesterIsAdmin) {
+                await connection.end();
+                return { statusCode: 403, headers, body: JSON.stringify({ success: false, message: 'You can only delete your own listings.' }) };
+            }
             await connection.query('DELETE FROM listings WHERE id = ?', [id]);
             await connection.end();
             return { statusCode: 200, headers, body: JSON.stringify({ success: true, message: 'Listing deleted.' }) };

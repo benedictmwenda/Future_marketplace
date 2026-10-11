@@ -2024,6 +2024,13 @@
             }
         });
     </script>
+    <script>
+        // Deep link from the profile page: post-item.html?edit=LISTING_ID opens that listing in the editor.
+        window.addEventListener('load', function () {
+            var editId = new URLSearchParams(window.location.search).get('edit');
+            if (editId && typeof editSellerListing === 'function') editSellerListing(editId);
+        });
+    </script>
 </body>
 
 </html>

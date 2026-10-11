@@ -72,7 +72,9 @@ const SokoMySQL = (function () {
         deleteListing: async function (id) {
             try {
                 const baseUrl = await getActiveBaseUrl();
-                const response = await fetch(`${baseUrl}/listings/${id}`, {
+                let by = '';
+                try { by = (JSON.parse(localStorage.getItem('sokohub_user') || 'null') || {}).email || ''; } catch (e) { }
+                const response = await fetch(`${baseUrl}/listings/${encodeURIComponent(id)}?by=${encodeURIComponent(by)}`, {
                     method: 'DELETE'
                 });
                 const data = await response.json();
