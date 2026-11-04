@@ -25,10 +25,11 @@ async function restoreData() {
 
         console.log('✅ Connected successfully!');
 
-        // 1. Ensure tables exist
+        // 1. Ensure tables exist with all required columns
         console.log('🛠️ Creating / verifying tables in target database...');
+        await connection.query(`DROP TABLE IF EXISTS users;`);
         await connection.query(`
-            CREATE TABLE IF NOT EXISTS users (
+            CREATE TABLE users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL UNIQUE,
