@@ -1,31 +1,56 @@
 /* =====================================================
    SokoHub Wishlist Module
    Shared across all pages. Stores liked items in
-   localStorage under 'sokohub_wishlist' and wires up
+   TiDB (wishlist_items, via /api/wishlist) and wires up
    every heart icon on the site automatically.
 ===================================================== */
 
 (function (window, document) {
     'use strict';
 
-    var WISHLIST_KEY = 'sokohub_wishlist';
+    // The wishlist lives in TiDB (table wishlist_items). The browser keeps only an
+    // in-memory copy for the current page, loaded from / synced to /api/wishlist.
+    var wishCache = [];
+    var wishDirty = false;
+    var wishTimer = null;
+    var wishInflight = Promise.resolve();
 
     function getWishlist() {
-        try {
-            var raw = localStorage.getItem(WISHLIST_KEY);
-            var parsed = raw ? JSON.parse(raw) : [];
-            return Array.isArray(parsed) ? parsed : [];
-        } catch (e) {
-            return [];
-        }
+        return wishCache;
     }
 
     function saveWishlist(list) {
-        try {
-            localStorage.setItem(WISHLIST_KEY, JSON.stringify(list));
-        } catch (e) { /* noop */ }
+        wishCache = Array.isArray(list) ? list : [];
         updateWishlistUI();
+        wishDirty = true;
+        clearTimeout(wishTimer);
+        wishTimer = setTimeout(flushWishlist, 250);
     }
+
+    function flushWishlist() {
+        clearTimeout(wishTimer);
+        if (!wishDirty || !window.SokoApi) return wishInflight;
+        wishDirty = false;
+        wishInflight = wishInflight.then(function () {
+            var payload = wishCache.map(function (i) { return { id: i.id }; });
+            return window.SokoApi.request('/wishlist', { method: 'PUT', body: { items: payload }, keepalive: true });
+        }).then(function (res) {
+            if (res && res.success && Array.isArray(res.items) && !wishDirty) {
+                wishCache = res.items;
+                updateWishlistUI();
+            }
+        }).catch(function (e) { console.warn('Could not save wishlist:', e); });
+        return wishInflight;
+    }
+
+    var ready = (window.SokoSession ? window.SokoSession.ready : Promise.resolve(null)).then(function (user) {
+        if (!user || !window.SokoApi) return;
+        return window.SokoApi.request('/wishlist').then(function (res) {
+            if (res && res.success && Array.isArray(res.items)) wishCache = res.items;
+        });
+    }).catch(function () { }).then(function () { updateWishlistUI(); });
+
+    window.addEventListener('pagehide', function () { flushWishlist(); });
 
     function isInWishlist(id) {
         return getWishlist().some(function (item) { return String(item.id) === String(id); });
@@ -267,7 +292,8 @@
         toggleWishlist: toggleWishlist,
         isInWishlist: isInWishlist,
         getWishlistCount: getWishlistCount,
-        updateWishlistUI: updateWishlistUI
+        updateWishlistUI: updateWishlistUI,
+        ready: ready
     };
 
     document.addEventListener('DOMContentLoaded', function () {

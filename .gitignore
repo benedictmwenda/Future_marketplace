@@ -1,4 +1,6 @@
 .env
+.env.*
 node_modules/
-.env.local
 *.log
+database-backup*.json
+*.sql.bak

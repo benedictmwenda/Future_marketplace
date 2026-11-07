@@ -16,7 +16,7 @@ exports.handler = async function (event, context) {
 
     try {
         const DB_HOST = process.env.DB_HOST;
-        const DB_PORT = parseInt(process.env.DB_PORT);
+        const DB_PORT = parseInt(process.env.DB_PORT || '4000');
         const DB_USER = process.env.DB_USER;
         const DB_PASSWORD = process.env.DB_PASSWORD; // no hardcoded fallback
         const DB_NAME = process.env.DB_NAME;
@@ -320,7 +320,7 @@ exports.handler = async function (event, context) {
             const query = `
                 INSERT INTO listings 
                 (id, title, category, subcategory, price, description, \`condition\`, location, seller_id, seller_name, seller_email, seller_phone, whatsapp, negotiable, delivery_available, image_url, images, features, attributes, status, premium, featured)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON DUPLICATE KEY UPDATE
                 title=VALUES(title), category=VALUES(category), subcategory=VALUES(subcategory), price=VALUES(price), description=VALUES(description), \`condition\`=VALUES(\`condition\`), location=VALUES(location), seller_name=VALUES(seller_name), seller_email=VALUES(seller_email), seller_phone=VALUES(seller_phone), whatsapp=VALUES(whatsapp), negotiable=VALUES(negotiable), delivery_available=VALUES(delivery_available), image_url=VALUES(image_url), images=VALUES(images), features=VALUES(features), attributes=VALUES(attributes), status=VALUES(status), premium=VALUES(premium), featured=VALUES(featured)
             `;

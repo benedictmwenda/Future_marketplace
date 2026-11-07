@@ -562,6 +562,7 @@
             }
         }
     </style>
+    <script src="js/soko-session.js"></script>
 </head>
 <body>
 
@@ -809,14 +810,7 @@
         }
 
         async function getAuthBaseUrl() {
-            if (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app') || (window.location.protocol === 'https:' && !window.location.hostname.includes('localhost'))) {
-                return `${window.location.origin}/api`;
-            }
-            try {
-                const testRes = await fetch('http://localhost:5000/api/listings', { method: 'HEAD', signal: AbortSignal.timeout(1200) });
-                if (testRes.ok) return 'http://localhost:5000/api';
-            } catch(e) {}
-            return 'https://mysokohub.netlify.app/api';
+            return window.SokoApi.base;
         }
 
         async function handleAuthSubmit(event, type) {
@@ -908,7 +902,7 @@
                 loggedInAt: new Date().toISOString()
             };
             
-            localStorage.setItem('sokohub_user', JSON.stringify(userSession));
+            // The server has set the session cookie; nothing is stored in the browser.
             
             const redirectUrl = redirectParam || (sessionRole === 'seller' ? './post-item.html' : './index.html');
             

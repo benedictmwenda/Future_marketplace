@@ -1,11 +1,9 @@
 // SokoHub Global Auth & Navbar Helper
 
 document.addEventListener('DOMContentLoaded', function () {
-    const rawUser = localStorage.getItem('sokohub_user');
-    let user = null;
-    try {
-        if (rawUser) user = JSON.parse(rawUser);
-    } catch (e) { }
+  // The signed-in user comes from the server (TiDB session), not from browser storage.
+  (window.SokoSession ? window.SokoSession.ready : Promise.resolve(null)).then(function (sessionUser) {
+    let user = sessionUser;
 
     // Helper: Check if user is logged in (any role)
     function isLoggedIn() {
@@ -110,9 +108,11 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.logout-btn').forEach(btn => {
         btn.addEventListener('click', function (e) {
             e.preventDefault();
-            localStorage.removeItem('sokohub_user');
-            alert("Signed out successfully.");
-            window.location.reload();
+            window.SokoSession.logout().then(function () {
+                alert("Signed out successfully.");
+                window.location.reload();
+            });
         });
     });
+  });
 });

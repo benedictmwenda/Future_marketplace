@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function () {
             primaryBtn.onclick = null;
             if (phone) {
                 primaryBtn.href = `tel:${phone}`;
-                primaryBtn.innerHTML = `<i class="fa fa-phone"></i> Call ${phone}`;
+                primaryBtn.innerHTML = `<i class="fa fa-phone"></i> Call ${String(phone).replace(/[<>&"']/g, '')}`;
             } else {
                 primaryBtn.href = `shop-details.html?id=${item.id}`;
                 primaryBtn.innerHTML = '<i class="fa fa-info-circle"></i> View Details';

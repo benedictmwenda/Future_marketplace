@@ -24,19 +24,9 @@
     <link rel="stylesheet" href="css/style.css" type="text/css">
 
     <!-- Immediate Auth Guard: Must be logged in to checkout -->
+    <script src="js/soko-session.js"></script>
     <script>
-        (function () {
-            try {
-                const rawUser = localStorage.getItem('sokohub_user');
-                const user = rawUser ? JSON.parse(rawUser) : null;
-                if (!user || !user.isLoggedIn) {
-                    alert("🔒 Sign In Required\n\nYou must be signed in to proceed with Checkout on SokoHub. Redirecting to Login...");
-                    window.location.href = './login.html?redirect=checkout.html';
-                }
-            } catch (e) {
-                window.location.href = './login.html?redirect=checkout.html';
-            }
-        })();
+        SokoSession.require("🔒 Sign In Required\n\nYou must be signed in to proceed with Checkout on SokoHub. Redirecting to Login...", 'checkout.html');
     </script>
 
     <style>
@@ -239,53 +229,53 @@
             </div>
             <div class="checkout__form">
                 <h4>Billing Details &amp; Delivery</h4>
-                <form action="#">
+                <form action="#" id="checkoutForm">
                     <div class="row">
                         <div class="col-lg-8 col-md-6">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>First Name<span>*</span></p>
-                                        <input type="text" placeholder="e.g. Benedict">
+                                        <input type="text" id="co_first" placeholder="e.g. Benedict">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Last Name<span>*</span></p>
-                                        <input type="text" placeholder="e.g. Mwenda">
+                                        <input type="text" id="co_last" placeholder="e.g. Mwenda">
                                     </div>
                                 </div>
                             </div>
                             <div class="checkout__input">
                                 <p>County / Region<span>*</span></p>
-                                <input type="text" placeholder="e.g. Nairobi / Kiambu / Mombasa">
+                                <input type="text" id="co_city" placeholder="e.g. Nairobi / Kiambu / Mombasa">
                             </div>
                             <div class="checkout__input">
                                 <p>Street Address / Delivery Location<span>*</span></p>
-                                <input type="text" placeholder="Street name, Estate, or Building" class="checkout__input__add">
-                                <input type="text" placeholder="Apartment, suite, unit, etc. (optional)">
+                                <input type="text" id="co_address" placeholder="Street name, Estate, or Building" class="checkout__input__add">
+                                <input type="text" id="co_address2" placeholder="Apartment, suite, unit, etc. (optional)">
                             </div>
                             <div class="checkout__input">
                                 <p>Town / City<span>*</span></p>
-                                <input type="text" placeholder="e.g. Westlands, Nairobi">
+                                <input type="text" id="co_area" placeholder="e.g. Westlands, Nairobi">
                             </div>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Phone Number (M-Pesa registered)<span>*</span></p>
-                                        <input type="text" placeholder="+254 7XX XXX XXX">
+                                        <input type="text" id="co_phone" placeholder="+254 7XX XXX XXX">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Email Address<span>*</span></p>
-                                        <input type="email" placeholder="you@example.com">
+                                        <input type="email" id="co_email" placeholder="you@example.com">
                                     </div>
                                 </div>
                             </div>
                             <div class="checkout__input">
                                 <p>Order Notes / Delivery Instructions<span>*</span></p>
-                                <input type="text" placeholder="Notes about your order, e.g. preferred delivery time or gate code.">
+                                <input type="text" id="co_notes" placeholder="Notes about your order, e.g. preferred delivery time or gate code.">
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6">
@@ -412,7 +402,7 @@
 
             // Render the order summary from the shared cart so checkout reflects
             // exactly what the buyer added (same source as the header total).
-            if (window.SokoCart) {
+            if (window.SokoCart) window.SokoCart.ready.then(function () {
                 var cartItems = window.SokoCart.getCart();
                 var orderList = $('.checkout__order ul').first();
                 var subtotal = window.SokoCart.getCartTotal();
@@ -437,7 +427,7 @@
                     $('.checkout__order .checkout__order__total span')
                         .text(window.SokoCart.formatKsh(window.SokoCart.getCheckoutTotal()));
                 }
-            }
+            });
         });
     </script>
 
@@ -450,6 +440,7 @@
         // what the buyer actually had in their cart.
         document.addEventListener('DOMContentLoaded', function () {
             if (!window.SokoCart) return;
+            window.SokoCart.ready.then(function () {
             const cart = window.SokoCart.getCart();
             const listEl = document.getElementById('checkoutItemsList');
 
@@ -487,6 +478,36 @@
                 if (deliveryEl) deliveryEl.textContent = window.SokoCart.formatKsh(0);
                 if (discountEl) discountEl.textContent = window.SokoCart.formatKsh(0);
             }
+            });
+        });
+    </script>
+    <script>
+        // Place order -> stored in TiDB (orders + order_items). Prices are recomputed on the server.
+        document.getElementById('checkoutForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var btn = this.querySelector('button[type="submit"]');
+            var label = btn.textContent;
+            var val = function (id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; };
+            var pay = document.querySelector('input[name="payment_method"]:checked');
+            btn.disabled = true;
+            btn.textContent = 'PLACING ORDER...';
+            window.SokoCart.ready.then(function () { return window.SokoCart.sync(); }).then(function () {
+                return window.SokoApi.request('/orders', { method: 'POST', body: {
+                    firstName: val('co_first'), lastName: val('co_last'), city: val('co_city'),
+                    address: val('co_address'), address2: val('co_address2'), area: val('co_area'),
+                    phone: val('co_phone'), email: val('co_email'), notes: val('co_notes'),
+                    paymentMethod: pay ? pay.value : 'mpesa'
+                } });
+            }).then(function (res) {
+                if (!res.success) throw new Error(res.message || 'Could not place your order.');
+                window.SokoCart.clearCart();
+                alert('✅ Order #' + res.order.id + ' placed!\n\nTotal: ' + window.SokoCart.formatKsh(res.order.total));
+                window.location.href = './index.html';
+            }).catch(function (err) {
+                alert(err.message || 'Could not place your order.');
+                btn.disabled = false;
+                btn.textContent = label;
+            });
         });
     </script>
 </body>

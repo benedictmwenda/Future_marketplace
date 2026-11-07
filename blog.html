@@ -6,14 +6,10 @@
     <script>
         // Start fetching listings immediately, before any other scripts/styles load,
         // so the data is already in flight (or ready) by the time the page finishes loading.
-        window.__earlyListingsPromise = (function () {
-            var isProd = window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app') || window.location.protocol === 'https:';
-            if (!isProd) return null;
-            return fetch(window.location.origin + '/api/listings')
-                .then(function (r) { return r.json(); })
-                .then(function (data) { return (data && data.success && Array.isArray(data.listings)) ? data.listings : null; })
-                .catch(function (err) { console.warn('Early listings prefetch failed:', err); return null; });
-        })();
+        window.__earlyListingsPromise = fetch('/api/listings', { credentials: 'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (data) { return (data && data.success && Array.isArray(data.listings)) ? data.listings : null; })
+            .catch(function (err) { console.warn('Early listings prefetch failed:', err); return null; });
     </script>
     <meta name="description" content="SokoHub Blog - Insights, Buying Guides, Rental Tips & Marketplace Advice in Kenya">
     <meta name="keywords" content="SokoHub, Kenya blog, marketplace tips, Nairobi rentals, car buying guide, M-Pesa safety">
@@ -564,7 +560,7 @@
     <script src="js/mixitup.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/sokohub-db.js"></script>
+    <script src="js/soko-session.js"></script>
     <script src="js/sokohub-mysql.js"></script>
     <script src="js/sokohub-firebase.js"></script>
     <script src="js/blog-data.js"></script>

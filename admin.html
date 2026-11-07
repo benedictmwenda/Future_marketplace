@@ -371,6 +371,7 @@
     <script src="js/mixitup.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/soko-session.js"></script>
     <script src="js/sokohub-auth.js"></script>
     <script src="js/sokohub-cart.js"></script>
     <script src="js/sokohub-wishlist.js"></script>
@@ -400,12 +401,11 @@
             toast._t = setTimeout(function () { t.style.display = 'none'; }, 2600);
         }
 
-        var isLocal = !(location.hostname.indexOf('netlify.app') > -1 || location.hostname.indexOf('vercel.app') > -1 || location.protocol === 'https:');
-        var BASE = isLocal ? 'http://localhost:5000/api' : location.origin + '/api';
+        var isLocal = true; // direct /api/admin/* routes work on every host
+        var BASE = window.SokoApi.base;
 
         var sessionUser = null;
-        try { sessionUser = JSON.parse(localStorage.getItem('sokohub_user') || 'null'); } catch (e) { }
-        var adminEmail = sessionUser && sessionUser.email;
+        var adminEmail = null; // filled from the server session below
 
         // The server re-checks the role in the database on EVERY call below.
         // Nothing stored in the browser can grant access to any of this data.
@@ -674,6 +674,8 @@
         });
 
         // ---------- boot: verify against the server before showing anything ----------
+        window.SokoSession.ready.then(function (u) {
+        sessionUser = u; adminEmail = u && u.email;
         if (!adminEmail) {
             showGate('<h3>Please sign in</h3><p>You need to be signed in with an admin account to view this page.</p><a href="login.html" class="primary-btn">Sign in</a>');
             return;
@@ -695,6 +697,7 @@
                 .catch(function (e) { toast(e.message || 'Load failed', true); });
         }).catch(function () {
             showGate('<h3>Couldn\'t reach the server</h3><p>Check your connection and try again.</p>');
+        });
         });
     })();
     </script>

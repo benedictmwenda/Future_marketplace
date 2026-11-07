@@ -1,91 +1,53 @@
-// SokoHub Frontend MySQL API Client
-// Connects browser pages to Netlify Serverless Function / API endpoint
-// or local Express server (http://localhost:5000/api) when offline/local.
-
-const SokoMySQL = (function () {
-    const API_PORTS = [5000, 5001];
-
-    async function getActiveBaseUrl() {
-        // If hosted on Netlify, Vercel, or any HTTPS server, use relative /api
-        if (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app') || window.location.protocol === 'https:') {
-            return `${window.location.origin}/api`;
-        }
-
-        // Local development: test ports 5000 and 5001
-        for (let port of API_PORTS) {
-            try {
-                const res = await fetch(`http://localhost:${port}/api/listings`);
-                if (res.ok) return `http://localhost:${port}/api`;
-            } catch (e) {}
-        }
-        return `http://localhost:5000/api`;
-    }
+// SokoHub listings client — talks to the TiDB-backed API (/api/listings).
+// (File name kept so existing <script> tags keep working; the old global name
+// SokoMySQL is kept as an alias of SokoTiDB.)
+const SokoTiDB = (function () {
+    function api() { return window.SokoApi; }
 
     return {
-        // Save listing to MySQL API
+        // Resolves { ok, id, listing } on success or { ok:false, message } on failure.
         saveListing: async function (item) {
             try {
-                const baseUrl = await getActiveBaseUrl();
-                const response = await fetch(`${baseUrl}/listings`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(item)
-                });
-                const data = await response.json();
-                if (data.success) {
-                    console.log('✅ Saved listing to MySQL Database:', data.id);
-                    return true;
-                } else {
-                    console.warn('MySQL API error:', data.error);
-                    return false;
-                }
+                const data = await api().request('/listings', { method: 'POST', body: item });
+                if (data.success) return { ok: true, id: data.id, listing: data.listing };
+                return { ok: false, message: data.message || 'Could not save your listing.' };
             } catch (err) {
-                console.warn('MySQL Server offline or unreachable:', err.message);
-                return false;
+                return { ok: false, message: 'Could not reach the server. Please check your connection and try again.' };
             }
         },
 
-        // Fetch all listings from MySQL API
+        // Resolves an array of listings, or null if the server could not be reached.
         fetchListings: async function () {
             try {
-                // Reuse the request kicked off in <head> as soon as the page started loading,
-                // instead of waiting until now to start a brand new one.
-                if (window.__earlyListingsPromise) {
-                    const early = await window.__earlyListingsPromise;
-                    if (Array.isArray(early)) {
-                        return early;
-                    }
+                // Use the request started in <head> once; later calls always hit the server.
+                const early = window.__earlyListingsPromise;
+                window.__earlyListingsPromise = null;
+                if (early) {
+                    const list = await early;
+                    if (Array.isArray(list)) return list;
                 }
-                const baseUrl = await getActiveBaseUrl();
-                const response = await fetch(`${baseUrl}/listings`);
-                const data = await response.json();
-                if (data.success && Array.isArray(data.listings)) {
-                    return data.listings;
-                }
+                const data = await api().request('/listings');
+                if (data.success && Array.isArray(data.listings)) return data.listings;
             } catch (err) {
-                console.warn('MySQL Server offline or unreachable during fetch:', err.message);
+                console.warn('Could not load listings:', err.message);
             }
             return null;
         },
 
-        // Delete listing from MySQL API
         deleteListing: async function (id) {
             try {
-                const baseUrl = await getActiveBaseUrl();
-                let by = '';
-                try { by = (JSON.parse(localStorage.getItem('sokohub_user') || 'null') || {}).email || ''; } catch (e) { }
-                const response = await fetch(`${baseUrl}/listings/${encodeURIComponent(id)}?by=${encodeURIComponent(by)}`, {
-                    method: 'DELETE'
-                });
-                const data = await response.json();
-                return data.success;
+                const data = await api().request('/listings/' + encodeURIComponent(id), { method: 'DELETE' });
+                return { ok: !!data.success, message: data.message };
             } catch (err) {
-                console.warn('Could not delete from MySQL API:', err.message);
-                return false;
+                return { ok: false, message: 'Could not reach the server.' };
             }
+        },
+
+        recordView: function (id) {
+            try { api().request('/listings/' + encodeURIComponent(id) + '/view', { method: 'POST', body: {} }); } catch (e) { }
         }
     };
 })();
 
-// Expose globally
-window.SokoMySQL = SokoMySQL;
+window.SokoTiDB = SokoTiDB;
+window.SokoMySQL = SokoTiDB;

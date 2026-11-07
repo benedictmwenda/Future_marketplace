@@ -1,14 +1,13 @@
 /* =====================================================
    SokoHub Cart Module
-   Shared across all pages. Stores cart in localStorage
-   under 'sokohub_cart' and syncs the header total + count
+   Shared across all pages. Stores the cart in TiDB
+   (cart_items, via /api/cart) and syncs the header total + count
    on every page automatically.
 ===================================================== */
 
 (function (window, document) {
     'use strict';
 
-    var CART_KEY = 'sokohub_cart';
 
     // Checkout constants — MUST match the cart/checkout page calculations so
     // the header total is always identical to the amount shown at checkout.
@@ -21,27 +20,54 @@
 
 
     // ---- Read helpers -------------------------------------------------
+    // The cart lives in TiDB (table cart_items). The browser keeps only an
+    // in-memory copy for the current page, loaded from / synced to /api/cart.
+
+    var cartCache = [];
+    var dirty = false;
+    var syncTimer = null;
+    var inflight = Promise.resolve();
 
     function getCart() {
-        try {
-            var raw = localStorage.getItem(CART_KEY);
-            if (!raw) {
-                return [];
-            }
-            var parsed = JSON.parse(raw);
-            return Array.isArray(parsed) ? parsed : [];
-        } catch (e) {
-            return [];
-        }
+        return cartCache;
     }
 
     function saveCart(cart) {
-        try {
-            localStorage.setItem(CART_KEY, JSON.stringify(cart));
-        } catch (e) {
-            console.warn('Could not save cart:', e);
-        }
+        cartCache = Array.isArray(cart) ? cart : [];
+        dirty = true;
+        clearTimeout(syncTimer);
+        syncTimer = setTimeout(flushCart, 250);
     }
+
+    // Sends the latest cart to the server. Resolves when the server copy is up to date.
+    function flushCart() {
+        clearTimeout(syncTimer);
+        if (!dirty || !window.SokoApi) return inflight;
+        dirty = false;
+        inflight = inflight.then(function () {
+            var payload = cartCache.map(function (i) {
+                return { id: i.id, quantity: parseInt(i.quantity, 10) || 1 };
+            });
+            return window.SokoApi.request('/cart', { method: 'PUT', body: { items: payload }, keepalive: true });
+        }).then(function (res) {
+            if (res && res.success && Array.isArray(res.items) && !dirty) {
+                cartCache = res.items;
+                updateCartUI();
+            }
+        }).catch(function (e) {
+            console.warn('Could not save cart:', e);
+        });
+        return inflight;
+    }
+
+    var ready = (window.SokoSession ? window.SokoSession.ready : Promise.resolve(null)).then(function (user) {
+        if (!user || !window.SokoApi) return;
+        return window.SokoApi.request('/cart').then(function (res) {
+            if (res && res.success && Array.isArray(res.items)) cartCache = res.items;
+        });
+    }).catch(function () { }).then(function () { updateCartUI(); });
+
+    window.addEventListener('pagehide', function () { flushCart(); });
 
     // ---- Math ---------------------------------------------------------
 
@@ -384,7 +410,9 @@
         commissionRate: COMMISSION_RATE,
         getCartCount: getCartCount,
         formatKsh: formatKsh,
-        updateCartUI: updateCartUI
+        updateCartUI: updateCartUI,
+        ready: ready,
+        sync: flushCart
     };
 
     // Auto-sync header/cart indicators on DOM ready

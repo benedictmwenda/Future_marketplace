@@ -6,14 +6,10 @@
     <script>
         // Start fetching listings immediately, before any other scripts/styles load,
         // so the data is already in flight (or ready) by the time the page finishes loading.
-        window.__earlyListingsPromise = (function () {
-            var isProd = window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app') || window.location.protocol === 'https:';
-            if (!isProd) return null;
-            return fetch(window.location.origin + '/api/listings')
-                .then(function (r) { return r.json(); })
-                .then(function (data) { return (data && data.success && Array.isArray(data.listings)) ? data.listings : null; })
-                .catch(function (err) { console.warn('Early listings prefetch failed:', err); return null; });
-        })();
+        window.__earlyListingsPromise = fetch('/api/listings', { credentials: 'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (data) { return (data && data.success && Array.isArray(data.listings)) ? data.listings : null; })
+            .catch(function (err) { console.warn('Early listings prefetch failed:', err); return null; });
     </script>
     <meta name="description" content="SokoHub - Post Your Item, Rental, Vehicle or Service">
     <meta name="keywords" content="SokoHub, sell, post listing, Kenya marketplace, Nairobi">
@@ -36,19 +32,9 @@
     <link rel="stylesheet" href="css/style.css" type="text/css">
 
     <!-- Immediate Auth Check (Redirects if not logged in) -->
+    <script src="js/soko-session.js"></script>
     <script>
-        (function () {
-            try {
-                const rawUser = localStorage.getItem('sokohub_user');
-                const user = rawUser ? JSON.parse(rawUser) : null;
-                if (!user || !user.isLoggedIn) {
-                    alert("🔒 Sign In Required\n\nPlease sign in or register to publish items on SokoHub.");
-                    window.location.href = './login.html?redirect=post-item.html';
-                }
-            } catch (e) {
-                window.location.href = './login.html?redirect=post-item.html';
-            }
-        })();
+        SokoSession.require("🔒 Sign In Required\n\nPlease sign in or register to publish items on SokoHub.", 'post-item.html');
     </script>
 
     <style>
@@ -1249,17 +1235,12 @@
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/sokohub-db.js"></script>
     <script src="js/sokohub-mysql.js"></script>
     <script src="js/sokohub-firebase.js"></script>
     <script src="js/sokohub-auth.js"></script>
 
     <!-- Firebase SDKs — loaded AFTER core scripts with defer so a slow or blocked CDN
          can never block the form's submit handler or the preloader hide. -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js" defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js" defer></script>
-    <script src="js/firebase-config.js" defer></script>
 
     <script>
         // ============================================================
@@ -1581,9 +1562,6 @@
                 listings = await fetchSokoHubListings();
             } catch (e) {
                 console.warn("Could not fetch listings:", e);
-                try {
-                    listings = JSON.parse(localStorage.getItem('sokohub_listings') || '[]');
-                } catch (e2) { }
             }
 
             const sellerSlug = getSellerSlug(currentUser);
@@ -1645,9 +1623,7 @@
             try {
                 listings = await fetchSokoHubListings();
             } catch (e) {
-                try {
-                    listings = JSON.parse(localStorage.getItem('sokohub_listings') || '[]');
-                } catch (e2) { }
+                console.warn("Could not fetch listings:", e);
             }
 
             const item = listings.find(function (l) { return String(l.id) === String(listingId); });
@@ -1770,79 +1746,23 @@
             if (alertBox) alertBox.style.display = 'none';
         }
 
-        // Delete a seller's listing from localStorage, MySQL, and IndexedDB
+        // Delete a seller's listing from TiDB
         async function deleteSellerListing(listingId) {
             if (!confirm('Are you sure you want to permanently delete this listing?')) return;
-
-            let listings = [];
-            try {
-                listings = JSON.parse(localStorage.getItem('sokohub_listings') || '[]');
-            } catch (e) { }
-
-            const filtered = listings.filter(function (item) { return item.id !== listingId; });
-            localStorage.setItem('sokohub_listings', JSON.stringify(filtered));
-
-            // Delete from MySQL API
-            if (window.SokoMySQL) {
-                try {
-                    await window.SokoMySQL.deleteListing(listingId);
-                } catch (e) {
-                    console.warn('Could not delete from MySQL API:', e);
-                }
+            const result = window.SokoTiDB ? await window.SokoTiDB.deleteListing(listingId) : { ok: false };
+            if (!result.ok) {
+                alert(result.message || 'Could not delete the listing. Please try again.');
+                return;
             }
-
-            // Delete from IndexedDB
-            if (window.SokoDB) {
-                try {
-                    await window.SokoDB.deleteListing(listingId);
-                } catch (e) {
-                    console.warn('Could not delete from SokoDB:', e);
-                }
-            }
-
-            // Also try to delete from Firestore if configured
-            if (window.db && typeof firebaseConfig !== 'undefined' && firebaseConfig.apiKey !== "YOUR_API_KEY") {
-                window.db.collection('listings').doc(listingId).delete()
-                    .then(function () { console.log('Listing deleted from Firestore:', listingId); })
-                    .catch(function (err) { console.warn('Could not delete from Firestore:', err.message); });
-            }
-
             renderSellerListings();
             alert('Listing has been deleted.');
-        }
-
-        // Safe storage writer: Saves to IndexedDB (high capacity) and LocalStorage safely
-        async function saveListingsToStorage(listings) {
-            // Save to IndexedDB
-            if (window.SokoDB) {
-                try {
-                    for (let item of listings) {
-                        await window.SokoDB.saveListing(item);
-                    }
-                } catch (dbErr) {
-                    console.warn('SokoDB save warning:', dbErr);
-                }
-            }
-
-            // Save to LocalStorage safely
-            try {
-                localStorage.setItem('sokohub_listings', JSON.stringify(listings));
-                return true;
-            } catch (e) {
-                console.warn('LocalStorage limit reached. Item saved in SokoDB database.');
-                return true;
-            }
         }
 
         // ============================================================
         //  DOM READY — init
         // ============================================================
-        document.addEventListener('DOMContentLoaded', function () {
-            const rawUser = localStorage.getItem('sokohub_user');
-            let user = null;
-            try {
-                if (rawUser) user = JSON.parse(rawUser);
-            } catch (e) { }
+        document.addEventListener('DOMContentLoaded', async function () {
+            const user = await window.SokoSession.ready;
 
             currentUser = user;
             renderSellerListings();
@@ -1871,7 +1791,7 @@
             // Ensure seller role for this session
             if (user.role !== 'seller' && user.role !== 'admin') {
                 user.role = 'seller';
-                try { localStorage.setItem('sokohub_user', JSON.stringify(user)); } catch (e) { }
+                // (the server upgrades the account to seller when the first listing is published)
             }
 
             // Authenticated seller — auto-fill contact info
@@ -1887,8 +1807,7 @@
                 const logoutBtn = document.getElementById('logoutBtn');
                 if (logoutBtn) logoutBtn.addEventListener('click', function (e) {
                     e.preventDefault();
-                    localStorage.removeItem('sokohub_user');
-                    window.location.reload();
+                    window.SokoSession.logout().then(function () { window.location.reload(); });
                 });
             }
         });
@@ -1917,11 +1836,7 @@
             }
 
             // If editing, load the existing listing to preserve id / createdAt
-            let existingItem = null;
-            try {
-                const raw = JSON.parse(localStorage.getItem('sokohub_listings') || '[]');
-                existingItem = raw.find(function (l) { return l.id === editingListingId; });
-            } catch (e) { }
+            let existingItem = null; // the server keeps owner / created date / views for existing listings
 
             const category = document.getElementById('itemCategory').value;
             const premium = selectedPremium;
@@ -1957,39 +1872,11 @@
             };
 
             try {
-                // Save to Aiven Cloud MySQL database directly
-                if (window.SokoMySQL) {
-                    try {
-                        await window.SokoMySQL.saveListing(newListing);
-                    } catch (sqlErr) {
-                        console.warn('SokoMySQL save warning:', sqlErr);
-                    }
+                // Save to TiDB (the only place listings are stored)
+                const saveResult = await window.SokoTiDB.saveListing(newListing);
+                if (!saveResult.ok) {
+                    throw new Error(saveResult.message || 'Could not save your listing.');
                 }
-
-                // Save into Firestore if Firebase db initialized (best-effort; images are local data URLs)
-                if (window.db && typeof firebaseConfig !== 'undefined' && firebaseConfig.apiKey !== "YOUR_API_KEY") {
-                    try {
-                        await window.db.collection('listings').doc(newListing.id).set(newListing);
-                    } catch (fbErr) {
-                        console.warn('Firestore write skipped (likely too large):', fbErr.message);
-                    }
-                }
-
-                // Save to LocalStorage & SokoDB so items show up instantly on front-end.
-                let localListings = JSON.parse(localStorage.getItem('sokohub_listings') || '[]');
-                if (isEditing) {
-                    localListings = localListings.map(function (l) {
-                        return l.id === editingListingId ? newListing : l;
-                    });
-                } else {
-                    localListings.unshift(newListing);
-                }
-                const saved = await saveListingsToStorage(localListings);
-
-                if (!saved) {
-                    throw new Error('Browser storage is full. Please use fewer/smaller images or clear browser data, then try again.');
-                }
-
                 renderSellerListings();
 
                 alertBox.className = "alert alert-status alert-success";

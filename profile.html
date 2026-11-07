@@ -347,16 +347,13 @@
     <script src="js/mixitup.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/sokohub-db.js"></script>
+    <script src="js/soko-session.js"></script>
     <script src="js/sokohub-auth.js"></script>
     <script src="js/sokohub-cart.js"></script>
     <script src="js/sokohub-wishlist.js"></script>
 
     <script>
-        (function () {
-            const rawUser = localStorage.getItem('sokohub_user');
-            let user = null;
-            try { if (rawUser) user = JSON.parse(rawUser); } catch (e) { }
+        window.SokoSession.ready.then(function (user) {
 
             if (!user || !user.isLoggedIn) {
                 document.getElementById('profile-logged-out').style.display = 'block';
@@ -393,8 +390,7 @@
 
             // --- Save profile ---
             function getActiveBaseUrl() {
-                const isProd = window.location.hostname.includes('netlify.app') || window.location.hostname.includes('vercel.app') || window.location.protocol === 'https:';
-                return isProd ? (window.location.origin + '/api') : 'http://localhost:5000/api';
+                return window.SokoApi.base;
             }
 
             document.getElementById('saveProfileBtn').addEventListener('click', async function () {
@@ -422,7 +418,7 @@
                         user.name = data.user.name;
                         user.phone = data.user.phone;
                         user.photo = data.user.photo;
-                        localStorage.setItem('sokohub_user', JSON.stringify(user));
+                        window.SokoSession.setUser(user);
                         document.getElementById('profileDisplayName').textContent = user.name;
                         msgEl.style.color = '#28a745';
                         msgEl.textContent = '✓ Saved successfully.';
@@ -438,8 +434,7 @@
 
             document.getElementById('profileLogoutBtn').addEventListener('click', function (e) {
                 e.preventDefault();
-                localStorage.removeItem('sokohub_user');
-                window.location.href = './index.html';
+                window.SokoSession.logout().then(function () { window.location.href = './index.html'; });
             });
 
             // --- Wishlist ---
@@ -516,7 +511,7 @@
                 function fail(text) { msgEl.style.color = '#e74c3c'; msgEl.textContent = text; }
 
                 if (!currentPassword || !newPassword || !confirmPassword) return fail('Please fill in all three fields.');
-                if (newPassword.length < 6) return fail('New password must be at least 6 characters.');
+                if (newPassword.length < 8) return fail('New password must be at least 8 characters.');
                 if (newPassword !== confirmPassword) return fail('New passwords don\'t match.');
                 if (newPassword === currentPassword) return fail('New password must be different from the current one.');
 
@@ -607,18 +602,10 @@
                 const id = btn.dataset.delListing;
                 btn.disabled = true;
                 try {
-                    const resp = await fetch(getActiveBaseUrl() + '/listings/' + encodeURIComponent(id) + '?by=' + encodeURIComponent(user.email), { method: 'DELETE' });
+                    const resp = await fetch(getActiveBaseUrl() + '/listings/' + encodeURIComponent(id) , { method: 'DELETE' });
                     const data = await resp.json();
                     if (!data.success) throw new Error(data.message || 'Delete failed');
 
-                    // Clear this browser's local copies too, so a stale cached copy can't reappear.
-                    try {
-                        const local = JSON.parse(localStorage.getItem('sokohub_listings') || '[]');
-                        localStorage.setItem('sokohub_listings', JSON.stringify(local.filter(function (l) { return String(l.id) !== String(id); })));
-                    } catch (e2) { }
-                    if (window.SokoDB && typeof window.SokoDB.deleteListing === 'function') {
-                        try { await window.SokoDB.deleteListing(id); } catch (e3) { }
-                    }
                     renderMyListings();
                 } catch (err) {
                     alert(err.message || 'Could not delete the listing.');
@@ -629,7 +616,7 @@
             renderWishlist();
             renderCart();
             renderMyListings();
-        })();
+        });
     </script>
 
 </body>

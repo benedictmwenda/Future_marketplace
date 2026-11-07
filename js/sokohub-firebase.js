@@ -4,6 +4,14 @@
 // contact-only (call/WhatsApp the seller), never go through cart + checkout.
 // Everything else (electronics, fashion, home goods, etc.) is shop-type and
 // can be bought directly through the cart.
+// Escapes text before it is placed into HTML (listing fields are user-supplied).
+function sokoEsc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (ch) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+    });
+}
+window.sokoEsc = sokoEsc;
+
 window.SOKO_LISTING_ONLY_CATEGORIES = ['vehicles', 'property', 'services', 'jobs'];
 
 function getSokoCatSlug(categoryText) {
@@ -69,71 +77,20 @@ function isSokoShopType(item) {
 window.isSokoShopType = isSokoShopType;
 
 async function fetchSokoHubListings() {
-    let allListings = [];
-
-    // 0. Fetch from MySQL Backend Server (if running on http://localhost:5000)
-    if (window.SokoMySQL) {
-        try {
-            const mysqlListings = await window.SokoMySQL.fetchListings();
-            if (Array.isArray(mysqlListings) && mysqlListings.length > 0) {
-                allListings = mysqlListings;
-            }
-        } catch (mErr) {
-            console.warn("MySQL fetch warning:", mErr);
-        }
+    // Listings come from TiDB via the API — nothing is cached in the browser.
+    let listings = [];
+    if (window.SokoTiDB) {
+        const fromServer = await window.SokoTiDB.fetchListings();
+        if (Array.isArray(fromServer)) listings = fromServer;
     }
-
-    // 1. Read from IndexedDB — only as a fallback if MySQL returned nothing
-    // (e.g. offline). Must NOT run when MySQL already succeeded, otherwise this
-    // browser's local cache silently replaces the full catalog after posting.
-    if (window.SokoDB && allListings.length === 0) {
-        try {
-            const dbListings = await window.SokoDB.getAllListings();
-            if (Array.isArray(dbListings) && dbListings.length > 0) {
-                allListings = dbListings;
-            }
-        } catch (e) {
-            console.warn("Could not read from IndexedDB: ", e);
-        }
-    }
-
-    // 2. Fetch from LocalStorage synced items
+    // Make sure the signed-in user's cart + wishlist are loaded before pages draw hearts/cart state.
     try {
-        const localData = localStorage.getItem('sokohub_listings');
-        if (localData) {
-            const parsed = JSON.parse(localData);
-            if (Array.isArray(parsed)) {
-                parsed.forEach(item => {
-                    if (!allListings.some(l => l.id === item.id)) {
-                        allListings.unshift(item);
-                    }
-                });
-            }
-        }
-    } catch (e) {
-        console.warn("Could not read local listings: ", e);
-    }
-
-    // 3. Fetch from Firebase Firestore if configured
-    if (window.db && typeof firebaseConfig !== 'undefined' && firebaseConfig.apiKey !== "YOUR_API_KEY") {
-        try {
-            const snapshot = await window.db.collection('listings').get();
-            snapshot.forEach(doc => {
-                const item = doc.data() || {};
-                if (!item.id) item.id = doc.id;
-                const idx = allListings.findIndex(l => l.id === item.id);
-                if (idx === -1) {
-                    allListings.unshift(item);
-                } else {
-                    allListings[idx] = Object.assign({}, allListings[idx], item);
-                }
-            });
-        } catch (err) {
-            console.warn("Firestore fetch notice: ", err.message);
-        }
-    }
-
-    return allListings;
+        await Promise.all([
+            window.SokoCart && window.SokoCart.ready,
+            window.SokoWishlist && window.SokoWishlist.ready
+        ]);
+    } catch (e) { /* ignore */ }
+    return listings;
 }
 
 // Render dynamic items on shop-grid.html
@@ -211,25 +168,25 @@ async function renderShopGridListings() {
                 <div class="product__item">
                     <div class="product__item__pic set-bg" style="background-image: url('${mainImage}'); background-size: cover; background-position: center; height: 260px; position: relative;">
                         <span class="badge" style="position: absolute; top: 10px; left: 10px; background: #1000B8; color: #F3F3E6; padding: 5px 10px; font-size: 11px; text-transform: uppercase; border-radius: 4px; font-weight: 700;">
-                            ${item.category || 'Product'} ${item.subcategory ? '▸ ' + item.subcategory : ''}
+                            ${sokoEsc(item.category || 'Product')} ${item.subcategory ? '▸ ' + sokoEsc(item.subcategory) : ''}
                         </span>
                         <span class="badge" style="position: absolute; top: 10px; right: 10px; background: ${item.status === 'Sold' ? '#dc3545' : (item.status === 'Reserved' ? '#DAA520' : (item.status === 'Out of Stock' ? '#6c757d' : '#28a745'))}; padding: 5px 10px; font-size: 11px; text-transform: uppercase; color: #F3F3E6; border-radius: 4px;">
-                            ${item.status || 'Available'}
+                            ${sokoEsc(item.status || 'Available')}
                         </span>
                         ${getPremiumBadgeHtml(item, 'bottom-left')}
                         <ul class="product__item__pic__hover">
-                            <li><a href="#" data-qv-id="${item.id}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#" class="quick-view-btn" data-qv-id="${item.id}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-eye"></i></a></li>
-                            <li><a href="shop-details.html?id=${item.id}" style="background:#DAA520; color:#1D1912;"><i class="fa fa-external-link"></i></a></li>
+                            <li><a href="#" data-qv-id="${sokoEsc(item.id)}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-heart"></i></a></li>
+                            <li><a href="#" class="quick-view-btn" data-qv-id="${sokoEsc(item.id)}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-eye"></i></a></li>
+                            <li><a href="shop-details.html?id=${encodeURIComponent(item.id)}" style="background:#DAA520; color:#1D1912;"><i class="fa fa-external-link"></i></a></li>
                         </ul>
                     </div>
                     <div class="product__item__text" style="padding-top: 15px;">
-                        <h6><a href="shop-details.html?id=${item.id}" style="color:#1D1912; font-weight:700;">${item.title}</a></h6>
+                        <h6><a href="shop-details.html?id=${encodeURIComponent(item.id)}" style="color:#1D1912; font-weight:700;">${sokoEsc(item.title)}</a></h6>
                         <h5 style="color: #1000B8; font-weight: 800; margin-top: 5px;">
-                            ${typeof item.price === 'number' ? 'KSH ' + formattedPrice : item.price}
+                            ${typeof item.price === 'number' ? 'KSH ' + formattedPrice : sokoEsc(item.price)}
                         </h5>
                         <small style="color: #666; display: block; margin-top: 3px;">
-                            <i class="fa fa-map-marker" style="color:#1000B8;"></i> ${item.location || 'Nairobi'} | <i class="fa fa-user" style="color:#DAA520;"></i> ${item.sellerName || 'Verified Seller'}
+                            <i class="fa fa-map-marker" style="color:#1000B8;"></i> ${sokoEsc(item.location || 'Nairobi')} | <i class="fa fa-user" style="color:#DAA520;"></i> ${sokoEsc(item.sellerName || 'Verified Seller')}
                         </small>
                     </div>
                 </div>
@@ -268,19 +225,19 @@ function buildHomeListingCard(item) {
             <div class="featured__item">
                 <div class="featured__item__pic set-bg" style="background-image: url('${mainImage}'); background-size: cover; background-position: center; height: 260px; position: relative;">
                     <span class="badge" style="position: absolute; top: 10px; left: 10px; background: #1000B8; color: #F3F3E6; padding: 5px 10px; font-size: 11px; text-transform: uppercase; font-weight:700; border-radius:4px; z-index: 2;">
-                        ${item.category || 'Product'} ${item.subcategory ? '▸ ' + item.subcategory : ''}
+                        ${sokoEsc(item.category || 'Product')} ${item.subcategory ? '▸ ' + sokoEsc(item.subcategory) : ''}
                     </span>
                     ${getPremiumBadgeHtml(item)}
                     <ul class="featured__item__pic__hover">
-                        <li><a href="#" data-qv-id="${item.id}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-heart"></i></a></li>
-                        <li><a href="#" class="quick-view-btn" data-qv-id="${item.id}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-eye"></i></a></li>
-                        <li><a href="shop-details.html?id=${item.id}" style="background:#DAA520; color:#1D1912;"><i class="fa fa-external-link"></i></a></li>
+                        <li><a href="#" data-qv-id="${sokoEsc(item.id)}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-heart"></i></a></li>
+                        <li><a href="#" class="quick-view-btn" data-qv-id="${sokoEsc(item.id)}" style="background:#1000B8; color:#F3F3E6;"><i class="fa fa-eye"></i></a></li>
+                        <li><a href="shop-details.html?id=${encodeURIComponent(item.id)}" style="background:#DAA520; color:#1D1912;"><i class="fa fa-external-link"></i></a></li>
                     </ul>
                 </div>
                 <div class="featured__item__text">
-                    <h6><a href="shop-details.html?id=${item.id}" style="color:#1D1912; font-weight:700;">${item.title}</a></h6>
+                    <h6><a href="shop-details.html?id=${encodeURIComponent(item.id)}" style="color:#1D1912; font-weight:700;">${sokoEsc(item.title)}</a></h6>
                     <h5 style="color:#1000B8; font-weight:800;">${formattedPrice}</h5>
-                    <small style="color:#666;"><i class="fa fa-map-marker" style="color:#1000B8;"></i> ${item.location || 'Nairobi'} | ${item.sellerName || 'Seller'}</small>
+                    <small style="color:#666;"><i class="fa fa-map-marker" style="color:#1000B8;"></i> ${sokoEsc(item.location || 'Nairobi')} | ${sokoEsc(item.sellerName || 'Seller')}</small>
                 </div>
             </div>
         </div>
@@ -360,6 +317,7 @@ async function renderShopDetailsPage() {
     }
 
     window.__sokoCurrentDetailItem = item;
+    if (window.SokoTiDB) window.SokoTiDB.recordView(item.id);
     if (window.SokoWishlist && window.SokoWishlist.isInWishlist(item.id)) {
         const heartBtn = document.querySelector('.heart-icon');
         if (heartBtn) heartBtn.style.color = '#e74c3c';
@@ -448,8 +406,8 @@ async function renderShopDetailsPage() {
             };
         } else if (item.sellerPhone) {
             // Listing-type item (vehicles, property, services, jobs): contact only.
-            contactBtn.href = `tel:${item.sellerPhone}`;
-            contactBtn.innerHTML = `<i class="fa fa-phone"></i> CALL ${item.sellerPhone}`;
+            contactBtn.href = `tel:${sokoEsc(item.sellerPhone)}`;
+            contactBtn.innerHTML = `<i class="fa fa-phone"></i> CALL ${sokoEsc(item.sellerPhone)}`;
             contactBtn.onclick = null;
         }
     }
@@ -477,13 +435,13 @@ async function renderShopDetailsPage() {
     listItems.forEach(li => {
         const text = li.textContent;
         if (text.includes('Availability')) {
-            li.innerHTML = `<b>Availability</b> <span>${item.status || 'Available'}</span>`;
+            li.innerHTML = `<b>Availability</b> <span>${sokoEsc(item.status || 'Available')}</span>`;
         } else if (text.includes('Seller')) {
-            li.innerHTML = `<b>Seller</b> <span>${item.sellerName || 'Verified Seller'}</span>`;
+            li.innerHTML = `<b>Seller</b> <span>${sokoEsc(item.sellerName || 'Verified Seller')}</span>`;
         } else if (text.includes('Location')) {
-            li.innerHTML = `<b>Location</b> <span>${item.location || 'Nairobi, Kenya'}</span>`;
+            li.innerHTML = `<b>Location</b> <span>${sokoEsc(item.location || 'Nairobi, Kenya')}</span>`;
         } else if (text.includes('Category')) {
-            li.innerHTML = `<b>Category</b> <span>${item.category || 'Product'}</span>`;
+            li.innerHTML = `<b>Category</b> <span>${sokoEsc(item.category || 'Product')}</span>`;
         }
     });
 
@@ -519,7 +477,7 @@ async function renderShopDetailsPage() {
         }
         if (rows.length > 0) {
             const rowsHtml = rows.map(function (r) {
-                return `<tr><td><b>${r[0]}</b></td><td>${String(r[1]).replace(/</g, '&lt;')}</td></tr>`;
+                return `<tr><td><b>${sokoEsc(r[0])}</b></td><td>${sokoEsc(r[1])}</td></tr>`;
             }).join('');
             specsTab.innerHTML = `<h6>Specifications</h6><table class="table table-bordered mt-3"><tbody>${rowsHtml}</tbody></table>`;
         } else {
